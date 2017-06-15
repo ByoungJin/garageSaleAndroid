@@ -11,7 +11,7 @@
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:background="@drawable/ic_menu_send"
-        android:onClick="ExpandMenu"/>
+        android:onClick="slideMenu"/>
 
     <TextView
         android:text="타이틀"
