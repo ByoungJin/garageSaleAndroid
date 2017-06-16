@@ -14,6 +14,12 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 
+import com.garagesale.gapp.garagesale.fragment.JoinFragment;
+import com.garagesale.gapp.garagesale.fragment.LoginFragment;
+import com.garagesale.gapp.garagesale.fragment.MainFragment;
+import com.garagesale.gapp.garagesale.fragment.ProfileFragment;
+import com.garagesale.gapp.garagesale.fragment.SettingFragment;
+import com.garagesale.gapp.garagesale.fragment.StoreFragment;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 public class MainActivity extends AppCompatActivity {
