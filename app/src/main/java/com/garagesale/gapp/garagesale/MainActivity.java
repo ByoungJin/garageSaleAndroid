@@ -14,35 +14,41 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 
+import com.garagesale.gapp.garagesale.network.DaggerNetworkComponent;
+import com.garagesale.gapp.garagesale.network.NetworkComponent;
 import com.garagesale.gapp.garagesale.fragment.JoinFragment;
 import com.garagesale.gapp.garagesale.fragment.LoginFragment;
 import com.garagesale.gapp.garagesale.fragment.MainFragment;
 import com.garagesale.gapp.garagesale.fragment.ProfileFragment;
 import com.garagesale.gapp.garagesale.fragment.SettingFragment;
 import com.garagesale.gapp.garagesale.fragment.StoreFragment;
+import com.garagesale.gapp.garagesale.network.NetworkModule;
+import com.garagesale.gapp.garagesale.util.SharedPreferenceManager;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 public class MainActivity extends AppCompatActivity {
+
+    NetworkComponent networkComponent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
-
         // Floating Button
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show());
 
+        // GetSharedPreferenceManger
+        SharedPreferenceManager.getInstance(this);
 
+        // NetworkModule에서 Content를 받을 수 있도록 빌드
+        networkComponent = DaggerNetworkComponent.builder().networkModule(new NetworkModule(this)).build();
+    }
+
+    public NetworkComponent getNetworkComponent(){
+        return networkComponent;
     }
 
     @Override
@@ -83,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    // 메뉴버튼 클릭이벤트
     public void btnStart(View v) {
         // 판넬 닫기
         slideMenu(null);
