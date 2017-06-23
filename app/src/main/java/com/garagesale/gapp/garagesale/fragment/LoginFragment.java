@@ -42,15 +42,14 @@ public class LoginFragment extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        // Login (서버 주소는 build.gradle에 있음, 본인 로컬 서버 주소로 변경하여 테스트하세요)
         getNetworkComponent().inject(this); // retrofit 객체 주입 시점
+        LoginService loginService = retrofit.create(LoginService.class);    // 로그인 서비스 객체 생성
 
+        // View
         binding = FragmentLoginBinding.bind(getView()); // Login 프레그먼트 View
-
-        // button
         binding.loginButton.setOnClickListener(view1 -> {
 
-            // Login (서버 주소는 build.gradle에 있음, 본인 로컬 서버 주소로 변경하여 테스트하세요)
-            LoginService loginService = retrofit.create(LoginService.class);
 
             // userId, Password를 넣고 Login Reqest 요청
             Call<Account> repos = loginService.loginPost(
