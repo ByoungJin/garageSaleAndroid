@@ -20,4 +20,6 @@ public interface LoginService {
     @POST("/login")
     Call<Account> loginPost(@Field("email") String email, @Field("password") String password);
 
+    @POST("/auth/token")
+    Call<Account> tokenLoginPost();
 }

@@ -1,6 +1,7 @@
 package com.garagesale.gapp.garagesale;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -9,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
         // NetworkModule에서 Content를 받을 수 있도록 빌드
         networkComponent = DaggerNetworkComponent.builder().networkModule(new NetworkModule(this)).build();
+
     }
 
     public NetworkComponent getNetworkComponent(){
@@ -82,6 +85,9 @@ public class MainActivity extends AppCompatActivity {
         Toolbar parent = (Toolbar) actionbar.getParent();
         parent.setContentInsetsAbsolute(0, 0);
 
+        // Login 화면부터 시작
+        changeFragment(LoginFragment.getInstance());
+
         return true;
     }
 
@@ -114,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Set the toolbar title
         TextView titleTextView = (TextView) findViewById(R.id.title);
+
         titleTextView.setText(fragment.getTitle());
     }
 
