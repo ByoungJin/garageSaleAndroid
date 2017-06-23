@@ -23,7 +23,6 @@ import com.garagesale.gapp.garagesale.fragment.ProfileFragment;
 import com.garagesale.gapp.garagesale.fragment.SettingFragment;
 import com.garagesale.gapp.garagesale.fragment.StoreFragment;
 import com.garagesale.gapp.garagesale.network.NetworkModule;
-import com.garagesale.gapp.garagesale.util.SharedPreferenceManager;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 public class MainActivity extends AppCompatActivity {
@@ -39,9 +38,6 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show());
-
-        // GetSharedPreferenceManger
-        SharedPreferenceManager.getInstance(this);
 
         // NetworkModule에서 Content를 받을 수 있도록 빌드
         networkComponent = DaggerNetworkComponent.builder().networkModule(new NetworkModule(this)).build();
@@ -91,32 +87,33 @@ public class MainActivity extends AppCompatActivity {
 
     // 메뉴버튼 클릭이벤트
     public void btnStart(View v) {
-        // 판넬 닫기
-        slideMenu(null);
-
-        // Fragment Change
+        slideMenu(null);    // 판넬 닫기
         int id = v.getId();
+        changeFragment(id);
+    }
 
+    // Fragment Change
+    public void changeFragment(int id) {
         Fragment fragment = null;
         String title = getString(R.string.app_name);
 
         if (id == R.id.main_button) {
-            fragment = new MainFragment();
+            fragment = MainFragment.getInstance();
             title = "Main";
         } else if (id == R.id.profile_button) {
-            fragment = new ProfileFragment();
+            fragment = ProfileFragment.getInstance();
             title = "Profile";
         } else if (id == R.id.join_button) {
-            fragment = new JoinFragment();
+            fragment = JoinFragment.getInstance();
             title = "Join";
         } else if (id == R.id.login_button) {
-            fragment = new LoginFragment();
+            fragment = LoginFragment.getInstance();
             title = "Login";
         } else if (id == R.id.setting_button) {
-            fragment = new SettingFragment();
+            fragment = SettingFragment.getInstance();
             title = "Setting";
         } else if (id == R.id.store_button) {
-            fragment = new StoreFragment();
+            fragment = StoreFragment.getInstance();
             title = "Store";
         }
 
@@ -129,7 +126,6 @@ public class MainActivity extends AppCompatActivity {
         // Set the toolbar title
         TextView titleTextView = (TextView) findViewById(R.id.title);
         titleTextView.setText(title);
-
     }
 
     public void slideMenu(View v) {

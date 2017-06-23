@@ -1,5 +1,6 @@
 package com.garagesale.gapp.garagesale;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -23,5 +24,10 @@ public class BaseFragment extends Fragment {
     // Get NetworkComponent
     protected NetworkComponent getNetworkComponent(){
         return ((MainActivity)getActivity()).getNetworkComponent();
+    }
+
+    // Get MainActivity Context
+    protected MainActivity getMainActivity(){
+        return (MainActivity)getActivity();
     }
 }

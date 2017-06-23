@@ -1,5 +1,6 @@
 package com.garagesale.gapp.garagesale.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -25,6 +26,15 @@ import retrofit2.Retrofit;
 
 
 public class LoginFragment extends BaseFragment {
+
+    // 싱글톤 패턴
+    @SuppressLint("StaticFieldLeak")
+    private static LoginFragment mInstance;
+    public static LoginFragment getInstance(){
+        if(mInstance == null) mInstance = new LoginFragment();
+        return mInstance;
+    }
+
     private FragmentLoginBinding binding;
     View view;
     @Inject
@@ -66,18 +76,26 @@ public class LoginFragment extends BaseFragment {
                             // 토큰을 로컬에 저장
                             Account account = response.body();
                             SharedPreferenceManager preferenceManager = SharedPreferenceManager.getInstance(getActivity());
-                            preferenceManager.putStringValue(BuildConfig.KEYTOKEN,account.getToken());
+                            preferenceManager.putStringValue(BuildConfig.KEYTOKEN, account.getToken());
 
                             Log.v("getToken : ", account.getToken());
                             Log.v("getEmail : ", account.getUser().getEmail());
                             Log.v("getName : ", account.getUser().getName());
 
-                            Toast.makeText(getActivity(), "로그인 성공, Name : " + account.getUser().getName(),Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getActivity(), "로그인 성공, Name : " + account.getUser().getName(), Toast.LENGTH_SHORT).show();
 
-                        } catch (Exception e){
+                            Toast.makeText(getActivity(), "토큰 : " + preferenceManager.getStringValue(BuildConfig.KEYTOKEN), Toast.LENGTH_SHORT).show();
+
+
+                            // 화면 전환
+                            getMainActivity().changeFragment(R.id.main_button);
+                            mInstance = null;   // 재사용 불필요 시 프레그먼트 객체 제거
+
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
-                    }else {
+                    }
+                    else {
                         int statusCode  = response.code();
                         // handle request errors depending on status code
                         Toast.makeText(getActivity(), response.message(),Toast.LENGTH_SHORT).show();
