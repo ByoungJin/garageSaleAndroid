@@ -2,9 +2,9 @@ package com.garagesale.gapp.garagesale;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -89,43 +89,32 @@ public class MainActivity extends AppCompatActivity {
     public void btnStart(View v) {
         slideMenu(null);    // 판넬 닫기
         int id = v.getId();
-        changeFragment(id);
-    }
-
-    // Fragment Change
-    public void changeFragment(int id) {
-        Fragment fragment = null;
-        String title = getString(R.string.app_name);
 
         if (id == R.id.main_button) {
-            fragment = MainFragment.getInstance();
-            title = "Main";
+            changeFragment(MainFragment.getInstance());
         } else if (id == R.id.profile_button) {
-            fragment = ProfileFragment.getInstance();
-            title = "Profile";
+            changeFragment(ProfileFragment.getInstance());
         } else if (id == R.id.join_button) {
-            fragment = JoinFragment.getInstance();
-            title = "Join";
+            changeFragment(JoinFragment.getInstance());
         } else if (id == R.id.login_button) {
-            fragment = LoginFragment.getInstance();
-            title = "Login";
+            changeFragment(LoginFragment.getInstance());
         } else if (id == R.id.setting_button) {
-            fragment = SettingFragment.getInstance();
-            title = "Setting";
+            changeFragment(SettingFragment.getInstance());
         } else if (id == R.id.store_button) {
-            fragment = StoreFragment.getInstance();
-            title = "Store";
+            changeFragment(StoreFragment.getInstance());
         }
 
-        if (fragment != null) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_fragment_layout, fragment);
-            ft.commit();
-        }
+    }
+
+    public void changeFragment(@NonNull BaseFragment fragment){
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_fragment_layout, fragment);
+        ft.commit();
 
         // Set the toolbar title
         TextView titleTextView = (TextView) findViewById(R.id.title);
-        titleTextView.setText(title);
+        titleTextView.setText(fragment.getTitle());
     }
 
     public void slideMenu(View v) {

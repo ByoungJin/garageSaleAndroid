@@ -1,6 +1,5 @@
 package com.garagesale.gapp.garagesale;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,7 +12,7 @@ import com.garagesale.gapp.garagesale.network.NetworkComponent;
  * 모든 화면이 공통적으로 해야할 것들을 구현할 때 사용
  */
 
-public class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment {
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -30,4 +29,6 @@ public class BaseFragment extends Fragment {
     protected MainActivity getMainActivity(){
         return (MainActivity)getActivity();
     }
+
+    public abstract String getTitle();
 }

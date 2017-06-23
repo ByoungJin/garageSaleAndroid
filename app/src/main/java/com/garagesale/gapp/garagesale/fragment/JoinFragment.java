@@ -25,4 +25,9 @@ public class JoinFragment extends BaseFragment {
         return inflater.inflate(R.layout.fragment_join, container, false);
 
     }
+
+    @Override
+    public String getTitle() {
+        return "Join";
+    }
 }

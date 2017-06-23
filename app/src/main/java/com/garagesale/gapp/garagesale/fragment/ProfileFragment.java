@@ -25,4 +25,9 @@ public class ProfileFragment extends BaseFragment {
         return inflater.inflate(R.layout.fragment_profile, container, false);
 
     }
+
+    @Override
+    public String getTitle() {
+        return "Profile";
+    }
 }

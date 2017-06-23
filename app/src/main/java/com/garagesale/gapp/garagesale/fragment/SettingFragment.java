@@ -25,4 +25,9 @@ public class SettingFragment extends BaseFragment {
         return inflater.inflate(R.layout.fragment_setting, container, false);
 
     }
+
+    @Override
+    public String getTitle() {
+        return "Setting";
+    }
 }

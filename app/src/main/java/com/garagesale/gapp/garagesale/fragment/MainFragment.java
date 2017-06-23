@@ -25,4 +25,9 @@ public class MainFragment extends BaseFragment {
         return inflater.inflate(R.layout.fragment_main, container, false);
 
     }
+
+    @Override
+    public String getTitle() {
+        return "Main";
+    }
 }

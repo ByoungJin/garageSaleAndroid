@@ -25,4 +25,9 @@ public class StoreFragment extends BaseFragment {
         return inflater.inflate(R.layout.fragment_store, container, false);
 
     }
+
+    @Override
+    public String getTitle() {
+        return "Store";
+    }
 }

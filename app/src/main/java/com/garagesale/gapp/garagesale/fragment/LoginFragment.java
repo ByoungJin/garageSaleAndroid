@@ -88,7 +88,7 @@ public class LoginFragment extends BaseFragment {
 
 
                             // 화면 전환
-                            getMainActivity().changeFragment(R.id.main_button);
+                            getMainActivity().changeFragment(MainFragment.getInstance());
                             mInstance = null;   // 재사용 불필요 시 프레그먼트 객체 제거
 
                         } catch (Exception e) {
@@ -111,6 +111,11 @@ public class LoginFragment extends BaseFragment {
 
         });
 
+    }
+
+    @Override
+    public String getTitle() {
+        return "Join";
     }
 
 }
