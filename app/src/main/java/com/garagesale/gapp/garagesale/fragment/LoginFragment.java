@@ -38,13 +38,12 @@ public class LoginFragment extends BaseFragment {
     private FragmentLoginBinding binding;
     View view;
     @Inject
-    public Retrofit retrofit ;  // retrofit
+    public Retrofit retrofit;  // retrofit
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_login, container, false);
-
         return view;
     }
 
@@ -98,7 +97,7 @@ public class LoginFragment extends BaseFragment {
 
                         //Toast.makeText(getActivity(), "로그인 성공, Name : " + account.getUser().getName(), Toast.LENGTH_SHORT).show();
 
-                        Toast.makeText(getActivity(), "토큰 : " + preferenceManager.getStringValue(BuildConfig.KEYTOKEN), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "로그인 성공, 토큰 : " + preferenceManager.getStringValue(BuildConfig.KEYTOKEN), Toast.LENGTH_SHORT).show();
 
 
                         // 화면 전환
@@ -125,7 +124,7 @@ public class LoginFragment extends BaseFragment {
 
     @Override
     public String getTitle() {
-        return "Join";
+        return "Login";
     }
 
 }
