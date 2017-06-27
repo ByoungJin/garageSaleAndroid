@@ -2,20 +2,21 @@ package com.garagesale.gapp.garagesale.util;
 
 import android.location.Address;
 import android.location.Geocoder;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
-
-/**
- * Geocoder 를 이용한 주소변환 메소드
- */
 
 import android.content.Context;
 import android.location.Location;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
+
+/**
+ * Created by juyeol on 2017. 6. 26
+ * GeoCoder를 이용한 주소변환
+ * 위도,경도 -> 주소 / 주소 -> 위도,경도
+ */
 
 public class addrConvertor {
 

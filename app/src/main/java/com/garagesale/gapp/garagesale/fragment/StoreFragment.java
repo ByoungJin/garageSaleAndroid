@@ -2,18 +2,20 @@ package com.garagesale.gapp.garagesale.fragment;
 
 import android.annotation.SuppressLint;
 import android.graphics.Point;
-import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.garagesale.gapp.garagesale.BaseFragment;
 import com.garagesale.gapp.garagesale.R;
 import com.garagesale.gapp.garagesale.databinding.FragmentStoreBinding;
 
+
 import com.garagesale.gapp.garagesale.util.addrConvertor;
+import com.garagesale.gapp.garagesale.util.setPermission;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
@@ -21,6 +23,10 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.gun0912.tedpermission.PermissionListener;
+
+
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 import retrofit2.Retrofit;
@@ -50,12 +56,14 @@ public class StoreFragment extends BaseFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_store, container, false);
+        setPermission.getmInstance(getMainActivity());
         // 구글맵 Fragment로 가져오기
         SupportMapFragment supportMapFragment;
         supportMapFragment = (SupportMapFragment) this.
                 getChildFragmentManager().
                 findFragmentById(R.id.map);
         supportMapFragment.getMapAsync(this);
+
 //        mGoogleMap.setOnMapClickListener(this);         // 구글 클릭 리스너 등록
 
         return view;
@@ -66,6 +74,7 @@ public class StoreFragment extends BaseFragment
         super.onActivityCreated(savedInstanceState);
         getNetworkComponent().inject(this); // retrofit 객체 주입
         binding = FragmentStoreBinding.bind(getView()); // Store 프레그먼트 View
+
     }
 
     /**
@@ -111,6 +120,21 @@ public class StoreFragment extends BaseFragment
         binding.editText13.setText("위도 : "+ String.valueOf(latLng.latitude+"\n경도 : "+String.valueOf(latLng.longitude)));
         binding.editText14.setText(address);
     }
+
+    PermissionListener permissionlistener = new PermissionListener() {
+        @Override
+        public void onPermissionGranted() {
+            Toast.makeText(getContext(), "Permission Granted", Toast.LENGTH_SHORT).show();
+            // 사용자의 위치 수신을 위한 세팅 //
+        }
+
+        @Override
+        public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+            Toast.makeText(getContext(), "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+        }
+
+
+    };
 
 
     @Override
