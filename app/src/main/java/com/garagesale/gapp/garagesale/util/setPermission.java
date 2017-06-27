@@ -14,7 +14,7 @@ import java.util.ArrayList;
 /**
  * Created by juyeol on 2017. 6. 27
  * TedPermmsion을 이용한 권한 획득
- * 사용법 setPermssion.getInstance(Context) / 싱글톤
+ * 사용법 setPermssion.getInstance(Context) / 1싱글톤
  * 추가 권한은 TedPermssion.setPermssions(permesion,permesion,...);
  */
 

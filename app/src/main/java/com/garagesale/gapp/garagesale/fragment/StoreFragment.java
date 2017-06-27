@@ -56,6 +56,7 @@ public class StoreFragment extends BaseFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_store, container, false);
+        // 권한 요청 (gps)
         setPermission.getmInstance(getMainActivity());
         // 구글맵 Fragment로 가져오기
         SupportMapFragment supportMapFragment;

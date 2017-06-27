@@ -15,7 +15,7 @@ import com.google.android.gms.maps.model.LatLng;
 /**
  * Created by juyeol on 2017. 6. 26
  * GeoCoder를 이용한 주소변환
- * 위도,경도 -> 주소 / 주소 -> 위도,경도
+ * 위도,경도 -> 주소 / 주소 -> 위도,경도 변환가능
  */
 
 public class addrConvertor {
