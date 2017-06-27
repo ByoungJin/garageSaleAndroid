@@ -19,7 +19,7 @@ import java.util.ArrayList;
  */
 
 public class setPermission {
-    Context mContext;
+
 
     @SuppressLint("StaticFieldLeak")
     private static setPermission mInstance;
@@ -29,11 +29,14 @@ public class setPermission {
         return mInstance;
     }
 
+    Context mContext;
+
     public setPermission(Context context) {
         mContext = context;
         new TedPermission(mContext)
                 .setPermissionListener(permissionlistener)
-                .setDeniedMessage("권한을 거부하시면 사용자기반\n위치서비스를 사용수없습니다.\n\n                                     설정방법 [설정] > [권한]")
+                .setDeniedMessage("권한을 거부하시면 사용자기반\n위치서비스를 사용수없습니다" +
+                        ".\n\n                                     설정방법 [설정] > [권한]")
                 .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
                 .check();
     }

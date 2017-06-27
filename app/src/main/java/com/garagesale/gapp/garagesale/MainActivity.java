@@ -23,12 +23,13 @@ import com.garagesale.gapp.garagesale.fragment.ProfileFragment;
 import com.garagesale.gapp.garagesale.fragment.SettingFragment;
 import com.garagesale.gapp.garagesale.fragment.StoreFragment;
 import com.garagesale.gapp.garagesale.network.NetworkModule;
+import com.garagesale.gapp.garagesale.util.CloseActivityHandler;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 public class MainActivity extends AppCompatActivity {
 
     NetworkComponent networkComponent;
-
+    private CloseActivityHandler closeActivityHandler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +42,8 @@ public class MainActivity extends AppCompatActivity {
 
         // NetworkModule에서 Content를 받을 수 있도록 빌드
         networkComponent = DaggerNetworkComponent.builder().networkModule(new NetworkModule(this)).build();
-
+        //앱테스트하는데 너무실수로 자주꺼서 임시로 추가하는 baackpress 이벤트처리
+        closeActivityHandler = new CloseActivityHandler(this);
     }
 
     public NetworkComponent getNetworkComponent(){
@@ -55,7 +57,8 @@ public class MainActivity extends AppCompatActivity {
         if(slidingUpPanelLayout.getPanelState().equals(SlidingUpPanelLayout.PanelState.EXPANDED)) {
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
         } else {
-            super.onBackPressed();
+            //super.onBackPressed();
+            closeActivityHandler.onBackPressed();
         }
 
     }
