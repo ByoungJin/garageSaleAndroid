@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -54,10 +55,9 @@ public class StoreFragment extends BaseFragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        Fragment childFragment = new GoogleMapFragment();
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.replace(R.id.map, childFragment).commit();
-
+                Fragment childFragment = new GoogleMapFragment();
+                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+                transaction.replace(R.id.map, childFragment).commit();
     }
 
     private RecyclerView.Adapter iAdapter, rAdapter;
@@ -73,25 +73,31 @@ public class StoreFragment extends BaseFragment {
         //RecyclerViewPositionHelper
         setTestItemData(); //아이템 리스트뷰 셋팅
         setTestreplyData(); //댓글 리스트뷰 셋팅
-
+        view.post(new Runnable() {
+            @Override
+            public void run() {
+                binding.itemList.smoothScrollToPosition(iAdapter.getItemCount()-1);
+                binding.replyList.smoothScrollToPosition(rAdapter.getItemCount()-1);
+            }
+        });
         // GoogleMapFragment와 scrollview 간의 간섭 컨트롤
         binding.transparentImage.setOnTouchListener(interceptListener);
 
         binding.replyaccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (binding.replytext.getText() != null)
-                    replyDataset.add(new listData("anonymous", "?? km", String.valueOf(binding.replytext.getText()), R.mipmap.ic_launcher));
+                replyDataset.add(new listData("anonymous", "?? km", String.valueOf(binding.replytext.getText()), R.mipmap.ic_launcher));
+                rAdapter.notifyDataSetChanged();
+                binding.replyList.smoothScrollToPosition(rAdapter.getItemCount()-1);
+                binding.replytext.setText(null);
             }
         });
-
     }
 
     public void setTestItemData() {
         itemDataset = new ArrayList<>();
         iAdapter = new mListAdapter(itemDataset);
         binding.itemList.setAdapter(iAdapter);
-
         // 테스트셋
         for (int i = 0; i < 10; i++) {
             itemDataset.add(new listData("전자렌지", "1000원", "구매한지 1년 어쩌고", R.mipmap.ic_launcher));
