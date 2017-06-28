@@ -15,7 +15,7 @@ import retrofit2.http.POST;
 
 public interface JoinService {
     @FormUrlEncoded
-    @POST("/signup")
+    @POST("user/signup")
     Call<Account> signUp(@Field("name") String name,@Field("email") String email, @Field("password") String password);
 
 }
