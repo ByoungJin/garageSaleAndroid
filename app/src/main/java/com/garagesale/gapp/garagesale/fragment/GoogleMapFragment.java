@@ -46,7 +46,6 @@ public class GoogleMapFragment extends Fragment
     private Location gLocation;
     private LatLng mLatLng;
     private SupportMapFragment supportMapFragment;
-    private View pView;
     private FragmentGooglemapBinding binding;
     private FragmentInteractionListener mParentListener;
 
@@ -79,7 +78,7 @@ public class GoogleMapFragment extends Fragment
         mGPSInfo = GPSInfo.getmInstance(getContext());  //GPS정보 객체
         supportMapFragment = (SupportMapFragment) this. // 지도 Fragment
                 getChildFragmentManager().
-                findFragmentById(R.id.GoogleMap);
+                findFragmentById(R.id.googleMap);
         supportMapFragment.getMapAsync(this);
         binding = FragmentGooglemapBinding.bind(getView()); // Store 프레그먼트 View
 

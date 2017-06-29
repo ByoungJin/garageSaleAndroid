@@ -82,6 +82,7 @@ public class GPSInfo extends Service implements LocationListener {
                 bestLocation = knownlocation;
             }
         }
+
         return bestLocation;
     }
 
