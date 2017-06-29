@@ -1,17 +1,14 @@
 package com.garagesale.gapp.garagesale.fragment;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.content.Context;
 
 import com.garagesale.gapp.garagesale.R;
 import com.garagesale.gapp.garagesale.databinding.FragmentGooglemapBinding;
@@ -51,11 +48,27 @@ public class GoogleMapFragment extends Fragment
     private SupportMapFragment supportMapFragment;
     private View pView;
     private FragmentGooglemapBinding binding;
+    private FragmentInteractionListener mParentListener;
+
+    public interface FragmentInteractionListener {
+        void sendMessageToParent(LatLng latLng,String address);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        // check if parent Fragment implements listener
+        if (getParentFragment() instanceof FragmentInteractionListener) {
+            mParentListener = (FragmentInteractionListener) getParentFragment();
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnChildFragmentInteractionListener");
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_googlemap, container, false);
-        pView = getParentFragment().getView();
         return view;
     }
 
@@ -70,20 +83,13 @@ public class GoogleMapFragment extends Fragment
         supportMapFragment.getMapAsync(this);
         binding = FragmentGooglemapBinding.bind(getView()); // Store 프레그먼트 View
 
-
-        // ParentFragment().getView() 로 Binding하면 런타임 에러.. 당연한건가.. 그럼이건왜 되지..?
-        // ParaentFragment 와 ChildFragment의 통신수단을 못찾아서 임시.. 괴랄;
         binding.MyLocation.setOnClickListener(view1 -> {
             gLocation = mGPSInfo.getGPSLocation();
             mLatLng = new LatLng(gLocation.getLatitude(), gLocation.getLongitude());
             createGoogleMap(mGoogleMap, mLatLng);
-            EditText ed = pView.findViewById(R.id.editText13);
-            ed.setText(String.valueOf(mLatLng.latitude) + "\n/" + String.valueOf(mLatLng.longitude));
-            ed = pView.findViewById(R.id.editText14);
-            ed.setText(addrConvertor.getAddress(getContext(), mLatLng));
+            mParentListener.sendMessageToParent(mLatLng,addrConvertor.getAddress(getContext(),mLatLng));
         });
     }
-
 
     /**
      * 초기 맵생성기 실행되는 구현메소드
@@ -96,6 +102,7 @@ public class GoogleMapFragment extends Fragment
         mLatLng = mGPSInfo.getLatLng();
         createGoogleMap(map, mLatLng);
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mLatLng, 16));
+        mParentListener.sendMessageToParent(mLatLng,addrConvertor.getAddress(getContext(),mLatLng));
         mGoogleMap.setOnMapClickListener(this);
     }
 
@@ -107,11 +114,7 @@ public class GoogleMapFragment extends Fragment
     @Override
     public void onMapClick(LatLng latLng) {
         createGoogleMap(mGoogleMap, latLng);
-        // 아래는 테스트용
-        EditText ed = pView.findViewById(R.id.editText13);
-        ed.setText(String.valueOf(mLatLng.latitude) + "\n/" + String.valueOf(mLatLng.longitude));
-        ed = pView.findViewById(R.id.editText14);
-        ed.setText(addrConvertor.getAddress(getContext(), mLatLng));
+        mParentListener.sendMessageToParent(mLatLng,addrConvertor.getAddress(getContext(),mLatLng));
     }
 
     /**

@@ -19,6 +19,7 @@ import com.garagesale.gapp.garagesale.databinding.FragmentStoreBinding;
 import com.garagesale.gapp.garagesale.entity.listData;
 import com.garagesale.gapp.garagesale.util.mListAdapter;
 import com.garagesale.gapp.garagesale.util.setPermission;
+import com.google.android.gms.maps.model.LatLng;
 import com.gun0912.tedpermission.PermissionListener;
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ import retrofit2.Retrofit;
  * Created by juyeol on 2017-06-28.
  * 현재 skeleton 레이아웃
  */
-public class StoreFragment extends BaseFragment {
+public class StoreFragment extends BaseFragment implements GoogleMapFragment.FragmentInteractionListener{
 
     // 싱글톤 패턴
     @SuppressLint("StaticFieldLeak")
@@ -80,6 +81,13 @@ public class StoreFragment extends BaseFragment {
 
         binding.transparentImage.setOnTouchListener(interceptListener); // GoogleMapFragment와 scrollview 간의 간섭 컨트롤
         binding.replyaccept.setOnClickListener(addItemListener);        //댓글 작성 버튼
+    }
+
+
+    @Override
+    public void sendMessageToParent(LatLng latLng, String address) {
+        binding.editText13.setText("위도 : "+String.valueOf(latLng.longitude)+"\n경도 : "+String.valueOf(latLng.latitude));
+        binding.editText14.setText(address);
     }
 
     /**
