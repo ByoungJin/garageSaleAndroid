@@ -14,9 +14,9 @@ import retrofit2.http.POST;
 
 public interface FcmService {
     @FormUrlEncoded
-    @POST("/saveFcmUser")
+    @POST("fcm/saveFcmUser")
     Call<Account>  fcmSavePost(@Field("userId") String userId, @Field("regId") String regId);
 
-    @POST("/sendFcmNotification")
+    @POST("fcm/sendFcmNotification")
     Call<Account> reqFcmNotificaitioPost();
 }

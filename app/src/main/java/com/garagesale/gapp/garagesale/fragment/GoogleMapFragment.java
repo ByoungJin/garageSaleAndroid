@@ -82,7 +82,6 @@ public class GoogleMapFragment extends Fragment
             ed = pView.findViewById(R.id.editText14);
             ed.setText(addrConvertor.getAddress(getContext(), mLatLng));
         });
-
     }
 
 

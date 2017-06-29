@@ -1,5 +1,6 @@
 package com.garagesale.gapp.garagesale.fragment;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,6 +19,7 @@ import com.garagesale.gapp.garagesale.databinding.FragmentStoreBinding;
 import com.garagesale.gapp.garagesale.entity.listData;
 import com.garagesale.gapp.garagesale.util.mListAdapter;
 import com.garagesale.gapp.garagesale.util.setPermission;
+import com.gun0912.tedpermission.PermissionListener;
 
 import java.util.ArrayList;
 
@@ -45,23 +47,20 @@ public class StoreFragment extends BaseFragment {
     @Inject
     public Retrofit retrofit;
 
+    private RecyclerView.Adapter iAdapter, rAdapter;
+    private ArrayList<listData> itemDataset, replyDataset;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_store, container, false);
-        setPermission.getmInstance(getContext());       // 권한 요청
         return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-                Fragment childFragment = new GoogleMapFragment();
-                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-                transaction.replace(R.id.map, childFragment).commit();
+        setPermission.getmInstance(getContext(),Manifest.permission.ACCESS_FINE_LOCATION ,GoogleMapPermission); // 권한요청 및 권한에따른 구글맵 셋팅
     }
-
-    private RecyclerView.Adapter iAdapter, rAdapter;
-    private ArrayList<listData> itemDataset, replyDataset;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -70,29 +69,72 @@ public class StoreFragment extends BaseFragment {
         getNetworkComponent().inject(this); // retrofit 객체 주입
         binding = FragmentStoreBinding.bind(getView()); // Store 프레그먼트 View
 
-        //RecyclerViewPositionHelper
-        setTestItemData(); //아이템 리스트뷰 셋팅
-        setTestreplyData(); //댓글 리스트뷰 셋팅
-        view.post(new Runnable() {
-            @Override
-            public void run() {
-                binding.itemList.smoothScrollToPosition(iAdapter.getItemCount()-1);
-                binding.replyList.smoothScrollToPosition(rAdapter.getItemCount()-1);
-            }
-        });
-        // GoogleMapFragment와 scrollview 간의 간섭 컨트롤
-        binding.transparentImage.setOnTouchListener(interceptListener);
+        setTestItemData(); //아이템 리스트뷰 셋팅 (테스트셋)
+        setTestreplyData(); //댓글 리스트뷰 셋팅  (테스트셋)
 
-        binding.replyaccept.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                replyDataset.add(new listData("anonymous", "?? km", String.valueOf(binding.replytext.getText()), R.mipmap.ic_launcher));
-                rAdapter.notifyDataSetChanged();
-                binding.replyList.smoothScrollToPosition(rAdapter.getItemCount()-1);
-                binding.replytext.setText(null);
-            }
+        //댓글, 아이템목록 맨 아래로
+        view.post(() -> {
+            binding.itemList.smoothScrollToPosition(iAdapter.getItemCount() - 1);
+            binding.replyList.smoothScrollToPosition(rAdapter.getItemCount() - 1);
         });
+
+        binding.transparentImage.setOnTouchListener(interceptListener); // GoogleMapFragment와 scrollview 간의 간섭 컨트롤
+        binding.replyaccept.setOnClickListener(addItemListener);        //댓글 작성 버튼
     }
+
+    /**
+     * 이 아래부터는 리스너 정의
+     */
+    View.OnClickListener addItemListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            replyDataset.add(new listData("anonymous", "?? km", String.valueOf(binding.replytext.getText()), R.mipmap.ic_launcher));
+            rAdapter.notifyDataSetChanged();
+            binding.replyList.smoothScrollToPosition(rAdapter.getItemCount() - 1);
+            binding.replytext.setText(null);
+        }
+    };
+
+    View.OnTouchListener interceptListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            int action = motionEvent.getAction();
+            switch (action) {
+                case MotionEvent.ACTION_DOWN:
+                    binding.scrollView.requestDisallowInterceptTouchEvent(true);
+                    return false;
+
+                case MotionEvent.ACTION_UP:
+                    binding.scrollView.requestDisallowInterceptTouchEvent(false);
+                    return true;
+
+                case MotionEvent.ACTION_MOVE:
+                    binding.scrollView.requestDisallowInterceptTouchEvent(true);
+                    return false;
+
+                default:
+                    return true;
+            }
+        }
+    };
+
+    public void setGoogleMap(){
+        Fragment childFragment = new GoogleMapFragment();
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.replace(R.id.map, childFragment).commit();
+    }
+
+    PermissionListener GoogleMapPermission = new PermissionListener() {
+        @Override
+        public void onPermissionGranted() {
+            setGoogleMap();
+        }
+
+        @Override
+        public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+            setGoogleMap();
+        }
+    };
 
     public void setTestItemData() {
         itemDataset = new ArrayList<>();
@@ -122,37 +164,6 @@ public class StoreFragment extends BaseFragment {
             replyDataset.add(new listData("뱅뱅3", "1.50km", "세번만", R.mipmap.ic_launcher));
         }
     }
-
-    /**
-     * 리스너 정의
-     */
-    View.OnTouchListener interceptListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            int action = motionEvent.getAction();
-            binding.scrollView.requestDisallowInterceptTouchEvent(true);
-            switch (action) {
-                case MotionEvent.ACTION_DOWN:
-                    // Disallow ScrollView to intercept touch events.
-                    binding.scrollView.requestDisallowInterceptTouchEvent(true);
-                    // Disable touch on transparent view
-                    return false;
-
-                case MotionEvent.ACTION_UP:
-                    // Allow ScrollView to intercept touch events.
-                    binding.scrollView.requestDisallowInterceptTouchEvent(false);
-                    return true;
-
-                case MotionEvent.ACTION_MOVE:
-                    binding.scrollView.requestDisallowInterceptTouchEvent(true);
-                    return false;
-
-                default:
-                    return true;
-            }
-        }
-    };
-
 
     @Override
     public String getTitle() {

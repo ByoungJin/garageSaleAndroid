@@ -14,8 +14,9 @@ import java.util.ArrayList;
 /**
  * Created by juyeol on 2017. 6. 27
  * TedPermmsion을 이용한 권한 획득
- * 사용법 setPermssion.getInstance(Context) / 1싱글톤
- * 추가 권한은 TedPermssion.setPermssions(permesion,permesion,...);
+ * 사용법 setPermission.getmInstance(context, 권한String , 권한 후 리스너(PermissionListener));
+ * ex) setPermission.getmInstance(getContext(),Manifest.permission.ACCESS_FINE_LOCATION ,GoogleMapPermission);
+ * 리스너는 각자 구현해줘야함.
  */
 
 public class setPermission {
@@ -24,34 +25,25 @@ public class setPermission {
     @SuppressLint("StaticFieldLeak")
     private static setPermission mInstance;
 
-    public static setPermission getmInstance(Context c){
-        if (mInstance == null) mInstance = new setPermission(c);
+    // PermissionListener 를 넘길수 있는 getmInstance 추가
+    public static setPermission getmInstance(Context c,String s, PermissionListener permissionListener){
+        if (mInstance == null) mInstance = new setPermission(c,s, permissionListener);
         return mInstance;
     }
 
     Context mContext;
 
-    public setPermission(Context context) {
+    public setPermission(Context context,String permission, PermissionListener permissionListener){
         mContext = context;
+        String message = "권한을 거부하시면 특정 서비스를 사용수없습니다\n\n설정방법 [설정] > [권한]";
+
+        if(permission.equals(Manifest.permission.ACCESS_FINE_LOCATION))
+            message ="위치서비스권한을 거부하시면 사용자기반 위치서비스를 사용수없습니다\n\n설정방법 [설정] > [권한]";
+
         new TedPermission(mContext)
-                .setPermissionListener(permissionlistener)
-                .setDeniedMessage("권한을 거부하시면 사용자기반\n위치서비스를 사용수없습니다" +
-                        ".\n\n                                     설정방법 [설정] > [권한]")
-                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
+                .setPermissionListener(permissionListener)
+                .setDeniedMessage(message)
+                .setPermissions(permission)
                 .check();
     }
-
-    PermissionListener permissionlistener = new PermissionListener() {
-        @Override
-        public void onPermissionGranted() {
-            Toast.makeText(mContext, "권한획득", Toast.LENGTH_SHORT).show();
-            //TODO: 권한 획득후
-        }
-
-        @Override
-        public void onPermissionDenied(ArrayList<String> deniedPermissions) {
-            Toast.makeText(mContext, "권한거부\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
-            //TODO: 권한 획득 거부시
-        }
-    };
 }
