@@ -265,6 +265,7 @@
             <!-- 여섯째 댓글달기 창 끝 -->
             <!-- 일곱번째 기타 버튼 -->
             <LinearLayout
+                android:id="@+id/etcLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"

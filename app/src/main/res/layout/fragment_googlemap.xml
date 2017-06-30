@@ -2,25 +2,33 @@
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <fragment
-            android:id="@+id/googleMap"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/MyLocation"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="right"
-            android:layout_margin="10dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/common_google_signin_btn_icon_dark_normal" />
-    </FrameLayout>
+            <fragment
+                android:id="@+id/googleMap"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <fragment
+                android:id="@+id/autoComplete"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_margin="10dp"
+                android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+                />
+
+            <ImageView
+                android:id="@+id/MyLocation"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="right"
+                android:layout_margin="10dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/common_google_signin_btn_icon_dark_normal" />
+
+        </FrameLayout>
 
 </layout>

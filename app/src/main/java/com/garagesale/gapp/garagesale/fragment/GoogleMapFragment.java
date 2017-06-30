@@ -5,21 +5,30 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.content.Context;
-
+import android.content.Intent;
 import com.garagesale.gapp.garagesale.R;
 import com.garagesale.gapp.garagesale.databinding.FragmentGooglemapBinding;
 import com.garagesale.gapp.garagesale.util.GPSInfo;
 import com.garagesale.gapp.garagesale.util.addrConvertor;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by juyeol on 2017-06-28.
@@ -48,6 +57,7 @@ public class GoogleMapFragment extends Fragment
     private SupportMapFragment supportMapFragment;
     private FragmentGooglemapBinding binding;
     private FragmentInteractionListener mParentListener;
+    private SupportPlaceAutocompleteFragment autocompleteFragment;
 
     public interface FragmentInteractionListener {
         void sendMessageToParent(LatLng latLng,String address);
@@ -76,11 +86,19 @@ public class GoogleMapFragment extends Fragment
         super.onActivityCreated(savedInstanceState);
 
         mGPSInfo = GPSInfo.getmInstance(getContext());  //GPS정보 객체
-        supportMapFragment = (SupportMapFragment) this. // 지도 Fragment
+        // 지도 Fragment
+        supportMapFragment = (SupportMapFragment) this.
                 getChildFragmentManager().
                 findFragmentById(R.id.googleMap);
         supportMapFragment.getMapAsync(this);
-        binding = FragmentGooglemapBinding.bind(getView()); // Store 프레그먼트 View
+
+        binding = FragmentGooglemapBinding.bind(getView()); // Store 프레그먼트 Vie
+
+        autocompleteFragment = (SupportPlaceAutocompleteFragment) this.
+                getChildFragmentManager().
+                findFragmentById(R.id.autoComplete);
+        if(autocompleteFragment==null)
+            Log.d("부모","왜널이야");
 
         binding.MyLocation.setOnClickListener(view1 -> {
             gLocation = mGPSInfo.getGPSLocation();
@@ -88,6 +106,13 @@ public class GoogleMapFragment extends Fragment
             createGoogleMap(mGoogleMap, mLatLng);
             mParentListener.sendMessageToParent(mLatLng,addrConvertor.getAddress(getContext(),mLatLng));
         });
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        autocompleteFragment.onActivityResult(requestCode,resultCode,data);
     }
 
     /**
