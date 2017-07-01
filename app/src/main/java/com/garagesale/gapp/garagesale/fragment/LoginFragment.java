@@ -2,6 +2,7 @@ package com.garagesale.gapp.garagesale.fragment;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,7 +14,7 @@ import com.garagesale.gapp.garagesale.BaseFragment;
 import com.garagesale.gapp.garagesale.BuildConfig;
 import com.garagesale.gapp.garagesale.R;
 import com.garagesale.gapp.garagesale.databinding.FragmentLoginBinding;
-import com.garagesale.gapp.garagesale.entity.Account;
+import com.garagesale.gapp.garagesale.response.UserResponse;
 import com.garagesale.gapp.garagesale.service.LoginService;
 import com.garagesale.gapp.garagesale.util.SharedPreferenceManager;
 
@@ -37,6 +38,7 @@ public class LoginFragment extends BaseFragment {
 
     private FragmentLoginBinding binding;
     View view;
+    SharedPreferenceManager preferenceManager;
     @Inject
     public Retrofit retrofit;  // retrofit
 
@@ -51,7 +53,7 @@ public class LoginFragment extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        SharedPreferenceManager preferenceManager = SharedPreferenceManager.getInstance(getActivity());
+        preferenceManager = SharedPreferenceManager.getInstance(getActivity());
 
         // Login (서버 주소는 build.gradle에 있음, 본인 로컬 서버 주소로 변경하여 테스트하세요)
         getNetworkComponent().inject(this); // retrofit 객체 주입 시점
@@ -59,8 +61,8 @@ public class LoginFragment extends BaseFragment {
 
         if(preferenceManager.getStringValue(BuildConfig.KEYTOKEN) != ""){
             // 토큰 로그인
-            Call<Account> repos = loginService.tokenLoginPost();
-            responseCallback(preferenceManager, repos);
+            Call<UserResponse> repos = loginService.tokenLoginPost();
+            repos.enqueue(getCallback());
             return;
         }
 
@@ -70,32 +72,32 @@ public class LoginFragment extends BaseFragment {
 
             // 로그인
             // userId, Password를 넣고 Login Reqest 요청
-            Call<Account> repos = loginService.loginPost(
+            Call<UserResponse> repos = loginService.loginPost(
                     binding.userIdText.getText().toString(),
                     binding.passwordText.getText().toString()
             );
 
-            responseCallback(preferenceManager, repos);
+            repos.enqueue(getCallback());
         });
 
     }
 
-    public void responseCallback(final SharedPreferenceManager preferenceManager, Call<Account> repos) {
-        // Login Response 콜백
-        repos.enqueue(new Callback<Account>() {
+    @NonNull
+    public Callback<UserResponse> getCallback() {
+        return new Callback<UserResponse>() {
             @Override
-            public void onResponse(Call<Account> call, Response<Account> response) {
+            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
                 if(response.isSuccessful()) {
                     try {
                         // 토큰을 로컬에 저장
-                        Account account = response.body();
-                        preferenceManager.putStringValue(BuildConfig.KEYTOKEN, account.getToken());
+                        UserResponse userResponse = response.body();
+                        preferenceManager.putStringValue(BuildConfig.KEYTOKEN, userResponse.getToken());
 
-                        Log.v("getToken : ", account.getToken());
-                        Log.v("getEmail : ", account.getUser().getEmail());
-                        Log.v("getName : ", account.getUser().getName());
+                        Log.v("getToken : ", userResponse.getToken());
+                        Log.v("getEmail : ", userResponse.getUser().getEmail());
+                        Log.v("getName : ", userResponse.getUser().getName());
 
-                        //Toast.makeText(getActivity(), "로그인 성공, Name : " + account.getUser().getName(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getActivity(), "로그인 성공, Name : " + userResponse.getUser().getName(), Toast.LENGTH_SHORT).show();
 
                         Toast.makeText(getActivity(), "로그인 성공, 토큰 : " + preferenceManager.getStringValue(BuildConfig.KEYTOKEN), Toast.LENGTH_SHORT).show();
 
@@ -116,10 +118,10 @@ public class LoginFragment extends BaseFragment {
             }
 
             @Override
-            public void onFailure(Call<Account> call, Throwable t) {
+            public void onFailure(Call<UserResponse> call, Throwable t) {
                 // 아무 응답도 못받았을 때
             }
-        });
+        };
     }
 
     @Override

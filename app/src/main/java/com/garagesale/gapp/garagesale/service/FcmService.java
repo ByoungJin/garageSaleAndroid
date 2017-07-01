@@ -1,6 +1,6 @@
 package com.garagesale.gapp.garagesale.service;
 
-import com.garagesale.gapp.garagesale.entity.Account;
+import com.garagesale.gapp.garagesale.response.UserResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -15,8 +15,8 @@ import retrofit2.http.POST;
 public interface FcmService {
     @FormUrlEncoded
     @POST("fcm/saveFcmUser")
-    Call<Account>  fcmSavePost(@Field("userId") String userId, @Field("regId") String regId);
+    Call<UserResponse>  fcmSavePost(@Field("userId") String userId, @Field("regId") String regId);
 
     @POST("fcm/sendFcmNotification")
-    Call<Account> reqFcmNotificaitioPost();
+    Call<UserResponse> reqFcmNotificaitioPost();
 }

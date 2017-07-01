@@ -1,11 +1,8 @@
 package com.garagesale.gapp.garagesale.service;
 
-import com.garagesale.gapp.garagesale.BuildConfig;
-import com.garagesale.gapp.garagesale.entity.Account;
+import com.garagesale.gapp.garagesale.response.UserResponse;
 
 import retrofit2.Call;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
@@ -18,8 +15,8 @@ import retrofit2.http.POST;
 public interface LoginService {
     @FormUrlEncoded
     @POST("user/login")
-    Call<Account> loginPost(@Field("email") String email, @Field("password") String password);
+    Call<UserResponse> loginPost(@Field("email") String email, @Field("password") String password);
 
     @POST("user/auth/token")
-    Call<Account> tokenLoginPost();
+    Call<UserResponse> tokenLoginPost();
 }

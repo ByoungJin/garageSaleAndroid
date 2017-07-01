@@ -1,7 +1,6 @@
 package com.garagesale.gapp.garagesale.fragment;
 
 import android.annotation.SuppressLint;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -14,7 +13,7 @@ import com.garagesale.gapp.garagesale.BaseFragment;
 import com.garagesale.gapp.garagesale.BuildConfig;
 import com.garagesale.gapp.garagesale.R;
 import com.garagesale.gapp.garagesale.databinding.FragmentJoinBinding;
-import com.garagesale.gapp.garagesale.entity.Account;
+import com.garagesale.gapp.garagesale.response.UserResponse;
 import com.garagesale.gapp.garagesale.service.JoinService;
 import com.garagesale.gapp.garagesale.util.SharedPreferenceManager;
 
@@ -66,25 +65,25 @@ public class JoinFragment extends BaseFragment {
             }
 
             // HTTP Post
-            Call<Account> repos = joinService.signUp(
+            Call<UserResponse> repos = joinService.signUp(
                     binding.nameEditText.getText().toString(),
                     binding.emailEditText.getText().toString(),
                     binding.passwordEditText.getText().toString()
             );
 
-            repos.enqueue(new Callback<Account>() {
+            repos.enqueue(new Callback<UserResponse>() {
                 @Override
-                public void onResponse(Call<Account> call, Response<Account> response) {
+                public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
                     // 토큰을 로컬에 저장
-                    Account account = response.body();
+                    UserResponse userResponse = response.body();
                     SharedPreferenceManager preferenceManager = SharedPreferenceManager.getInstance(getActivity());
-                    preferenceManager.putStringValue(BuildConfig.KEYTOKEN, account.getToken());
+                    preferenceManager.putStringValue(BuildConfig.KEYTOKEN, userResponse.getToken());
 
-                    Log.v("getToken : ", account.getToken());
-                    Log.v("getEmail : ", account.getUser().getEmail());
-                    Log.v("getName : ", account.getUser().getName());
+                    Log.v("getToken : ", userResponse.getToken());
+                    Log.v("getEmail : ", userResponse.getUser().getEmail());
+                    Log.v("getName : ", userResponse.getUser().getName());
 
-                    //Toast.makeText(getActivity(), "로그인 성공, Name : " + account.getUser().getName(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getActivity(), "로그인 성공, Name : " + userResponse.getUser().getName(), Toast.LENGTH_SHORT).show();
 
                     Toast.makeText(getActivity(), "Join 성공, 토큰 : " + preferenceManager.getStringValue(BuildConfig.KEYTOKEN), Toast.LENGTH_SHORT).show();
 
@@ -96,7 +95,7 @@ public class JoinFragment extends BaseFragment {
                 }
 
                 @Override
-                public void onFailure(Call<Account> call, Throwable t) {
+                public void onFailure(Call<UserResponse> call, Throwable t) {
 
                 }
             });

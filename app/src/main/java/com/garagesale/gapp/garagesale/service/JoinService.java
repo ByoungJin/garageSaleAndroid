@@ -1,6 +1,6 @@
 package com.garagesale.gapp.garagesale.service;
 
-import com.garagesale.gapp.garagesale.entity.Account;
+import com.garagesale.gapp.garagesale.response.UserResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -16,6 +16,6 @@ import retrofit2.http.POST;
 public interface JoinService {
     @FormUrlEncoded
     @POST("user/signup")
-    Call<Account> signUp(@Field("name") String name,@Field("email") String email, @Field("password") String password);
+    Call<UserResponse> signUp(@Field("name") String name, @Field("email") String email, @Field("password") String password);
 
 }
