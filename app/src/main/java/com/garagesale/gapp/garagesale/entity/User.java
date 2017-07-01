@@ -9,19 +9,19 @@ public class User {
 
     @SerializedName("_id")
     @Expose
-    private String id;
+    private String id = "";
     @SerializedName("updatedAt")
     @Expose
-    private String updatedAt;
+    private String updatedAt = "";
     @SerializedName("createdAt")
     @Expose
-    private String createdAt;
+    private String createdAt = "";
     @SerializedName("name")
     @Expose
-    private String name;
+    private String name = "";
     @SerializedName("email")
     @Expose
-    private String email;
+    private String email = "";
     @SerializedName("__v")
     @Expose
     private Integer v;
@@ -125,7 +125,7 @@ public class User {
         private List<Integer> coordinates = null;
         @SerializedName("type")
         @Expose
-        private String type;
+        private String type = "";
 
         public List<Integer> getCoordinates() {
             return coordinates;
@@ -149,16 +149,16 @@ public class User {
 
         @SerializedName("description")
         @Expose
-        private String description;
+        private String description = "";
         @SerializedName("endDay")
         @Expose
-        private String endDay;
+        private String endDay = "";
         @SerializedName("name")
         @Expose
-        private String name;
+        private String name = "";
         @SerializedName("startDay")
         @Expose
-        private String startDay;
+        private String startDay = "";
         @SerializedName("comments")
         @Expose
         private List<Object> comments = null;

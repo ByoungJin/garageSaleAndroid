@@ -3,6 +3,7 @@ package com.garagesale.gapp.garagesale.network;
 import com.garagesale.gapp.garagesale.MainActivity;
 import com.garagesale.gapp.garagesale.fragment.JoinFragment;
 import com.garagesale.gapp.garagesale.fragment.LoginFragment;
+import com.garagesale.gapp.garagesale.fragment.MainFragment;
 import com.garagesale.gapp.garagesale.fragment.ProfileFragment;
 import com.garagesale.gapp.garagesale.fragment.SettingFragment;
 import com.garagesale.gapp.garagesale.fragment.StoreFragment;
@@ -20,7 +21,7 @@ import dagger.Component;
 public interface NetworkComponent {
     void inject(JoinFragment fragment);
     void inject(LoginFragment fragment);
-    void inject(MainActivity fragment);
+    void inject(MainFragment fragment);
     void inject(ProfileFragment fragment);
     void inject(SettingFragment fragment);
     void inject(StoreFragment fragment);

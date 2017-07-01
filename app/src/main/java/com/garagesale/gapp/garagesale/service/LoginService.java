@@ -1,5 +1,6 @@
 package com.garagesale.gapp.garagesale.service;
 
+import com.garagesale.gapp.garagesale.response.UserListResponse;
 import com.garagesale.gapp.garagesale.response.UserResponse;
 
 import retrofit2.Call;
@@ -19,4 +20,8 @@ public interface LoginService {
 
     @POST("user/auth/token")
     Call<UserResponse> tokenLoginPost();
+
+    @FormUrlEncoded
+    @POST("user/list")
+    Call<UserListResponse> getUserList(@Field("longitude") String longitude, @Field("latitude") String latitude);
 }
