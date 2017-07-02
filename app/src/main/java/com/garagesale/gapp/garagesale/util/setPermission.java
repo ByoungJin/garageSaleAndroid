@@ -35,10 +35,17 @@ public class setPermission {
 
     public setPermission(Context context,String permission, PermissionListener permissionListener){
         mContext = context;
-        String message = "권한을 거부하시면 특정 서비스를 사용수없습니다\n\n설정방법 [설정] > [권한]";
+        String message;
+        // 퍼미션에 따른 에러메세지 설정
+        switch (permission){
+            case Manifest.permission.ACCESS_FINE_LOCATION:
+                message ="위치서비스권한을 거부하시면 사용자기반 위치서비스를 사용수없습니다\n\n설정방법 [설정] > [권한]";
+                break;
+            default:
+                message = "권한을 거부하시면 특정 서비스를 사용수없습니다\n\n설정방법 [설정] > [권한]";
+                break;
+        }
 
-        if(permission.equals(Manifest.permission.ACCESS_FINE_LOCATION))
-            message ="위치서비스권한을 거부하시면 사용자기반 위치서비스를 사용수없습니다\n\n설정방법 [설정] > [권한]";
 
         new TedPermission(mContext)
                 .setPermissionListener(permissionListener)
