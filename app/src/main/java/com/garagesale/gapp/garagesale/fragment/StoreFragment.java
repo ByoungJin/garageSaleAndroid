@@ -94,8 +94,11 @@ public class StoreFragment extends BaseFragment implements GoogleMapFragment.Fra
         binding.replyaccept.setOnClickListener(this);        //댓글 작성 버튼
         binding.addItem.setOnClickListener(this);
 
-        binding.editText11.setText(user.getName() + "의 행성");
-        binding.editText12.setText(user.getPlanet().getName());
+        // 유저 정보 출력
+        if(user != null){
+            binding.editText11.setText(user.getName() + "의 행성");    // 유저 이름 출력
+            binding.editText12.setText(user.getPlanet().getName()); // 행성 이름 출력
+        }
     }
 /*
     @Override
