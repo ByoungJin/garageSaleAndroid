@@ -16,7 +16,9 @@ import android.view.ViewGroup;
 import com.garagesale.gapp.garagesale.BaseFragment;
 import com.garagesale.gapp.garagesale.R;
 import com.garagesale.gapp.garagesale.databinding.FragmentStoreBinding;
+import com.garagesale.gapp.garagesale.entity.User;
 import com.garagesale.gapp.garagesale.entity.listData;
+import com.garagesale.gapp.garagesale.util.DataContainer;
 import com.garagesale.gapp.garagesale.util.mListAdapter;
 import com.garagesale.gapp.garagesale.util.setPermission;
 import com.google.android.gms.maps.model.LatLng;
@@ -50,6 +52,7 @@ public class StoreFragment extends BaseFragment implements GoogleMapFragment.Fra
 
     private RecyclerView.Adapter iAdapter, rAdapter;
     private ArrayList<listData> itemDataset, replyDataset;
+    User user = DataContainer.getInstance().getmUser(); // user 정보
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -81,6 +84,10 @@ public class StoreFragment extends BaseFragment implements GoogleMapFragment.Fra
 
         binding.transparentImage.setOnTouchListener(interceptListener); // GoogleMapFragment와 scrollview 간의 간섭 컨트롤
         binding.replyaccept.setOnClickListener(addItemListener);        //댓글 작성 버튼
+
+        binding.editText11.setText(user.getName() + "의 행성");
+        binding.editText12.setText(user.getPlanet().getName()); // set 상점 이름
+
     }
 
 
