@@ -14,8 +14,10 @@ import com.garagesale.gapp.garagesale.BaseFragment;
 import com.garagesale.gapp.garagesale.BuildConfig;
 import com.garagesale.gapp.garagesale.R;
 import com.garagesale.gapp.garagesale.databinding.FragmentLoginBinding;
+import com.garagesale.gapp.garagesale.entity.User;
 import com.garagesale.gapp.garagesale.response.UserResponse;
 import com.garagesale.gapp.garagesale.service.LoginService;
+import com.garagesale.gapp.garagesale.util.DataContainer;
 import com.garagesale.gapp.garagesale.util.SharedPreferenceManager;
 
 import javax.inject.Inject;
@@ -53,11 +55,10 @@ public class LoginFragment extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        preferenceManager = SharedPreferenceManager.getInstance(getActivity());
-
         // Login (서버 주소는 build.gradle에 있음, 본인 로컬 서버 주소로 변경하여 테스트하세요)
         getNetworkComponent().inject(this); // retrofit 객체 주입 시점
         LoginService loginService = retrofit.create(LoginService.class);    // 로그인 서비스 객체 생성
+        preferenceManager = SharedPreferenceManager.getInstance(getActivity());
 
         if(preferenceManager.getStringValue(BuildConfig.KEYTOKEN) != ""){
             // 토큰 로그인
@@ -89,9 +90,10 @@ public class LoginFragment extends BaseFragment {
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
                 if(response.isSuccessful()) {
                     try {
-                        // 토큰을 로컬에 저장
+
                         UserResponse userResponse = response.body();
-                        preferenceManager.putStringValue(BuildConfig.KEYTOKEN, userResponse.getToken());
+                        preferenceManager.putStringValue(BuildConfig.KEYTOKEN, userResponse.getToken()); // 토큰을 로컬에 저장
+                        DataContainer.getInstance().setmUser(userResponse.getUser()); // User DataContainer에 저장
 
                         Log.v("getToken : ", userResponse.getToken());
                         Log.v("getEmail : ", userResponse.getUser().getEmail());
@@ -100,6 +102,7 @@ public class LoginFragment extends BaseFragment {
                         //Toast.makeText(getActivity(), "로그인 성공, Name : " + userResponse.getUser().getName(), Toast.LENGTH_SHORT).show();
 
                         Toast.makeText(getActivity(), "로그인 성공, 토큰 : " + preferenceManager.getStringValue(BuildConfig.KEYTOKEN), Toast.LENGTH_SHORT).show();
+
 
 
                         // 화면 전환

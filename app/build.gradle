@@ -14,7 +14,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 //        buildConfigField "String", "BASEURL", "\"http://192.168.219.100:3000\""    // 서버 주소
 //        buildConfigField "String", "BASEURL", "\"http://172.30.90.66:3000\""    // 서버 주소
-        buildConfigField "String", "BASEURL", "\"http://172.30.97.107:3000\""    // 서버 주소
+        buildConfigField "String", "BASEURL", "\"http://192.168.10.110:3000\""    // 서버 주소
 
         buildConfigField "String", "KEYTOKEN", "\"com.garagesale.key.token\""   // 로컬 토큰 Key
 

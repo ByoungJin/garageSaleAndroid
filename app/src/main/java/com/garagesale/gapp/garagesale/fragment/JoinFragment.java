@@ -15,6 +15,7 @@ import com.garagesale.gapp.garagesale.R;
 import com.garagesale.gapp.garagesale.databinding.FragmentJoinBinding;
 import com.garagesale.gapp.garagesale.response.UserResponse;
 import com.garagesale.gapp.garagesale.service.JoinService;
+import com.garagesale.gapp.garagesale.util.DataContainer;
 import com.garagesale.gapp.garagesale.util.SharedPreferenceManager;
 
 import javax.inject.Inject;
@@ -36,6 +37,7 @@ public class JoinFragment extends BaseFragment {
 
     private FragmentJoinBinding binding;
     View view;
+    SharedPreferenceManager preferenceManager;
     @Inject
     public Retrofit retrofit;
 
@@ -54,6 +56,7 @@ public class JoinFragment extends BaseFragment {
 
         getNetworkComponent().inject(this);
         JoinService joinService = retrofit.create(JoinService.class);
+        preferenceManager = SharedPreferenceManager.getInstance(getActivity());
 
         binding = FragmentJoinBinding.bind(getView());
         binding.joinButton.setOnClickListener(view1 -> {
@@ -74,10 +77,11 @@ public class JoinFragment extends BaseFragment {
             repos.enqueue(new Callback<UserResponse>() {
                 @Override
                 public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-                    // 토큰을 로컬에 저장
+
                     UserResponse userResponse = response.body();
-                    SharedPreferenceManager preferenceManager = SharedPreferenceManager.getInstance(getActivity());
-                    preferenceManager.putStringValue(BuildConfig.KEYTOKEN, userResponse.getToken());
+
+                    preferenceManager.putStringValue(BuildConfig.KEYTOKEN, userResponse.getToken()); // 토큰을 로컬에 저장
+                    DataContainer.getInstance().setmUser(userResponse.getUser()); // User DataContainer에 저장
 
                     Log.v("getToken : ", userResponse.getToken());
                     Log.v("getEmail : ", userResponse.getUser().getEmail());
@@ -86,6 +90,7 @@ public class JoinFragment extends BaseFragment {
                     //Toast.makeText(getActivity(), "로그인 성공, Name : " + userResponse.getUser().getName(), Toast.LENGTH_SHORT).show();
 
                     Toast.makeText(getActivity(), "Join 성공, 토큰 : " + preferenceManager.getStringValue(BuildConfig.KEYTOKEN), Toast.LENGTH_SHORT).show();
+
 
 
                     // 화면 전환
