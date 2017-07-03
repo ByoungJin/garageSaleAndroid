@@ -1,6 +1,7 @@
 package com.garagesale.gapp.garagesale.fragment;
 
 import android.annotation.SuppressLint;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -39,21 +40,19 @@ public class LoginFragment extends BaseFragment {
     }
 
     private FragmentLoginBinding binding;
-    View view;
     SharedPreferenceManager preferenceManager;
     @Inject
     public Retrofit retrofit;  // retrofit
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        view = inflater.inflate(R.layout.fragment_login, container, false);
-        return view;
+        return inflater.inflate(R.layout.fragment_login, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        binding = FragmentLoginBinding.bind(getView()); // Login 프레그먼트 View
 
         // Login (서버 주소는 build.gradle에 있음, 본인 로컬 서버 주소로 변경하여 테스트하세요)
         getNetworkComponent().inject(this); // retrofit 객체 주입 시점
@@ -67,8 +66,7 @@ public class LoginFragment extends BaseFragment {
             return;
         }
 
-        // View
-        binding = FragmentLoginBinding.bind(getView()); // Login 프레그먼트 View
+        // set Listener
         binding.loginButton.setOnClickListener(view1 -> {
 
             // 로그인

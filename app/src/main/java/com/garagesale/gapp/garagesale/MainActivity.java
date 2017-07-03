@@ -14,20 +14,18 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 
-import com.garagesale.gapp.garagesale.entity.User;
-import com.garagesale.gapp.garagesale.network.DaggerNetworkComponent;
-import com.garagesale.gapp.garagesale.network.NetworkComponent;
 import com.garagesale.gapp.garagesale.fragment.JoinFragment;
 import com.garagesale.gapp.garagesale.fragment.LoginFragment;
 import com.garagesale.gapp.garagesale.fragment.MainFragment;
+import com.garagesale.gapp.garagesale.fragment.ProductFragment;
 import com.garagesale.gapp.garagesale.fragment.ProfileFragment;
 import com.garagesale.gapp.garagesale.fragment.SettingFragment;
 import com.garagesale.gapp.garagesale.fragment.StoreFragment;
+import com.garagesale.gapp.garagesale.network.DaggerNetworkComponent;
+import com.garagesale.gapp.garagesale.network.NetworkComponent;
 import com.garagesale.gapp.garagesale.network.NetworkModule;
 import com.garagesale.gapp.garagesale.util.CloseActivityHandler;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -112,6 +110,8 @@ public class MainActivity extends AppCompatActivity {
             changeFragment(SettingFragment.getInstance());
         } else if (id == R.id.store_button) {
             changeFragment(StoreFragment.getInstance());
+        } else if( id == R.id.product_button) {
+            changeFragment(ProductFragment.getInstance());
         }
 
     }

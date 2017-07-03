@@ -1,32 +1,22 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.garagesale.gapp.garagesale.MainActivity"
-    tools:showIn="@layout/activity_main">
+    android:layout_height="match_parent">
 
     <com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:sothree="http://schemas.android.com/apk/res-auto"
         android:id="@+id/sliding_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:gravity="top"
-        sothree:umanoPanelHeight="0dp"
-        sothree:umanoShadowHeight="4dp"
         sothree:umanoOverlay="true"
-        tools:layout_editor_absoluteY="8dp"
-        tools:layout_editor_absoluteX="8dp">
+        sothree:umanoPanelHeight="0dp"
+        sothree:umanoShadowHeight="4dp">
 
         <!-- 페이지 -->
         <FrameLayout
+            android:id="@+id/content_fragment_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:id="@+id/content_fragment_layout"
-            />
+            android:gravity="center" />
 
 
         <!-- Menu -->
@@ -34,4 +24,4 @@
 
     </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>

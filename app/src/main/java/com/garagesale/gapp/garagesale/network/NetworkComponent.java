@@ -4,6 +4,7 @@ import com.garagesale.gapp.garagesale.MainActivity;
 import com.garagesale.gapp.garagesale.fragment.JoinFragment;
 import com.garagesale.gapp.garagesale.fragment.LoginFragment;
 import com.garagesale.gapp.garagesale.fragment.MainFragment;
+import com.garagesale.gapp.garagesale.fragment.ProductFragment;
 import com.garagesale.gapp.garagesale.fragment.ProfileFragment;
 import com.garagesale.gapp.garagesale.fragment.SettingFragment;
 import com.garagesale.gapp.garagesale.fragment.StoreFragment;
@@ -25,4 +26,5 @@ public interface NetworkComponent {
     void inject(ProfileFragment fragment);
     void inject(SettingFragment fragment);
     void inject(StoreFragment fragment);
+    void inject(ProductFragment fragment);
 }
