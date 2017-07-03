@@ -121,6 +121,7 @@ public class LoginFragment extends BaseFragment {
             @Override
             public void onFailure(Call<UserResponse> call, Throwable t) {
                 // 아무 응답도 못받았을 때
+                Log.v("t.getMessage()",t.getMessage());
             }
         };
     }

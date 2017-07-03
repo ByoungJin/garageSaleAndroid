@@ -9,19 +9,19 @@ public class User {
 
     @SerializedName("_id")
     @Expose
-    private String id = "";
+    private String id;
     @SerializedName("updatedAt")
     @Expose
-    private String updatedAt = "";
+    private String updatedAt;
     @SerializedName("createdAt")
     @Expose
-    private String createdAt = "";
+    private String createdAt;
     @SerializedName("name")
     @Expose
-    private String name = "";
+    private String name;
     @SerializedName("email")
     @Expose
-    private String email = "";
+    private String email;
     @SerializedName("__v")
     @Expose
     private Integer v;
@@ -116,104 +116,6 @@ public class User {
 
     public void setPoint(Point point) {
         this.point = point;
-    }
-
-    public class Point {
-
-        @SerializedName("coordinates")
-        @Expose
-        private List<Integer> coordinates = null;
-        @SerializedName("type")
-        @Expose
-        private String type = "";
-
-        public List<Integer> getCoordinates() {
-            return coordinates;
-        }
-
-        public void setCoordinates(List<Integer> coordinates) {
-            this.coordinates = coordinates;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
-    }
-
-    public class Planet {
-
-        @SerializedName("description")
-        @Expose
-        private String description = "";
-        @SerializedName("endDay")
-        @Expose
-        private String endDay = "";
-        @SerializedName("name")
-        @Expose
-        private String name = "";
-        @SerializedName("startDay")
-        @Expose
-        private String startDay = "";
-        @SerializedName("comments")
-        @Expose
-        private List<Object> comments = null;
-        @SerializedName("products")
-        @Expose
-        private List<Object> products = null;
-
-        public String getDescription() {
-            return description;
-        }
-
-        public void setDescription(String description) {
-            this.description = description;
-        }
-
-        public String getEndDay() {
-            return endDay;
-        }
-
-        public void setEndDay(String endDay) {
-            this.endDay = endDay;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getStartDay() {
-            return startDay;
-        }
-
-        public void setStartDay(String startDay) {
-            this.startDay = startDay;
-        }
-
-        public List<Object> getComments() {
-            return comments;
-        }
-
-        public void setComments(List<Object> comments) {
-            this.comments = comments;
-        }
-
-        public List<Object> getProducts() {
-            return products;
-        }
-
-        public void setProducts(List<Object> products) {
-            this.products = products;
-        }
-
     }
 
 }

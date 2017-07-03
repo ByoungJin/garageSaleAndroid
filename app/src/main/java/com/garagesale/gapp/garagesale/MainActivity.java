@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.garagesale.gapp.garagesale.fragment.JoinFragment;
 import com.garagesale.gapp.garagesale.fragment.LoginFragment;
 import com.garagesale.gapp.garagesale.fragment.MainFragment;
+import com.garagesale.gapp.garagesale.fragment.PlanetListFragment;
 import com.garagesale.gapp.garagesale.fragment.ProductFragment;
 import com.garagesale.gapp.garagesale.fragment.ProfileFragment;
 import com.garagesale.gapp.garagesale.fragment.SettingFragment;
@@ -112,6 +113,8 @@ public class MainActivity extends AppCompatActivity {
             changeFragment(StoreFragment.getInstance());
         } else if( id == R.id.product_button) {
             changeFragment(ProductFragment.getInstance());
+        } else if( id == R.id.planet_list_button){
+            changeFragment(PlanetListFragment.getInstance());
         }
 
     }

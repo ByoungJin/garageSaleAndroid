@@ -1,6 +1,7 @@
 package com.garagesale.gapp.garagesale.fragment;
 
 import android.annotation.SuppressLint;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -10,11 +11,12 @@ import android.view.ViewGroup;
 
 import com.garagesale.gapp.garagesale.BaseFragment;
 import com.garagesale.gapp.garagesale.R;
-import com.garagesale.gapp.garagesale.databinding.FragmentMainBinding;
+import com.garagesale.gapp.garagesale.databinding.FragmentPlanetListBinding;
 import com.garagesale.gapp.garagesale.entity.User;
 import com.garagesale.gapp.garagesale.entity.listData;
 import com.garagesale.gapp.garagesale.response.UserListResponse;
 import com.garagesale.gapp.garagesale.service.LoginService;
+import com.garagesale.gapp.garagesale.util.GPSInfo;
 import com.garagesale.gapp.garagesale.util.mListAdapter;
 
 import java.util.ArrayList;
@@ -26,17 +28,17 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class MainFragment extends BaseFragment {
+public class PlanetListFragment extends BaseFragment {
 
     private RecyclerView.Adapter adapter;
     private ArrayList<listData> itemDataset;
-    private FragmentMainBinding binding;
+    private FragmentPlanetListBinding binding;
 
     // 싱글톤 패턴
     @SuppressLint("StaticFieldLeak")
-    private static MainFragment mInstance;
-    public static MainFragment getInstance(){
-        if(mInstance == null) mInstance = new MainFragment();
+    private static PlanetListFragment mInstance;
+    public static PlanetListFragment getInstance(){
+        if(mInstance == null) mInstance = new PlanetListFragment();
         return mInstance;
     }
 
@@ -46,7 +48,7 @@ public class MainFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.fragment_main, container, false);
+        return inflater.inflate(R.layout.fragment_planet_list, container, false);
     }
 
     @Override
@@ -54,10 +56,13 @@ public class MainFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
 
         getNetworkComponent().inject(this);
-        binding = FragmentMainBinding.bind(getView());
+        binding = FragmentPlanetListBinding.bind(getView());
         LoginService loginService = retrofit.create(LoginService.class);
 
-        Call<UserListResponse> repos = loginService.getUserList("12","12");
+        Location gLocation = GPSInfo.getmInstance(getContext()).getGPSLocation();  //GPS정보 객체
+
+        Call<UserListResponse> repos = loginService.getUserList(String.valueOf(gLocation.getLongitude()), String.valueOf(gLocation.getLatitude()));
+
         repos.enqueue(new Callback<UserListResponse>() {
             @Override
             public void onResponse(Call<UserListResponse> call, Response<UserListResponse> response) {
@@ -75,7 +80,7 @@ public class MainFragment extends BaseFragment {
 
     @Override
     public String getTitle() {
-        return "Main";
+        return "Planet List";
     }
 
     public void setTestItemData(UserListResponse userListResponse) {

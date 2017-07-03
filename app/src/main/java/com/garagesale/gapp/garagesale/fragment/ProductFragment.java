@@ -1,7 +1,6 @@
 package com.garagesale.gapp.garagesale.fragment;
 
 import android.annotation.SuppressLint;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -10,14 +9,10 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.garagesale.gapp.garagesale.BaseFragment;
-import com.garagesale.gapp.garagesale.BuildConfig;
 import com.garagesale.gapp.garagesale.R;
-import com.garagesale.gapp.garagesale.databinding.FragmentLoginBinding;
 import com.garagesale.gapp.garagesale.databinding.FragmentProductBinding;
-import com.garagesale.gapp.garagesale.entity.Product;
 import com.garagesale.gapp.garagesale.response.ProductResponse;
 import com.garagesale.gapp.garagesale.service.ProductService;
-import com.garagesale.gapp.garagesale.util.SharedPreferenceManager;
 
 import javax.inject.Inject;
 
