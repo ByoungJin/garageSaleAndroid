@@ -20,6 +20,18 @@
             </intent-filter>
         </activity>
 
+        <!--사진 폴더 접근을 위한 provider 설정-->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.garagesale.gapp.garagesale.camera"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_path"/>
+        </provider>
+
+
         <service
             android:name=".fcm.MyFirebaseMessagingService">
             <intent-filter>
@@ -38,13 +50,15 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBfmBecXYtFB92HwB2wfsBuuPO8CJkdTmE"/>
     </application>
-            <!--AIzaSyBzSIpXPVMh2Hiz6sssHIDfR-rDX4h83BA-->
-            <!--AIzaSyBzXBxBzsP63QVoX7j74Fo5zffBCMtY-Xw-->
+
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
 
 
 </manifest>
