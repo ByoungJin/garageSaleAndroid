@@ -33,7 +33,6 @@ public class NetworkModule {
     private static final int CONNECT_TIMEOUT = 15;
     private static final int WRITE_TIMEOUT = 15;
     private static final int READ_TIMEOUT = 15;
-    private static final String baseUrl = BuildConfig.BASEURL; // your base url;
 
     private Context context;
 
@@ -99,7 +98,7 @@ public class NetworkModule {
     Retrofit provideRetrofit(Gson gson, OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .baseUrl(baseUrl)
+                .baseUrl(BuildConfig.TESTURL)
                 .client(okHttpClient)
                 .build();
     }
