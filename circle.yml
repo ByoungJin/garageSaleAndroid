@@ -9,7 +9,7 @@ dependencies:
     - echo y | $ANDROID_HOME/tools/bin/sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2"
 
 checkout:
-  pre:
+  post:
     - sed -i 's/10.0.2.2:3000/garagesalesever.herokuapp.com/g' app/build.gradle
 test:
   override:
