@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.Toast;
 
 /**
- * Created by hyochan on 2016. 3. 7..
+ * Created by KANG on 2017-07-04.
  */
 public class RuntimeUtil {
     public static final int PERMISSION_STORAGE = 0;

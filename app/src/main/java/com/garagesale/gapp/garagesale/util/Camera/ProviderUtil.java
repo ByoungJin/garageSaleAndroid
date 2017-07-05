@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Created by hyochan on 2016. 9. 30..
+ * Created by KANG on 2017-07-04.
  */
 public class ProviderUtil {
   private static final String TAG = "ProviderUtil";
