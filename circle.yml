@@ -10,7 +10,7 @@ dependencies:
 
 checkout:
   post:
-    - sed -i 's/10.0.2.2:3000/garagesalesever.herokuapp.com/g' app/build.gradle
+    - sed -i 's/BuildConfig.TESTURL/BuildConfig.BASEURL/g' app/src/main/java/com/garagesale/gapp/garagesale/network/NetworkModule.java
 test:
   override:
     - ./gradlew assembleRelease
