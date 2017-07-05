@@ -3,14 +3,10 @@ package com.garagesale.gapp.garagesale.fragment;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.media.ExifInterface;
 import android.net.Uri;
-import android.nfc.Tag;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -24,14 +20,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.garagesale.gapp.garagesale.BaseFragment;
 import com.garagesale.gapp.garagesale.R;
 import com.garagesale.gapp.garagesale.databinding.FragmentStoreBinding;
 import com.garagesale.gapp.garagesale.entity.User;
 import com.garagesale.gapp.garagesale.entity.listData;
 import com.garagesale.gapp.garagesale.response.UserResponse;
-import com.garagesale.gapp.garagesale.service.ImageService;
+import com.garagesale.gapp.garagesale.service.UserService;
 import com.garagesale.gapp.garagesale.util.Camera.*;
 import com.garagesale.gapp.garagesale.util.DataContainer;
 import com.garagesale.gapp.garagesale.util.mListAdapter;
@@ -53,7 +48,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-import static android.R.attr.path;
 import static android.app.Activity.RESULT_OK;
 import static com.garagesale.gapp.garagesale.util.Camera.RealPathUtil.getRealPath;
 
@@ -79,7 +73,7 @@ public class StoreFragment extends BaseFragment implements GoogleMapFragment.Fra
     @Inject
     public Retrofit retrofit;
     // 여기부턴 카메라관련 인자
-    private ImageService imageService;
+    private UserService userService;
     private static final int REQUEST_TAKE_PHOTO = 1;
     private static final int REQUEST_GALLERY = 2;
     private Uri outputFileUri;
@@ -105,7 +99,7 @@ public class StoreFragment extends BaseFragment implements GoogleMapFragment.Fra
         super.onActivityCreated(savedInstanceState);
 
         getNetworkComponent().inject(this); // retrofit 객체 주입
-        imageService = retrofit.create(ImageService.class);
+        userService = retrofit.create(UserService.class);
         binding = FragmentStoreBinding.bind(getView()); // Store 프레그먼트 View
 
         setTestItemData(); //아이템 리스트뷰 셋팅 (테스트셋)
@@ -189,14 +183,13 @@ public class StoreFragment extends BaseFragment implements GoogleMapFragment.Fra
     public void sendServerImage() {
         File file = new File(getRealPath(getContext(), outputFileUri));
 
-        // create RequestBody instance from file
         RequestBody requestFile = RequestBody.create(
                 MediaType.parse(getActivity().getContentResolver().getType(outputFileUri)),file);
 
         MultipartBody.Part body =
-                MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+                MultipartBody.Part.createFormData("profile", file.getName(), requestFile);
 
-        Call<UserResponse> repos = imageService.uploadImageFile(body);
+        Call<UserResponse> repos = userService.uploadProfile(body);
 
         repos.enqueue(new Callback<UserResponse>() {
             @Override
