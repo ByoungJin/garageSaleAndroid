@@ -25,8 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:layoutManager="LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@+id/textView3"
-            tools:layout_editor_absoluteX="8dp"></android.support.v7.widget.RecyclerView>
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     </android.support.constraint.ConstraintLayout>
 

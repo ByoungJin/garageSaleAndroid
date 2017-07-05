@@ -13,8 +13,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Created by KANG on 2017-07-04.
+ * Created by juyeol on 2017-07-04.
+ * 이미지 파일들의 Uri를 얻어옴
  */
+
 public class ProviderUtil {
   private static final String TAG = "ProviderUtil";
 

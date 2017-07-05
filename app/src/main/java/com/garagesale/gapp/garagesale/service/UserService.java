@@ -1,7 +1,7 @@
 package com.garagesale.gapp.garagesale.service;
 
 /**
- * Created by KANG on 2017-07-04.
+ * Created by juyeol on 2017-07-04.
  */
 
 import com.garagesale.gapp.garagesale.response.UserResponse;

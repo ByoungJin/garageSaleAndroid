@@ -43,12 +43,13 @@ public class GoogleMapFragment extends Fragment
     @SuppressLint("StaticFieldLeak")
     private static GoogleMapFragment mInstance;
 
+    public GoogleMapFragment() {
+    }
+
     public static GoogleMapFragment getInstance() {
         if (mInstance == null) mInstance = new GoogleMapFragment();
         return mInstance;
     }
-
-    View view;
 
     private GoogleMap mGoogleMap;
     private GPSInfo mGPSInfo;
@@ -77,7 +78,7 @@ public class GoogleMapFragment extends Fragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_googlemap, container, false);
+        final View view = inflater.inflate(R.layout.fragment_googlemap, container, false);
         return view;
     }
 
@@ -92,13 +93,13 @@ public class GoogleMapFragment extends Fragment
                 findFragmentById(R.id.googleMap);
         supportMapFragment.getMapAsync(this);
 
-        binding = FragmentGooglemapBinding.bind(getView()); // Store 프레그먼트 Vie
+        binding = FragmentGooglemapBinding.bind(getView());
 
-        autocompleteFragment = (SupportPlaceAutocompleteFragment) this.
+       /* autocompleteFragment = (SupportPlaceAutocompleteFragment) this.
                 getChildFragmentManager().
                 findFragmentById(R.id.autoComplete);
         if(autocompleteFragment==null)
-            Log.d("부모","왜널이야");
+            Log.d("부모","왜널이야");*/
 
         binding.MyLocation.setOnClickListener(view1 -> {
             gLocation = mGPSInfo.getGPSLocation();

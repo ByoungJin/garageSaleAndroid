@@ -7,7 +7,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -18,7 +17,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.garagesale.gapp.garagesale.BaseFragment;
 import com.garagesale.gapp.garagesale.R;
@@ -34,22 +32,17 @@ import com.garagesale.gapp.garagesale.util.setPermission;
 import com.google.android.gms.maps.model.LatLng;
 import com.gun0912.tedpermission.PermissionListener;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.inject.Inject;
 
-import okhttp3.MediaType;
 import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
 import static android.app.Activity.RESULT_OK;
-import static com.garagesale.gapp.garagesale.util.Camera.RealPathUtil.getRealPath;
 
 
 /**
@@ -77,21 +70,23 @@ public class StoreFragment extends BaseFragment implements GoogleMapFragment.Fra
     private static final int REQUEST_TAKE_PHOTO = 1;
     private static final int REQUEST_GALLERY = 2;
     private Uri outputFileUri;
+    private LoadPicture loadPicture;
     // 여기부턴 리스트 관련 인자들
     private RecyclerView.Adapter iAdapter, rAdapter;
     private ArrayList<listData> itemDataset, replyDataset;
+    private Fragment childFragment;
+    FragmentTransaction transaction;
     User user = DataContainer.getInstance().getmUser(); // user 정보
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         view = inflater.inflate(R.layout.fragment_store, container, false);
         return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        setPermission.getmInstance(getContext(), Manifest.permission.ACCESS_FINE_LOCATION, GoogleMapPermission); // 권한요청 및 권한에따른 구글맵 셋팅
+        new setPermission(getContext(), GoogleMapPermission, Manifest.permission.ACCESS_FINE_LOCATION); // 권한요청 및 권한에따른 구글맵 셋팅
     }
 
     @Override
@@ -101,6 +96,7 @@ public class StoreFragment extends BaseFragment implements GoogleMapFragment.Fra
         getNetworkComponent().inject(this); // retrofit 객체 주입
         userService = retrofit.create(UserService.class);
         binding = FragmentStoreBinding.bind(getView()); // Store 프레그먼트 View
+        loadPicture = new LoadPicture(this,getContext());
 
         setTestItemData(); //아이템 리스트뷰 셋팅 (테스트셋)
         setTestreplyData(); //댓글 리스트뷰 셋팅  (테스트셋)
@@ -113,7 +109,7 @@ public class StoreFragment extends BaseFragment implements GoogleMapFragment.Fra
 
         binding.transparentImage.setOnTouchListener(this); // GoogleMapFragment와 scrollview 간의 간섭 컨트롤
         binding.replyaccept.setOnClickListener(this);        //댓글 작성 버튼
-        binding.addItem.setOnClickListener(this);
+
         binding.addItem.setOnClickListener(this);
         binding.addItem2.setOnClickListener(this);
         // Glide.with(getInstance()).load("http://192.168.42.180:3000/imeage/Screenshot_2017-07-04-17-56-47.png").into(binding.imageView5);
@@ -132,11 +128,17 @@ public class StoreFragment extends BaseFragment implements GoogleMapFragment.Fra
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_GALLERY) {
                 outputFileUri = data.getData();
-            }
 
-            if (outputFileUri != null) {
-                drawFile();
-                sendServerImage();
+                if (outputFileUri != null) {
+                    showImage(loadPicture.drawFile(outputFileUri));
+                    sendServerImage();
+                }
+            }
+            else if(requestCode == REQUEST_TAKE_PHOTO){
+                if (outputFileUri!= null) {
+                    showImage(loadPicture.drawFile(outputFileUri));
+                    //sendServerImage();
+                }
             }
         }
     }
@@ -148,32 +150,6 @@ public class StoreFragment extends BaseFragment implements GoogleMapFragment.Fra
     }
 
     /*****************카메라 처리 메소드 **********************/
-    // 갤러리 호출 메소드
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == RuntimeUtil.PERMISSION_CAMERA) {
-            if (RuntimeUtil.verifyPermissions(getActivity(), grantResults)) {
-                // onCamera(binding.addItem);
-            }
-        } else if (requestCode == RuntimeUtil.PERMISSION_ALBUM) {
-            if (RuntimeUtil.verifyPermissions(getActivity(), getActivity().getWindow().getDecorView(), grantResults)) {
-                // onGallery(binding.addItem);
-            }
-        }
-    }
-
-    private void drawFile() {
-        Bitmap bitmapImage;
-        try {
-            bitmapImage = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), outputFileUri);
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(getContext(), "IOException:" + e.getMessage(), Toast.LENGTH_SHORT).show();
-            return;
-        }
-        showImage(bitmapImage);
-    }
 
     private void showImage(Bitmap bitmap) {
         Drawable bitmapDrawable = new BitmapDrawable(getResources(), bitmap);
@@ -181,14 +157,8 @@ public class StoreFragment extends BaseFragment implements GoogleMapFragment.Fra
     }
 
     public void sendServerImage() {
-        File file = new File(getRealPath(getContext(), outputFileUri));
-
-        RequestBody requestFile = RequestBody.create(
-                MediaType.parse(getActivity().getContentResolver().getType(outputFileUri)),file);
-
-        MultipartBody.Part body =
-                MultipartBody.Part.createFormData("profile", file.getName(), requestFile);
-
+        MultipartBody.Part body;
+        body= loadPicture.createBody(outputFileUri);
         Call<UserResponse> repos = userService.uploadProfile(body);
 
         repos.enqueue(new Callback<UserResponse>() {
@@ -216,32 +186,10 @@ public class StoreFragment extends BaseFragment implements GoogleMapFragment.Fra
                 binding.replytext.setText(null);
                 break;
             case R.id.addItem:
-                RuntimeUtil.checkPermission(this.getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE, RuntimeUtil.PERMISSION_ALBUM, new OnPermssionCallBackListener() {
-                    @Override
-                    public void OnGrantPermission() {
-                        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        startActivityForResult(intent, REQUEST_GALLERY);
-                    }
-                });
+                loadPicture.onGallery();
                 break;
             case R.id.addItem2:
-                Log.d("das", "dsads");
-                RuntimeUtil.checkPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE, RuntimeUtil.PERMISSION_ALBUM, new OnPermssionCallBackListener() {
-                    @Override
-                    public void OnGrantPermission() {
-                        RuntimeUtil.checkPermission(getActivity(), getActivity().getWindow().getDecorView(), Manifest.permission.CAMERA, RuntimeUtil.PERMISSION_CAMERA, null, new OnPermssionCallBackListener() {
-                            @Override
-                            public void OnGrantPermission() {
-                                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
-                                    outputFileUri = ProviderUtil.getOutputMediaFileUri(getActivity().getBaseContext());
-                                    intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-                                    startActivityForResult(intent, REQUEST_TAKE_PHOTO);
-                                }
-                            }
-                        });
-                    }
-                });
+                outputFileUri = loadPicture.onCamera();
                 break;
         }
     }
@@ -268,12 +216,6 @@ public class StoreFragment extends BaseFragment implements GoogleMapFragment.Fra
     /******************리스너 정의 끝**********************/
 
     /******************구글맵 메소드(+권한)**********************/
-    public void setGoogleMap() {
-        Fragment childFragment = new GoogleMapFragment();
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.replace(R.id.map, childFragment).commit();
-    }
-
     PermissionListener GoogleMapPermission = new PermissionListener() {
         @Override
         public void onPermissionGranted() {
@@ -285,6 +227,12 @@ public class StoreFragment extends BaseFragment implements GoogleMapFragment.Fra
             setGoogleMap();
         }
     };
+
+    public void setGoogleMap() {
+            childFragment = GoogleMapFragment.getInstance();
+            transaction = getChildFragmentManager().beginTransaction();
+            transaction.replace(R.id.map, childFragment).commit();
+    }
     /******************구글맵 메소드(+권한) 끝**********************/
 
     /******************리스트 아이템 셋**********************/
