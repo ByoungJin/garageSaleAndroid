@@ -4,23 +4,28 @@ import android.annotation.SuppressLint;
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.location.Location;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.garagesale.gapp.garagesale.BaseFragment;
 import com.garagesale.gapp.garagesale.R;
 import com.garagesale.gapp.garagesale.databinding.FragmentPlanetListBinding;
 import com.garagesale.gapp.garagesale.databinding.FragmentPlanetListItemBinding;
+import com.garagesale.gapp.garagesale.entity.Product;
 import com.garagesale.gapp.garagesale.entity.User;
 import com.garagesale.gapp.garagesale.response.UserListResponse;
 import com.garagesale.gapp.garagesale.service.LoginService;
 import com.garagesale.gapp.garagesale.util.GPSInfo;
+import com.garagesale.gapp.garagesale.util.mListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,12 +96,13 @@ public class PlanetListFragment extends BaseFragment {
 
     public void setTestItemData(List<User> userList) {
         itemDataset = new ArrayList<>();
-        adapter = new mListAdapter(itemDataset);
+        adapter = new PlanetListAdapter(itemDataset);
         binding.testList.setAdapter(adapter);
 
         for (User user : userList) {
+
             itemDataset.add(new PlanetListData(user.getEmail(), user.getPlanet().getName(),
-                    user.getPlanet().getDescription(),R.mipmap.ic_launcher
+                    user.getPlanet().getDescription(),R.mipmap.ic_launcher, user.getPlanet().getProducts()
             ));
         }
 
@@ -108,21 +114,29 @@ public class PlanetListFragment extends BaseFragment {
         public String option;
         public String body;
         public int img;
+        public List<Product> products;
 
-        public PlanetListData(String header, String option, String body, int img) {
+        public List<Product> getProducts() {
+            return products;
+        }
+
+        public void setProducts(List<Product> products) {
+            this.products = products;
+        }
+
+        public PlanetListData(String header, String option, String body, int img, List<Product> products) {
             this.header = header;
             this.option = option;
             this.body = body;
             this.img = img;
+            this.products = products;
         }
     }
 
-    public class mListAdapter extends RecyclerView.Adapter {
+    public class PlanetListAdapter extends RecyclerView.Adapter {
         private ArrayList<PlanetListData> listDatas;
 
-        /**
-         * 정보를 담기위한 BindingHolder 생성
-         */
+        // 정보를 담기위한 BindingHolder 생성
         public class BindingHolder extends RecyclerView.ViewHolder {
             private FragmentPlanetListItemBinding binding;
 
@@ -136,7 +150,7 @@ public class PlanetListFragment extends BaseFragment {
             }
         }
 
-        public mListAdapter(ArrayList<PlanetListData> listDataset) {
+        public PlanetListAdapter(ArrayList<PlanetListData> listDataset) {
             listDatas = listDataset;
         }
 
@@ -144,12 +158,23 @@ public class PlanetListFragment extends BaseFragment {
         @Override
         public BindingHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             FragmentPlanetListItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.fragment_planet_list_item, parent, false);
+
             return new BindingHolder(binding);
         }
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            ((BindingHolder)holder).bindConnection(listDatas.get(position));
+            PlanetListData planetListData = listDatas.get(position);
+            ((BindingHolder)holder).bindConnection(planetListData);
+
+            Log.d("planetListData size","" + planetListData.getProducts().size());
+            LinearLayout linearLayout = ((BindingHolder) holder).binding.productList;
+            for ( Product product : planetListData.getProducts()) {
+                ImageView imageView = new ImageView(getContext());
+                imageView.setImageResource(R.mipmap.ic_launcher);
+                linearLayout.addView(imageView);
+            }
+
         }
 
 
