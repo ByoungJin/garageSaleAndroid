@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.garagesale.gapp.garagesale.BaseFragment;
 import com.garagesale.gapp.garagesale.R;
 import com.garagesale.gapp.garagesale.databinding.FragmentPlanetListBinding;
@@ -135,6 +136,7 @@ public class PlanetListFragment extends BaseFragment {
 
     public class PlanetListAdapter extends RecyclerView.Adapter {
         private ArrayList<PlanetListData> listDatas;
+        String imageUrl = "https://cdn.pixabay.com/photo/2016/02/04/13/49/the-earth-1179212_960_720.png";
 
         // 정보를 담기위한 BindingHolder 생성
         public class BindingHolder extends RecyclerView.ViewHolder {
@@ -164,24 +166,22 @@ public class PlanetListFragment extends BaseFragment {
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+
+            Glide.with(getActivity()).load(imageUrl).into(((BindingHolder) holder).binding.image);
+
+
             PlanetListData planetListData = listDatas.get(position);
             ((BindingHolder)holder).bindConnection(planetListData);
-
             Log.d("planetListData size","" + planetListData.getProducts().size());
             LinearLayout linearLayout = ((BindingHolder) holder).binding.productList;
             for ( Product product : planetListData.getProducts()) {
                 ImageView imageView = new ImageView(getContext());
+                Glide.with(getActivity()).load(imageUrl).into(imageView);
+
                 imageView.setImageResource(R.mipmap.ic_launcher);
                 linearLayout.addView(imageView);
             }
 
-        }
-
-
-        // 이미지 바인딩용 BindingAdapter
-        @BindingAdapter("imgload")
-        public void imageLoad(ImageView imageView, int img) {
-            imageView.setImageResource(img);
         }
 
         @Override

@@ -22,7 +22,6 @@
             android:layout_width="50dp"
             android:layout_height="34dp"
             android:scaleType="fitXY"
-            app:imgload="@{list.img}"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             app:layout_constraintLeft_toLeftOf="parent"
