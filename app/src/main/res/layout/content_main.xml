@@ -1,8 +1,11 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:sothree="http://schemas.android.com/apk/res-auto">
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:sothree="http://schemas.android.com/apk/res-auto"
+    <com.sothree.slidinguppanel.SlidingUpPanelLayout
         android:id="@+id/sliding_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,8 +23,10 @@
 
 
         <!-- Menu -->
-        <include layout="@layout/menu_layout" />
+        <include layout="@layout/menu_layout"
+            android:id="@+id/menu_layout"/>
 
     </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 
 </RelativeLayout>
+</layout>

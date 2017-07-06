@@ -9,12 +9,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.garagesale.gapp.garagesale.BaseFragment;
 import com.garagesale.gapp.garagesale.BuildConfig;
 import com.garagesale.gapp.garagesale.R;
+import com.garagesale.gapp.garagesale.databinding.ActivityMainBinding;
 import com.garagesale.gapp.garagesale.databinding.FragmentLoginBinding;
+import com.garagesale.gapp.garagesale.databinding.MenuLayoutBinding;
 import com.garagesale.gapp.garagesale.entity.User;
 import com.garagesale.gapp.garagesale.response.UserResponse;
 import com.garagesale.gapp.garagesale.service.LoginService;
@@ -67,16 +70,17 @@ public class LoginFragment extends BaseFragment {
         }
 
         // set Listener
-        binding.loginButton.setOnClickListener(view1 -> {
-
+        binding.loginButton.setOnClickListener(view -> {
             // 로그인
-            // userId, Password를 넣고 Login Reqest 요청
             Call<UserResponse> repos = loginService.loginPost(
                     binding.userIdText.getText().toString(),
                     binding.passwordText.getText().toString()
-            );
-
+            ); // userId, Password를 넣고 Login Reqest 요청
             repos.enqueue(getCallback());
+        });
+
+        binding.joinButton.setOnClickListener(view -> {
+            getMainActivity().changeFragment(JoinFragment.getInstance());   // Change to Join Fragment
         });
 
     }
@@ -101,7 +105,15 @@ public class LoginFragment extends BaseFragment {
 
                         Toast.makeText(getActivity(), "로그인 성공, 토큰 : " + preferenceManager.getStringValue(BuildConfig.KEYTOKEN), Toast.LENGTH_SHORT).show();
 
+                        // 로그인, 조인 버튼 없애고, 로그아웃 보임.
 
+                        ActivityMainBinding activityMainBinding = getMainActivity().getBinding();
+                        MenuLayoutBinding menuLayoutBinding = activityMainBinding.contentMain.menuLayout;
+                        //MenuLayoutBinding menuLayoutBinding = DataBindingUtil.setContentView(getMainActivity(), R.layout.menu_layout);
+                        menuLayoutBinding.logoutButton.setVisibility(Button.VISIBLE); // logout button
+                        menuLayoutBinding.loginButton.setVisibility(Button.GONE); // login button
+                        menuLayoutBinding.joinButton.setVisibility(Button.GONE); // join button
+//                        activityMainBinding.contentMain.menuLayout.joinButton.setText("asdaf"); // join button
 
                         // 화면 전환
                         getMainActivity().changeFragment(MainFragment.getInstance());
