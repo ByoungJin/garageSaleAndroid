@@ -31,4 +31,10 @@ public abstract class BaseFragment extends Fragment implements MainActivity.OnBa
     }
 
     public abstract String getTitle();
+
+    @Override
+    public void onBack() {
+        if(getFragmentManager() == null) return;    // Stack이 비었을 경우 에러 처리
+        getFragmentManager().popBackStack();
+    }
 }

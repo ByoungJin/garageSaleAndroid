@@ -32,8 +32,4 @@ public class SettingFragment extends BaseFragment {
         return "Setting";
     }
 
-    @Override
-    public void onBack() {
-        getFragmentManager().popBackStack();
-    }
 }

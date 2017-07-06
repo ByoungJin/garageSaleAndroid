@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.garagesale.gapp.garagesale.BaseFragment;
 import com.garagesale.gapp.garagesale.R;
@@ -63,6 +64,10 @@ public class MainFragment extends BaseFragment {
             @Override
             public void onResponse(Call<UserListResponse> call, Response<UserListResponse> response) {
                 UserListResponse userListResponse = response.body();
+                if(userListResponse == null) {
+                    Toast.makeText(getActivity(), response.message() , Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 setTestItemData(userListResponse);
             }
 
@@ -94,8 +99,4 @@ public class MainFragment extends BaseFragment {
 
     }
 
-    @Override
-    public void onBack() {
-        getFragmentManager().popBackStack();
-    }
 }

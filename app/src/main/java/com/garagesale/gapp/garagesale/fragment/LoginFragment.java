@@ -146,8 +146,4 @@ public class LoginFragment extends BaseFragment {
     }
 
 
-    @Override
-    public void onBack() {
-        getFragmentManager().popBackStack();
-    }
 }

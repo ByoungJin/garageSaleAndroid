@@ -116,8 +116,4 @@ public class JoinFragment extends BaseFragment {
     }
 
 
-    @Override
-    public void onBack() {
-        getFragmentManager().popBackStack();
-    }
 }

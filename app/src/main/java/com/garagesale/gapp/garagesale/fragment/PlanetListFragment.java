@@ -80,6 +80,10 @@ public class PlanetListFragment extends BaseFragment {
             @Override
             public void onResponse(Call<UserListResponse> call, Response<UserListResponse> response) {
                 UserListResponse userListResponse = response.body();
+                if(userListResponse == null) {
+                    Toast.makeText(getActivity(), response.message() , Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 setTestItemData(userListResponse.getUsers());
             }
 
@@ -108,11 +112,6 @@ public class PlanetListFragment extends BaseFragment {
             ));
         }
 
-    }
-
-    @Override
-    public void onBack() {
-        getFragmentManager().popBackStack();
     }
 
 

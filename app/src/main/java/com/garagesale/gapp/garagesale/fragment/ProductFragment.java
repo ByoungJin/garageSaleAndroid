@@ -80,8 +80,4 @@ public class ProductFragment extends BaseFragment {
         return "Product";
     }
 
-    @Override
-    public void onBack() {
-        getFragmentManager().popBackStack();
-    }
 }

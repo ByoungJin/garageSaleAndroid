@@ -269,8 +269,4 @@ public class StoreFragment extends BaseFragment implements GoogleMapFragment.Fra
         return "Store";
     }
 
-    @Override
-    public void onBack() {
-        getFragmentManager().popBackStack();
-    }
 }

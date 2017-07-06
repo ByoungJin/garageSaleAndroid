@@ -32,8 +32,4 @@ public class ProfileFragment extends BaseFragment {
         return "Profile";
     }
 
-    @Override
-    public void onBack() {
-        getFragmentManager().popBackStack();
-    }
 }
