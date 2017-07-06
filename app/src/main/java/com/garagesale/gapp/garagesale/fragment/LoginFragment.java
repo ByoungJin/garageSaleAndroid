@@ -1,6 +1,7 @@
 package com.garagesale.gapp.garagesale.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -49,6 +50,7 @@ public class LoginFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        getMainActivity().pushOnBackKeyPressedListener(this);
         return inflater.inflate(R.layout.fragment_login, container, false);
     }
 
@@ -143,4 +145,9 @@ public class LoginFragment extends BaseFragment {
         return "Login";
     }
 
+
+    @Override
+    public void onBack() {
+        getFragmentManager().popBackStack();
+    }
 }

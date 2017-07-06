@@ -1,24 +1,21 @@
 package com.garagesale.gapp.garagesale;
 
 import android.annotation.SuppressLint;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.garagesale.gapp.garagesale.databinding.ActivityMainBinding;
-import com.garagesale.gapp.garagesale.databinding.MenuLayoutBinding;
 import com.garagesale.gapp.garagesale.fragment.JoinFragment;
 import com.garagesale.gapp.garagesale.fragment.LoginFragment;
 import com.garagesale.gapp.garagesale.fragment.MainFragment;
@@ -31,18 +28,33 @@ import com.garagesale.gapp.garagesale.network.DaggerNetworkComponent;
 import com.garagesale.gapp.garagesale.network.NetworkComponent;
 import com.garagesale.gapp.garagesale.network.NetworkModule;
 import com.garagesale.gapp.garagesale.util.CloseActivityHandler;
-import com.garagesale.gapp.garagesale.util.SharedPreferenceManager;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+
+import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity {
 
+    public interface OnBackKeyPressedListener {
+        void onBack();
+    }
+
+    public Stack<OnBackKeyPressedListener> mFragmentBackStack = new Stack<>();
+
+    public void pushOnBackKeyPressedListener(OnBackKeyPressedListener listener) {
+        Log.d("메인","push");
+        mFragmentBackStack.push(listener);
+    }
+
+
+
     NetworkComponent networkComponent;
     private CloseActivityHandler closeActivityHandler;
-    ActivityMainBinding binding;
+    private FragmentTransaction ft;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        setContentView(R.layout.activity_main);
 
         // Floating Button
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -65,7 +77,10 @@ public class MainActivity extends AppCompatActivity {
         SlidingUpPanelLayout slidingUpPanelLayout = (SlidingUpPanelLayout)findViewById(R.id.sliding_layout);
         if(slidingUpPanelLayout.getPanelState().equals(SlidingUpPanelLayout.PanelState.EXPANDED)) {
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-        } else {
+        }
+        else if (!mFragmentBackStack.isEmpty()) {
+            mFragmentBackStack.pop().onBack();
+        }else {
             //super.onBackPressed();
             closeActivityHandler.onBackPressed();
         }
@@ -96,8 +111,10 @@ public class MainActivity extends AppCompatActivity {
         parent.setContentInsetsAbsolute(0, 0);
 
         // Login 화면부터 시작
-        changeFragment(LoginFragment.getInstance());
-
+       // changeFragment(LoginFragment.getInstance());
+        ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_fragment_layout,LoginFragment.getInstance());
+        ft.commit();
         return true;
     }
 
@@ -105,7 +122,6 @@ public class MainActivity extends AppCompatActivity {
     public void btnStart(View v) {
         slideMenu(null);    // 판넬 닫기
         int id = v.getId();
-
         if (id == R.id.main_button) {
             changeFragment(MainFragment.getInstance());
         } else if (id == R.id.profile_button) {
@@ -122,32 +138,33 @@ public class MainActivity extends AppCompatActivity {
             changeFragment(ProductFragment.getInstance());
         } else if( id == R.id.planet_list_button){
             changeFragment(PlanetListFragment.getInstance());
-        } else if( id == R.id.logout_button){
-            logout();
         }
 
     }
 
-    public void logout() {
-        SharedPreferenceManager.getInstance(this).putStringValue(BuildConfig.KEYTOKEN, ""); // 토큰 초기화
-        MenuLayoutBinding menuLayoutBinding = binding.contentMain.menuLayout;
-        menuLayoutBinding.logoutButton.setVisibility(Button.GONE); // logout button gone
-        menuLayoutBinding.loginButton.setVisibility(Button.VISIBLE); // login button
-        menuLayoutBinding.joinButton.setVisibility(Button.VISIBLE); // join button none
-        Toast.makeText(this, "Logout 완료",Toast.LENGTH_SHORT).show();
-        changeFragment(LoginFragment.getInstance()); // Login 화면으로 전환
-    }
-
     public void changeFragment(@NonNull BaseFragment fragment){
 
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.content_fragment_layout, fragment);
-        ft.commit();
+        if(!getVisibleFragment().equals(fragment)) {
+            Log.d("메인", "같아");
+            ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_fragment_layout, fragment);
+            ft.addToBackStack(null);
+            ft.commit();
+        }
 
         // Set the toolbar title
         TextView titleTextView = (TextView) findViewById(R.id.title);
 
         titleTextView.setText(fragment.getTitle());
+    }
+
+    public BaseFragment getVisibleFragment() {
+        for (Fragment fragment: getSupportFragmentManager().getFragments()) {
+            if (fragment.isVisible()) {
+                return ((BaseFragment)fragment);
+            }
+        }
+        return null;
     }
 
     public void slideMenu(View v) {
@@ -158,10 +175,6 @@ public class MainActivity extends AppCompatActivity {
         }else {
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
         }
-    }
-
-    public ActivityMainBinding getBinding() {
-        return binding;
     }
 
 }

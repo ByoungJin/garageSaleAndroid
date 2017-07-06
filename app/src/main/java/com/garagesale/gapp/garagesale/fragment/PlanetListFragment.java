@@ -1,6 +1,7 @@
 package com.garagesale.gapp.garagesale.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.location.Location;
@@ -57,7 +58,7 @@ public class PlanetListFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+        getMainActivity().pushOnBackKeyPressedListener(this);
         return inflater.inflate(R.layout.fragment_planet_list, container, false);
     }
 
@@ -107,6 +108,11 @@ public class PlanetListFragment extends BaseFragment {
             ));
         }
 
+    }
+
+    @Override
+    public void onBack() {
+        getFragmentManager().popBackStack();
     }
 
 

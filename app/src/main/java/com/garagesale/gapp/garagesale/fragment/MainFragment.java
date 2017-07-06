@@ -1,6 +1,7 @@
 package com.garagesale.gapp.garagesale.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -45,7 +46,7 @@ public class MainFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+        getMainActivity().pushOnBackKeyPressedListener(this);
         return inflater.inflate(R.layout.fragment_main, container, false);
     }
 
@@ -93,4 +94,8 @@ public class MainFragment extends BaseFragment {
 
     }
 
+    @Override
+    public void onBack() {
+        getFragmentManager().popBackStack();
+    }
 }

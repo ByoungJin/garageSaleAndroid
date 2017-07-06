@@ -17,8 +17,10 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.content.Context;
 
 import com.garagesale.gapp.garagesale.BaseFragment;
+import com.garagesale.gapp.garagesale.MainActivity;
 import com.garagesale.gapp.garagesale.R;
 import com.garagesale.gapp.garagesale.databinding.FragmentStoreBinding;
 import com.garagesale.gapp.garagesale.entity.User;
@@ -50,7 +52,7 @@ import static android.app.Activity.RESULT_OK;
  * 현재 skeleton 레이아웃
  */
 public class StoreFragment extends BaseFragment implements GoogleMapFragment.FragmentInteractionListener,
-        View.OnClickListener, View.OnTouchListener {
+        View.OnClickListener, View.OnTouchListener, MainActivity.OnBackKeyPressedListener {
 
     // 싱글톤 패턴
     @SuppressLint("StaticFieldLeak")
@@ -80,6 +82,7 @@ public class StoreFragment extends BaseFragment implements GoogleMapFragment.Fra
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        getMainActivity().pushOnBackKeyPressedListener(this);
         view = inflater.inflate(R.layout.fragment_store, container, false);
         return view;
     }
@@ -97,6 +100,8 @@ public class StoreFragment extends BaseFragment implements GoogleMapFragment.Fra
         userService = retrofit.create(UserService.class);
         binding = FragmentStoreBinding.bind(getView()); // Store 프레그먼트 View
         loadPicture = new LoadPicture(this,getContext());
+
+        childFragment = GoogleAutoCompleteFragment.getInstance();
 
         setTestItemData(); //아이템 리스트뷰 셋팅 (테스트셋)
         setTestreplyData(); //댓글 리스트뷰 셋팅  (테스트셋)
@@ -137,7 +142,7 @@ public class StoreFragment extends BaseFragment implements GoogleMapFragment.Fra
             else if(requestCode == REQUEST_TAKE_PHOTO){
                 if (outputFileUri!= null) {
                     showImage(loadPicture.drawFile(outputFileUri));
-                    //sendServerImage();
+                    sendServerImage();
                 }
             }
         }
@@ -219,12 +224,12 @@ public class StoreFragment extends BaseFragment implements GoogleMapFragment.Fra
     PermissionListener GoogleMapPermission = new PermissionListener() {
         @Override
         public void onPermissionGranted() {
-            setGoogleMap();
+            //setGoogleMap();
         }
 
         @Override
         public void onPermissionDenied(ArrayList<String> deniedPermissions) {
-            setGoogleMap();
+            //setGoogleMap();
         }
     };
 
@@ -264,5 +269,8 @@ public class StoreFragment extends BaseFragment implements GoogleMapFragment.Fra
         return "Store";
     }
 
-
+    @Override
+    public void onBack() {
+        getFragmentManager().popBackStack();
+    }
 }

@@ -1,6 +1,7 @@
 package com.garagesale.gapp.garagesale.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -38,6 +39,7 @@ public class ProductFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        getMainActivity().pushOnBackKeyPressedListener(this);
         return inflater.inflate(R.layout.fragment_product, container, false);
     }
 
@@ -76,5 +78,10 @@ public class ProductFragment extends BaseFragment {
     @Override
     public String getTitle() {
         return "Product";
+    }
+
+    @Override
+    public void onBack() {
+        getFragmentManager().popBackStack();
     }
 }

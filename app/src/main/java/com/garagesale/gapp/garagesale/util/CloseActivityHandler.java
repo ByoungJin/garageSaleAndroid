@@ -13,13 +13,14 @@ public class CloseActivityHandler {
     private long backKeyPressedTime = 0;
     private Toast toast;
     private Activity activity;
-    private static final int time = 4000;  // 기다리는 시간
+    private final int time = 4000;  // 기다리는 시간
 
     public CloseActivityHandler(Activity context) {
         this.activity = context;
     }
 
     public void onBackPressed() {
+
         if (System.currentTimeMillis() <= backKeyPressedTime + time) {
             toast.cancel();
             activity.finish();

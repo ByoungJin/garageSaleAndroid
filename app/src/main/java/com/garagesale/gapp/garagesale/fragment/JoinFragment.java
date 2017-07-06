@@ -1,6 +1,7 @@
 package com.garagesale.gapp.garagesale.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -44,7 +45,7 @@ public class JoinFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+        getMainActivity().pushOnBackKeyPressedListener(this);
         view = inflater.inflate(R.layout.fragment_join, container, false);
         return view;
 
@@ -112,5 +113,11 @@ public class JoinFragment extends BaseFragment {
     @Override
     public String getTitle() {
         return "Join";
+    }
+
+
+    @Override
+    public void onBack() {
+        getFragmentManager().popBackStack();
     }
 }
