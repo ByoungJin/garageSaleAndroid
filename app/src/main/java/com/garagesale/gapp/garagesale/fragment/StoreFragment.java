@@ -101,7 +101,7 @@ public class StoreFragment extends BaseFragment implements GoogleMapFragment.Fra
         binding = FragmentStoreBinding.bind(getView()); // Store 프레그먼트 View
         loadPicture = new LoadPicture(this,getContext());
 
-        childFragment = GoogleAutoCompleteFragment.getInstance();
+        //childFragment = GoogleAutoCompleteFragment.getInstance();
 
         setTestItemData(); //아이템 리스트뷰 셋팅 (테스트셋)
         setTestreplyData(); //댓글 리스트뷰 셋팅  (테스트셋)

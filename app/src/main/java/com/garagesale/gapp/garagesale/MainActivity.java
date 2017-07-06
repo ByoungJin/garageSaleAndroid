@@ -1,6 +1,7 @@
 package com.garagesale.gapp.garagesale;
 
 import android.annotation.SuppressLint;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -14,8 +15,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.garagesale.gapp.garagesale.databinding.ActivityMainBinding;
+import com.garagesale.gapp.garagesale.databinding.MenuLayoutBinding;
 import com.garagesale.gapp.garagesale.fragment.JoinFragment;
 import com.garagesale.gapp.garagesale.fragment.LoginFragment;
 import com.garagesale.gapp.garagesale.fragment.MainFragment;
@@ -28,6 +33,7 @@ import com.garagesale.gapp.garagesale.network.DaggerNetworkComponent;
 import com.garagesale.gapp.garagesale.network.NetworkComponent;
 import com.garagesale.gapp.garagesale.network.NetworkModule;
 import com.garagesale.gapp.garagesale.util.CloseActivityHandler;
+import com.garagesale.gapp.garagesale.util.SharedPreferenceManager;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.Stack;
@@ -50,11 +56,12 @@ public class MainActivity extends AppCompatActivity {
     NetworkComponent networkComponent;
     private CloseActivityHandler closeActivityHandler;
     private FragmentTransaction ft;
+    ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         // Floating Button
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -138,8 +145,20 @@ public class MainActivity extends AppCompatActivity {
             changeFragment(ProductFragment.getInstance());
         } else if( id == R.id.planet_list_button){
             changeFragment(PlanetListFragment.getInstance());
+        } else if( id == R.id.logout_button){
+            logout();
         }
 
+    }
+
+    public void logout() {
+        SharedPreferenceManager.getInstance(this).putStringValue(BuildConfig.KEYTOKEN, ""); // 토큰 초기화
+        MenuLayoutBinding menuLayoutBinding = binding.contentMain.menuLayout;
+        menuLayoutBinding.logoutButton.setVisibility(Button.GONE); // logout button gone
+        menuLayoutBinding.loginButton.setVisibility(Button.VISIBLE); // login button
+        menuLayoutBinding.joinButton.setVisibility(Button.VISIBLE); // join button none
+        Toast.makeText(this, "Logout 완료",Toast.LENGTH_SHORT).show();
+        changeFragment(LoginFragment.getInstance()); // Login 화면으로 전환
     }
 
     public void changeFragment(@NonNull BaseFragment fragment){
@@ -175,6 +194,10 @@ public class MainActivity extends AppCompatActivity {
         }else {
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
         }
+    }
+
+    public ActivityMainBinding getBinding() {
+        return binding;
     }
 
 }
