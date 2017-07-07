@@ -111,11 +111,10 @@ public class LoginFragment extends BaseFragment {
 
                         ActivityMainBinding activityMainBinding = getMainActivity().getBinding();
                         MenuLayoutBinding menuLayoutBinding = activityMainBinding.contentMain.menuLayout;
-                        //MenuLayoutBinding menuLayoutBinding = DataBindingUtil.setContentView(getMainActivity(), R.layout.menu_layout);
-                        menuLayoutBinding.logoutButton.setVisibility(Button.VISIBLE); // logout button
+
                         menuLayoutBinding.loginButton.setVisibility(Button.GONE); // login button
                         menuLayoutBinding.joinButton.setVisibility(Button.GONE); // join button
-//                        activityMainBinding.contentMain.menuLayout.joinButton.setText("asdaf"); // join button
+                        menuLayoutBinding.logoutButton.setVisibility(Button.VISIBLE); // logout button
 
                         // 화면 전환
                         getMainActivity().changeFragment(MainFragment.getInstance());
