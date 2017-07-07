@@ -1,19 +1,21 @@
 package com.garagesale.gapp.garagesale.fragment;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.garagesale.gapp.garagesale.BaseFragment;
 import com.garagesale.gapp.garagesale.BuildConfig;
 import com.garagesale.gapp.garagesale.R;
+import com.garagesale.gapp.garagesale.databinding.ActivityMainBinding;
 import com.garagesale.gapp.garagesale.databinding.FragmentJoinBinding;
+import com.garagesale.gapp.garagesale.databinding.MenuLayoutBinding;
 import com.garagesale.gapp.garagesale.response.UserResponse;
 import com.garagesale.gapp.garagesale.service.JoinService;
 import com.garagesale.gapp.garagesale.util.DataContainer;
@@ -31,8 +33,9 @@ public class JoinFragment extends BaseFragment {
     // 싱글톤 패턴
     @SuppressLint("StaticFieldLeak")
     private static JoinFragment mInstance;
-    public static JoinFragment getInstance(){
-        if(mInstance == null) mInstance = new JoinFragment();
+
+    public static JoinFragment getInstance() {
+        if (mInstance == null) mInstance = new JoinFragment();
         return mInstance;
     }
 
@@ -63,8 +66,8 @@ public class JoinFragment extends BaseFragment {
         binding.joinButton.setOnClickListener(view1 -> {
 
             // 패스워드가 일치하는지 확인
-            if(!binding.passwordEditText.getText().toString().equals(binding.confirmEditText.getText().toString())){
-                Toast.makeText(getActivity(),"패스워드가 일치하지 않습니다." , Toast.LENGTH_SHORT).show();
+            if (!binding.passwordEditText.getText().toString().equals(binding.confirmEditText.getText().toString())) {
+                Toast.makeText(getActivity(), "패스워드가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -92,7 +95,12 @@ public class JoinFragment extends BaseFragment {
 
                     Toast.makeText(getActivity(), "Join 성공, 토큰 : " + preferenceManager.getStringValue(BuildConfig.KEYTOKEN), Toast.LENGTH_SHORT).show();
 
-
+                    // 로그인, 조인 버튼 없애고, 로그아웃 보임.
+                    ActivityMainBinding activityMainBinding = getMainActivity().getBinding();
+                    MenuLayoutBinding menuLayoutBinding = activityMainBinding.contentMain.menuLayout;
+                    menuLayoutBinding.loginButton.setVisibility(Button.GONE); // login button
+                    menuLayoutBinding.joinButton.setVisibility(Button.GONE); // join button
+                    menuLayoutBinding.logoutButton.setVisibility(Button.VISIBLE); // logout button
 
                     // 화면 전환
                     getMainActivity().changeFragment(MainFragment.getInstance());

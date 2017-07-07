@@ -108,10 +108,8 @@ public class LoginFragment extends BaseFragment {
                         Toast.makeText(getActivity(), "로그인 성공, 토큰 : " + preferenceManager.getStringValue(BuildConfig.KEYTOKEN), Toast.LENGTH_SHORT).show();
 
                         // 로그인, 조인 버튼 없애고, 로그아웃 보임.
-
                         ActivityMainBinding activityMainBinding = getMainActivity().getBinding();
                         MenuLayoutBinding menuLayoutBinding = activityMainBinding.contentMain.menuLayout;
-
                         menuLayoutBinding.loginButton.setVisibility(Button.GONE); // login button
                         menuLayoutBinding.joinButton.setVisibility(Button.GONE); // join button
                         menuLayoutBinding.logoutButton.setVisibility(Button.VISIBLE); // logout button
