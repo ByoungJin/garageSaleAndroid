@@ -81,30 +81,38 @@ public class JoinFragment extends BaseFragment {
             repos.enqueue(new Callback<UserResponse>() {
                 @Override
                 public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                    if(response.isSuccessful()) {
+                        try {
+                            UserResponse userResponse = response.body();
 
-                    UserResponse userResponse = response.body();
+                            preferenceManager.putStringValue(BuildConfig.KEYTOKEN, userResponse.getToken()); // 토큰을 로컬에 저장
+                            DataContainer.getInstance().setmUser(userResponse.getUser()); // User DataContainer에 저장
 
-                    preferenceManager.putStringValue(BuildConfig.KEYTOKEN, userResponse.getToken()); // 토큰을 로컬에 저장
-                    DataContainer.getInstance().setmUser(userResponse.getUser()); // User DataContainer에 저장
+                            Log.v("getToken : ", userResponse.getToken());
+                            Log.v("getEmail : ", userResponse.getUser().getEmail());
+                            Log.v("getName : ", userResponse.getUser().getName());
 
-                    Log.v("getToken : ", userResponse.getToken());
-                    Log.v("getEmail : ", userResponse.getUser().getEmail());
-                    Log.v("getName : ", userResponse.getUser().getName());
+                            //Toast.makeText(getActivity(), "로그인 성공, Name : " + userResponse.getUser().getName(), Toast.LENGTH_SHORT).show();
 
-                    //Toast.makeText(getActivity(), "로그인 성공, Name : " + userResponse.getUser().getName(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Join 성공, 토큰 : " + preferenceManager.getStringValue(BuildConfig.KEYTOKEN), Toast.LENGTH_SHORT).show();
 
-                    Toast.makeText(getActivity(), "Join 성공, 토큰 : " + preferenceManager.getStringValue(BuildConfig.KEYTOKEN), Toast.LENGTH_SHORT).show();
+                            // 로그인, 조인 버튼 없애고, 로그아웃 보임.
+                            ActivityMainBinding activityMainBinding = getMainActivity().getBinding();
+                            MenuLayoutBinding menuLayoutBinding = activityMainBinding.contentMain.menuLayout;
+                            menuLayoutBinding.loginButton.setVisibility(Button.GONE); // login button
+                            menuLayoutBinding.joinButton.setVisibility(Button.GONE); // join button
+                            menuLayoutBinding.logoutButton.setVisibility(Button.VISIBLE); // logout button
 
-                    // 로그인, 조인 버튼 없애고, 로그아웃 보임.
-                    ActivityMainBinding activityMainBinding = getMainActivity().getBinding();
-                    MenuLayoutBinding menuLayoutBinding = activityMainBinding.contentMain.menuLayout;
-                    menuLayoutBinding.loginButton.setVisibility(Button.GONE); // login button
-                    menuLayoutBinding.joinButton.setVisibility(Button.GONE); // join button
-                    menuLayoutBinding.logoutButton.setVisibility(Button.VISIBLE); // logout button
-
-                    // 화면 전환
-                    getMainActivity().changeFragment(MainFragment.getInstance());
-                    mInstance = null;   // 재사용 불필요 시 프레그먼트 객체 제거
+                            // 화면 전환
+                            getMainActivity().changeFragment(MainFragment.getInstance());
+                            mInstance = null;   // 재사용 불필요 시 프레그먼트 객체 제거
+                        } catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    } else {
+                        // handle request errors depending on status code
+                        Toast.makeText(getActivity(), response.message(),Toast.LENGTH_SHORT).show();
+                    }
 
                 }
 

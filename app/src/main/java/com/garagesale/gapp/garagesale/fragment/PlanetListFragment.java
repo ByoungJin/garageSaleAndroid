@@ -79,6 +79,12 @@ public class PlanetListFragment extends BaseFragment {
         repos.enqueue(new Callback<UserListResponse>() {
             @Override
             public void onResponse(Call<UserListResponse> call, Response<UserListResponse> response) {
+                // Error Handle
+                if(!response.isSuccessful()){
+                    Toast.makeText(getActivity(), response.message(),Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 UserListResponse userListResponse = response.body();
                 if(userListResponse == null) {
                     Toast.makeText(getActivity(), response.message() , Toast.LENGTH_SHORT).show();
