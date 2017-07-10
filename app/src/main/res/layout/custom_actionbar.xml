@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center_vertical"
-    android:background="#2F9D27"
+    android:background="#212121"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <ImageButton
         android:id="@+id/menu_image"
         android:layout_alignParentLeft="true"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:background="@drawable/ic_menu_send"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:background="@android:drawable/ic_menu_agenda"
         android:onClick="slideMenu"/>
 
     <TextView
@@ -27,11 +28,8 @@
     <ImageButton
         android:id="@+id/btnHistory"
         android:layout_alignParentRight="true"
-        android:background="@drawable/ic_menu_share"
-        android:layout_width="56dp"
-        android:layout_height="56dp" />
-
-
-
+        android:background="@android:drawable/ic_menu_search"
+        android:layout_width="44dp"
+        android:layout_height="44dp" />
 
 </RelativeLayout>
