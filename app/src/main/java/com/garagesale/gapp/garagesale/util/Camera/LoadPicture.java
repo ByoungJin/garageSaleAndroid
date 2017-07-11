@@ -2,12 +2,14 @@ package com.garagesale.gapp.garagesale.util.Camera;
 
 import android.Manifest;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.widget.Toast;
 
 import android.content.Context;
@@ -88,9 +90,6 @@ public class LoadPicture {
             }, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
 
-
-
-
         return outputFileUri;
     }
 
@@ -130,8 +129,8 @@ public class LoadPicture {
      * 멀티파트 바디 반환
      */
     public MultipartBody.Part createBody(Uri uri) {
-        File file = new File(getRealPath(context, uri));
-        //File file = new File(uri.getPath());
+        //Log.d("dsa",String.valueOf(uri.getPath();
+        File file = new File(getRealPathFromURI(uri));
         RequestBody requestFile = RequestBody.create(
                 MediaType.parse(fragment.getActivity().getContentResolver().getType(uri)), file);
 
@@ -140,4 +139,21 @@ public class LoadPicture {
 
         return body;
     }
+
+    public String getRealPathFromURI(Uri contentUri)
+    {
+        try
+        {
+            String[] proj = {MediaStore.Images.Media.DATA};
+            Cursor cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        }
+        catch (Exception e)
+        {
+            return contentUri.getPath();
+        }
+    }
+
 }

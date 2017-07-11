@@ -1,6 +1,7 @@
 package com.garagesale.gapp.garagesale.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -106,14 +107,11 @@ public class LoginFragment extends BaseFragment {
                         Toast.makeText(getActivity(), "로그인 성공, 토큰 : " + preferenceManager.getStringValue(BuildConfig.KEYTOKEN), Toast.LENGTH_SHORT).show();
 
                         // 로그인, 조인 버튼 없애고, 로그아웃 보임.
-
                         ActivityMainBinding activityMainBinding = getMainActivity().getBinding();
                         MenuLayoutBinding menuLayoutBinding = activityMainBinding.contentMain.menuLayout;
-                        //MenuLayoutBinding menuLayoutBinding = DataBindingUtil.setContentView(getMainActivity(), R.layout.menu_layout);
-                        menuLayoutBinding.logoutButton.setVisibility(Button.VISIBLE); // logout button
                         menuLayoutBinding.loginButton.setVisibility(Button.GONE); // login button
                         menuLayoutBinding.joinButton.setVisibility(Button.GONE); // join button
-//                        activityMainBinding.contentMain.menuLayout.joinButton.setText("asdaf"); // join button
+                        menuLayoutBinding.logoutButton.setVisibility(Button.VISIBLE); // logout button
 
                         // 화면 전환
                         getMainActivity().changeFragment(MainFragment.getInstance());
@@ -142,5 +140,6 @@ public class LoginFragment extends BaseFragment {
     public String getTitle() {
         return "Login";
     }
+
 
 }

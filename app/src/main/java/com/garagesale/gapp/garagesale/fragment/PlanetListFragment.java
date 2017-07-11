@@ -1,6 +1,7 @@
 package com.garagesale.gapp.garagesale.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.location.Location;
@@ -57,7 +58,6 @@ public class PlanetListFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         return inflater.inflate(R.layout.fragment_planet_list, container, false);
     }
 
@@ -78,7 +78,17 @@ public class PlanetListFragment extends BaseFragment {
         repos.enqueue(new Callback<UserListResponse>() {
             @Override
             public void onResponse(Call<UserListResponse> call, Response<UserListResponse> response) {
+                // Error Handle
+                if(!response.isSuccessful()){
+                    Toast.makeText(getActivity(), response.message(),Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 UserListResponse userListResponse = response.body();
+                if(userListResponse == null) {
+                    Toast.makeText(getActivity(), response.message() , Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 setTestItemData(userListResponse.getUsers());
             }
 

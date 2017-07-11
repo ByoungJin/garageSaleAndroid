@@ -1,6 +1,7 @@
 package com.garagesale.gapp.garagesale.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -61,6 +62,11 @@ public class ProductFragment extends BaseFragment {
         ).enqueue(new Callback<ProductResponse>() {
             @Override
             public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
+                // Error Handle
+                if(!response.isSuccessful()){
+                    Toast.makeText(getActivity(), response.message(),Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 Toast.makeText(getActivity(), "물건 생성 성공, 물건 이름 : " + response.body().getProduct().getName(), Toast.LENGTH_SHORT).show();
 
@@ -77,4 +83,5 @@ public class ProductFragment extends BaseFragment {
     public String getTitle() {
         return "Product";
     }
+
 }

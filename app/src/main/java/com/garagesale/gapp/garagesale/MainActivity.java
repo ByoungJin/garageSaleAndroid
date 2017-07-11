@@ -6,10 +6,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -34,11 +37,16 @@ import com.garagesale.gapp.garagesale.util.CloseActivityHandler;
 import com.garagesale.gapp.garagesale.util.SharedPreferenceManager;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import java.util.List;
+import java.util.Stack;
+
 public class MainActivity extends AppCompatActivity {
 
     NetworkComponent networkComponent;
     private CloseActivityHandler closeActivityHandler;
+    private FragmentTransaction ft;
     ActivityMainBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +73,10 @@ public class MainActivity extends AppCompatActivity {
         SlidingUpPanelLayout slidingUpPanelLayout = (SlidingUpPanelLayout)findViewById(R.id.sliding_layout);
         if(slidingUpPanelLayout.getPanelState().equals(SlidingUpPanelLayout.PanelState.EXPANDED)) {
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-        } else {
+        }
+        else if (getSupportFragmentManager().getBackStackEntryCount()>1) {
+            getSupportFragmentManager().popBackStack();
+        }else {
             //super.onBackPressed();
             closeActivityHandler.onBackPressed();
         }
@@ -96,8 +107,11 @@ public class MainActivity extends AppCompatActivity {
         parent.setContentInsetsAbsolute(0, 0);
 
         // Login 화면부터 시작
-        changeFragment(LoginFragment.getInstance());
-
+       // changeFragment(LoginFragment.getInstance());
+        ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_fragment_layout, LoginFragment.getInstance()).
+                addToBackStack(LoginFragment.getInstance().getTitle()).
+                commit();
         return true;
     }
 
@@ -105,7 +119,6 @@ public class MainActivity extends AppCompatActivity {
     public void btnStart(View v) {
         slideMenu(null);    // 판넬 닫기
         int id = v.getId();
-
         if (id == R.id.main_button) {
             changeFragment(MainFragment.getInstance());
         } else if (id == R.id.profile_button) {
@@ -140,14 +153,37 @@ public class MainActivity extends AppCompatActivity {
 
     public void changeFragment(@NonNull BaseFragment fragment){
 
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.content_fragment_layout, fragment);
-        ft.commit();
+        if(!getVisibleFragment().equals(fragment)) { // 같은 Fragment로 움직였는지
+            if(getIsExist(fragment)) {      // 기존에 저장된 Fragmnet인지
+                ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.content_fragment_layout, fragment).
+                        addToBackStack(fragment.getTitle()).
+                        commit();
+            }
+        }
 
         // Set the toolbar title
         TextView titleTextView = (TextView) findViewById(R.id.title);
 
         titleTextView.setText(fragment.getTitle());
+    }
+
+    public boolean getIsExist(Fragment targetfragment){
+        List<Fragment> list = getSupportFragmentManager().getFragments();
+            for (Fragment f : list) {
+                if (f!=null && f.getClass().getName().equals(targetfragment.getClass().getName()))
+                    return false;
+        }
+        return true;
+    }
+
+    public BaseFragment getVisibleFragment() {
+        for (Fragment fragment: getSupportFragmentManager().getFragments()) {
+            if (fragment.isVisible()) {
+                return ((BaseFragment)fragment);
+            }
+        }
+        return null;
     }
 
     public void slideMenu(View v) {
