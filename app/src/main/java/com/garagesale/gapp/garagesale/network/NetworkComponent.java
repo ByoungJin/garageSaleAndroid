@@ -1,10 +1,10 @@
 package com.garagesale.gapp.garagesale.network;
 
-import com.garagesale.gapp.garagesale.MainActivity;
 import com.garagesale.gapp.garagesale.fragment.JoinFragment;
 import com.garagesale.gapp.garagesale.fragment.LoginFragment;
 import com.garagesale.gapp.garagesale.fragment.MainFragment;
 import com.garagesale.gapp.garagesale.fragment.PlanetListFragment;
+import com.garagesale.gapp.garagesale.fragment.PractiveMainFragment;
 import com.garagesale.gapp.garagesale.fragment.ProductFragment;
 import com.garagesale.gapp.garagesale.fragment.ProfileFragment;
 import com.garagesale.gapp.garagesale.fragment.SettingFragment;
@@ -22,11 +22,20 @@ import dagger.Component;
 @Component(modules = {NetworkModule.class,})
 public interface NetworkComponent {
     void inject(JoinFragment fragment);
+
     void inject(LoginFragment fragment);
+
     void inject(MainFragment fragment);
+
     void inject(ProfileFragment fragment);
+
     void inject(SettingFragment fragment);
+
     void inject(StoreFragment fragment);
+
     void inject(ProductFragment fragment);
+
     void inject(PlanetListFragment fragment);
+
+    void inject(PractiveMainFragment fragment);
 }

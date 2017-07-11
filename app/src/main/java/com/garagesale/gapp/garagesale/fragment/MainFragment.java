@@ -3,8 +3,6 @@ package com.garagesale.gapp.garagesale.fragment;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,70 +80,18 @@ public class MainFragment extends BaseFragment {
 
         });
 
-        // 이미지 랜덤 배치
-        randomArrangeImages();
-
-        binding.imageViewCenter.setOnClickListener(view -> {
-            randomArrangeImages();
-        });
-
-    }
-
-    public void randomArrangeImages() {
-        ConstraintSet set = new ConstraintSet();
-        Random random = new Random();
-        set.clone(binding.planetsContainer);
-
-        int max = 68, min = 33, full = 100;
-
-        // 2시
-        
-        set.setHorizontalBias(binding.imageView2h.getId(), getBiasFromMin(random, max, min, full)); // 33 ~ 100
-
-        set.setVerticalBias(binding.imageView2h.getId(), getBiasToMax(random, max, full));   // 0 ~ 67
-
-        // 5시
-        set.setHorizontalBias(binding.imageView5h.getId(), getBiasFromMin(random, max, min, full));
-        set.setVerticalBias(binding.imageView5h.getId(), getBiasFromMin(random, max, min, full));
-
-        // 7시
-        set.setHorizontalBias(binding.imageView7h.getId(), getBiasToMax(random, max, full));
-        set.setVerticalBias(binding.imageView7h.getId(), getBiasFromMin(random, max, min, full));
-
-        // 10시
-        set.setHorizontalBias(binding.imageView10h.getId(), getBiasToMax(random, max, full));
-        set.setVerticalBias(binding.imageView10h.getId(), getBiasToMax(random, max, full));
-
-
-        // 3시
-        set.setHorizontalBias(binding.imageView3h.getId(), getBiasFull(random, full));
-        set.setVerticalBias(binding.imageView3h.getId(), (float)0.50);
-
-        // 6시
-        set.setHorizontalBias(binding.imageView6h.getId(), (float)0.50);
-        set.setVerticalBias(binding.imageView6h.getId(), getBiasFull(random, full));
-
-        // 9시
-        set.setHorizontalBias(binding.imageView9h.getId(), getBiasFull(random, full));
-        set.setVerticalBias(binding.imageView9h.getId(), (float)0.50);
-
-        // 12시
-        set.setHorizontalBias(binding.imageView12h.getId(), (float)0.50);
-        set.setVerticalBias(binding.imageView12h.getId(), getBiasFull(random, full));
-
-        set.applyTo(binding.planetsContainer);
     }
 
     public float getBiasFull(Random random, int full) {
-        return ((float)random.nextInt(full+1)) / (float)full;
+        return ((float) random.nextInt(full + 1)) / (float) full;
     }
 
     public float getBiasToMax(Random random, int max, float full) {
-        return ((float)random.nextInt(max)) / full;
+        return ((float) random.nextInt(max)) / full;
     }
 
     public float getBiasFromMin(Random random, int max, int min, float full) {
-        return ((float)random.nextInt(max) + min) / full;
+        return ((float) random.nextInt(max) + min) / full;
     }
 
     @Override

@@ -7,12 +7,10 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -26,6 +24,7 @@ import com.garagesale.gapp.garagesale.fragment.JoinFragment;
 import com.garagesale.gapp.garagesale.fragment.LoginFragment;
 import com.garagesale.gapp.garagesale.fragment.MainFragment;
 import com.garagesale.gapp.garagesale.fragment.PlanetListFragment;
+import com.garagesale.gapp.garagesale.fragment.PractiveMainFragment;
 import com.garagesale.gapp.garagesale.fragment.ProductFragment;
 import com.garagesale.gapp.garagesale.fragment.ProfileFragment;
 import com.garagesale.gapp.garagesale.fragment.SettingFragment;
@@ -38,7 +37,6 @@ import com.garagesale.gapp.garagesale.util.SharedPreferenceManager;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.List;
-import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -63,20 +61,19 @@ public class MainActivity extends AppCompatActivity {
         closeActivityHandler = new CloseActivityHandler(this);
     }
 
-    public NetworkComponent getNetworkComponent(){
+    public NetworkComponent getNetworkComponent() {
         return networkComponent;
     }
 
     @Override
     public void onBackPressed() {
         // 판넬 열려있으면 닫음
-        SlidingUpPanelLayout slidingUpPanelLayout = (SlidingUpPanelLayout)findViewById(R.id.sliding_layout);
-        if(slidingUpPanelLayout.getPanelState().equals(SlidingUpPanelLayout.PanelState.EXPANDED)) {
+        SlidingUpPanelLayout slidingUpPanelLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+        if (slidingUpPanelLayout.getPanelState().equals(SlidingUpPanelLayout.PanelState.EXPANDED)) {
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-        }
-        else if (getSupportFragmentManager().getBackStackEntryCount()>1) {
+        } else if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
             getSupportFragmentManager().popBackStack();
-        }else {
+        } else {
             //super.onBackPressed();
             closeActivityHandler.onBackPressed();
         }
@@ -107,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
         parent.setContentInsetsAbsolute(0, 0);
 
         // Login 화면부터 시작
-       // changeFragment(LoginFragment.getInstance());
+        // changeFragment(LoginFragment.getInstance());
         ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.content_fragment_layout, LoginFragment.getInstance()).
                 addToBackStack(LoginFragment.getInstance().getTitle()).
@@ -131,12 +128,14 @@ public class MainActivity extends AppCompatActivity {
             changeFragment(SettingFragment.getInstance());
         } else if (id == R.id.store_button) {
             changeFragment(StoreFragment.getInstance());
-        } else if( id == R.id.product_button) {
+        } else if (id == R.id.product_button) {
             changeFragment(ProductFragment.getInstance());
-        } else if( id == R.id.planet_list_button){
+        } else if (id == R.id.planet_list_button) {
             changeFragment(PlanetListFragment.getInstance());
-        } else if( id == R.id.logout_button){
+        } else if (id == R.id.logout_button) {
             logout();
+        } else if (id == R.id.practive_main_button) {
+            changeFragment(PractiveMainFragment.getInstance());
         }
 
     }
@@ -147,16 +146,16 @@ public class MainActivity extends AppCompatActivity {
         menuLayoutBinding.logoutButton.setVisibility(Button.GONE); // logout button gone
         menuLayoutBinding.loginButton.setVisibility(Button.VISIBLE); // login button
         menuLayoutBinding.joinButton.setVisibility(Button.VISIBLE); // join button none
-        Toast.makeText(this, "Logout 완료",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Logout 완료", Toast.LENGTH_SHORT).show();
         changeFragment(LoginFragment.getInstance()); // Login 화면으로 전환
     }
 
-    public void changeFragment(@NonNull BaseFragment fragment){
+    public void changeFragment(@NonNull BaseFragment fragment) {
 
-        if(!getVisibleFragment().equals(fragment)) { // 같은 Fragment로 움직였는지
+        if (!getVisibleFragment().equals(fragment)) { // 같은 Fragment로 움직였는지
             ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_fragment_layout, fragment);
-            if(getIsExist(fragment)) {      // 기존에 저장된 Fragmnet인지
+            if (getIsExist(fragment)) {      // 기존에 저장된 Fragmnet인지
                 ft.addToBackStack(fragment.getTitle());
             }
             ft.commit();
@@ -168,19 +167,19 @@ public class MainActivity extends AppCompatActivity {
         titleTextView.setText(fragment.getTitle());
     }
 
-    public boolean getIsExist(Fragment targetfragment){
+    public boolean getIsExist(Fragment targetfragment) {
         List<Fragment> list = getSupportFragmentManager().getFragments();
-            for (Fragment f : list) {
-                if (f!=null && f.getClass().getName().equals(targetfragment.getClass().getName()))
-                    return false;
+        for (Fragment f : list) {
+            if (f != null && f.getClass().getName().equals(targetfragment.getClass().getName()))
+                return false;
         }
         return true;
     }
 
     public BaseFragment getVisibleFragment() {
-        for (Fragment fragment: getSupportFragmentManager().getFragments()) {
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
             if (fragment.isVisible()) {
-                return ((BaseFragment)fragment);
+                return ((BaseFragment) fragment);
             }
         }
         return null;
@@ -188,10 +187,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void slideMenu(View v) {
         // 판넬 열려있음 닫고 닫혀있음 열기
-        SlidingUpPanelLayout slidingUpPanelLayout = (SlidingUpPanelLayout)findViewById(R.id.sliding_layout);
-        if(slidingUpPanelLayout.getPanelState().equals(SlidingUpPanelLayout.PanelState.EXPANDED)) {
+        SlidingUpPanelLayout slidingUpPanelLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+        if (slidingUpPanelLayout.getPanelState().equals(SlidingUpPanelLayout.PanelState.EXPANDED)) {
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-        }else {
+        } else {
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
         }
     }
