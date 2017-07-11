@@ -17,7 +17,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Main content"
+                android:text="cheolhyeok"
                 android:textSize="16sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="cheolhyeok"
-                android:textSize="50dp"
+                android:textSize="40dp"
                 tools:layout_editor_absoluteY="195dp"
                 tools:layout_editor_absoluteX="66dp">
             </Button>
