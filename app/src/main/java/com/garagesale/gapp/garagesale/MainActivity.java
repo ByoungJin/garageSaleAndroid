@@ -75,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
         }
         else if (getSupportFragmentManager().getBackStackEntryCount()>1) {
-            Log.d("메인","pop");
             getSupportFragmentManager().popBackStack();
         }else {
             //super.onBackPressed();
@@ -156,7 +155,6 @@ public class MainActivity extends AppCompatActivity {
 
         if(!getVisibleFragment().equals(fragment)) { // 같은 Fragment로 움직였는지
             if(getIsExist(fragment)) {      // 기존에 저장된 Fragmnet인지
-                Log.d("메인", "addBackStack" + getSupportFragmentManager().getBackStackEntryCount());
                 ft = getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.content_fragment_layout, fragment).
                         addToBackStack(fragment.getTitle()).
