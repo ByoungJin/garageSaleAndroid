@@ -17,19 +17,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="cheolhyeok"
+                android:text="main content"
                 android:textSize="16sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="cheolhyeok"
-                android:textSize="40dp"
-                tools:layout_editor_absoluteY="195dp"
-                tools:layout_editor_absoluteX="66dp">
-            </Button>
 
         </android.support.constraint.ConstraintLayout>
 
