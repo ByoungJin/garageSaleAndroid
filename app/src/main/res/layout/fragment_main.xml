@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <FrameLayout
@@ -21,8 +22,20 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <Button
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="cheolhyeok"
+                android:textSize="50dp"
+                tools:layout_editor_absoluteY="195dp"
+                tools:layout_editor_absoluteX="66dp">
+            </Button>
 
         </android.support.constraint.ConstraintLayout>
 
+
     </FrameLayout>
+
+
+
 </layout>
