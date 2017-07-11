@@ -154,12 +154,12 @@ public class MainActivity extends AppCompatActivity {
     public void changeFragment(@NonNull BaseFragment fragment){
 
         if(!getVisibleFragment().equals(fragment)) { // 같은 Fragment로 움직였는지
+            ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_fragment_layout, fragment);
             if(getIsExist(fragment)) {      // 기존에 저장된 Fragmnet인지
-                ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.content_fragment_layout, fragment).
-                        addToBackStack(fragment.getTitle()).
-                        commit();
+                ft.addToBackStack(fragment.getTitle());
             }
+            ft.commit();
         }
 
         // Set the toolbar title
