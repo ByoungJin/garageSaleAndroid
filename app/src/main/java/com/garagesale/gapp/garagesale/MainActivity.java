@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -36,22 +37,10 @@ import com.garagesale.gapp.garagesale.util.CloseActivityHandler;
 import com.garagesale.gapp.garagesale.util.SharedPreferenceManager;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import java.util.List;
 import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity {
-
-    public interface OnBackKeyPressedListener {
-        void onBack();
-    }
-
-    public Stack<OnBackKeyPressedListener> mFragmentBackStack = new Stack<>();
-
-    public void pushOnBackKeyPressedListener(OnBackKeyPressedListener listener) {
-        Log.d("메인","push");
-        mFragmentBackStack.push(listener);
-    }
-
-
 
     NetworkComponent networkComponent;
     private CloseActivityHandler closeActivityHandler;
@@ -85,8 +74,9 @@ public class MainActivity extends AppCompatActivity {
         if(slidingUpPanelLayout.getPanelState().equals(SlidingUpPanelLayout.PanelState.EXPANDED)) {
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
         }
-        else if (!mFragmentBackStack.isEmpty()) {
-            mFragmentBackStack.pop().onBack();
+        else if (getSupportFragmentManager().getBackStackEntryCount()>1) {
+            Log.d("메인","pop");
+            getSupportFragmentManager().popBackStack();
         }else {
             //super.onBackPressed();
             closeActivityHandler.onBackPressed();
@@ -120,8 +110,9 @@ public class MainActivity extends AppCompatActivity {
         // Login 화면부터 시작
        // changeFragment(LoginFragment.getInstance());
         ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.content_fragment_layout,LoginFragment.getInstance());
-        ft.commit();
+        ft.replace(R.id.content_fragment_layout, LoginFragment.getInstance()).
+                addToBackStack(LoginFragment.getInstance().getTitle()).
+                commit();
         return true;
     }
 
@@ -163,18 +154,29 @@ public class MainActivity extends AppCompatActivity {
 
     public void changeFragment(@NonNull BaseFragment fragment){
 
-        if(!getVisibleFragment().equals(fragment)) {
-            Log.d("메인", "같아");
-            ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_fragment_layout, fragment);
-            ft.addToBackStack(null);
-            ft.commit();
+        if(!getVisibleFragment().equals(fragment)) { // 같은 Fragment로 움직였는지
+            if(getIsExist(fragment)) {      // 기존에 저장된 Fragmnet인지
+                Log.d("메인", "addBackStack" + getSupportFragmentManager().getBackStackEntryCount());
+                ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.content_fragment_layout, fragment).
+                        addToBackStack(fragment.getTitle()).
+                        commit();
+            }
         }
 
         // Set the toolbar title
         TextView titleTextView = (TextView) findViewById(R.id.title);
 
         titleTextView.setText(fragment.getTitle());
+    }
+
+    public boolean getIsExist(Fragment targetfragment){
+        List<Fragment> list = getSupportFragmentManager().getFragments();
+            for (Fragment f : list) {
+                if (f!=null && f.getClass().getName().equals(targetfragment.getClass().getName()))
+                    return false;
+        }
+        return true;
     }
 
     public BaseFragment getVisibleFragment() {

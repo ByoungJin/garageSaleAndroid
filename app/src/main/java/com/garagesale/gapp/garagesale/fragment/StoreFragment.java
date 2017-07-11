@@ -52,7 +52,7 @@ import static android.app.Activity.RESULT_OK;
  * 현재 skeleton 레이아웃
  */
 public class StoreFragment extends BaseFragment implements GoogleMapFragment.FragmentInteractionListener,
-        View.OnClickListener, View.OnTouchListener, MainActivity.OnBackKeyPressedListener {
+        View.OnClickListener, View.OnTouchListener{
 
     // 싱글톤 패턴
     @SuppressLint("StaticFieldLeak")
@@ -82,14 +82,15 @@ public class StoreFragment extends BaseFragment implements GoogleMapFragment.Fra
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getMainActivity().pushOnBackKeyPressedListener(this);
         view = inflater.inflate(R.layout.fragment_store, container, false);
         return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        new setPermission(getContext(), GoogleMapPermission, Manifest.permission.ACCESS_FINE_LOCATION); // 권한요청 및 권한에따른 구글맵 셋팅
+        view.post(() -> {
+            new setPermission(getContext(), GoogleMapPermission, Manifest.permission.ACCESS_FINE_LOCATION); // 권한요청 및 권한에따른 구글맵 셋팅});
+        });
     }
 
     @Override

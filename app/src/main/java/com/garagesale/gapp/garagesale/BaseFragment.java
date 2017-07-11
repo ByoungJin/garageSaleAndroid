@@ -1,8 +1,14 @@
 package com.garagesale.gapp.garagesale;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.garagesale.gapp.garagesale.network.NetworkComponent;
 
@@ -12,7 +18,7 @@ import com.garagesale.gapp.garagesale.network.NetworkComponent;
  * 모든 화면이 공통적으로 해야할 것들을 구현할 때 사용
  */
 
-public abstract class BaseFragment extends Fragment implements MainActivity.OnBackKeyPressedListener {
+public abstract class BaseFragment extends Fragment {
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -31,10 +37,4 @@ public abstract class BaseFragment extends Fragment implements MainActivity.OnBa
     }
 
     public abstract String getTitle();
-
-    @Override
-    public void onBack() {
-        if(getFragmentManager() == null) return;    // Stack이 비었을 경우 에러 처리
-        getFragmentManager().popBackStack();
-    }
 }
