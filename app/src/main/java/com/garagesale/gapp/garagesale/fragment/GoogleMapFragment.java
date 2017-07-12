@@ -100,11 +100,8 @@ public class GoogleMapFragment extends Fragment
         supportMapFragment.getMapAsync(this);
         binding = FragmentGooglemapBinding.bind(getView());
 
-        autocompleteFragment = (SupportPlaceAutocompleteFragment) this.
-                getChildFragmentManager().
-                findFragmentById(R.id.autoComplete);
-        autocompleteFragment.setOnPlaceSelectedListener(this);
-        AutocompleteFilter typeFilter;
+        createAutoComplete();
+
         binding.MyLocation.setOnClickListener(view1 -> {
             gLocation = mGPSInfo.getGPSLocation();
             mLatLng = new LatLng(gLocation.getLatitude(), gLocation.getLongitude());

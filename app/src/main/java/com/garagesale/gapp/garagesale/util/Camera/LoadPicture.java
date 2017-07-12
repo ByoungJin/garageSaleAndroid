@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
@@ -26,6 +28,7 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
+import static com.garagesale.gapp.garagesale.R.anim.rotate;
 import static com.garagesale.gapp.garagesale.util.Camera.RealPathUtil.getRealPath;
 
 /**
@@ -130,6 +133,7 @@ public class LoadPicture {
      */
     public MultipartBody.Part createBody(Uri uri) {
         //Log.d("dsa",String.valueOf(uri.getPath();
+
         File file = new File(getRealPathFromURI(uri));
         RequestBody requestFile = RequestBody.create(
                 MediaType.parse(fragment.getActivity().getContentResolver().getType(uri)), file);
@@ -155,5 +159,6 @@ public class LoadPicture {
             return contentUri.getPath();
         }
     }
+
 
 }

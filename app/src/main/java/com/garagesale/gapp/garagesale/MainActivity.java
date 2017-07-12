@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -36,19 +37,26 @@ import com.garagesale.gapp.garagesale.util.CloseActivityHandler;
 import com.garagesale.gapp.garagesale.util.SharedPreferenceManager;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity {
 
     NetworkComponent networkComponent;
     private CloseActivityHandler closeActivityHandler;
     private FragmentTransaction ft;
+    private BaseFragment defualtfragment;
     ActivityMainBinding binding;
+    private Stack<BaseFragment> backstack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        backstack = new Stack<>();
+        ft = getSupportFragmentManager().beginTransaction();
+        defualtfragment = LoginFragment.getInstance();
 
 //        // Floating Button
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -59,6 +67,10 @@ public class MainActivity extends AppCompatActivity {
         networkComponent = DaggerNetworkComponent.builder().networkModule(new NetworkModule(this)).build();
         //앱테스트하는데 너무실수로 자주꺼서 임시로 추가하는 baackpress 이벤트처리
         closeActivityHandler = new CloseActivityHandler(this);
+
+        // Login 화면부터 시작
+        ft.replace(R.id.content_fragment_layout, defualtfragment).
+                commit();
     }
 
     public NetworkComponent getNetworkComponent() {
@@ -71,11 +83,13 @@ public class MainActivity extends AppCompatActivity {
         SlidingUpPanelLayout slidingUpPanelLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
         if (slidingUpPanelLayout.getPanelState().equals(SlidingUpPanelLayout.PanelState.EXPANDED)) {
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-        } else if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
-            getSupportFragmentManager().popBackStack();
+        } else if (backstack.size() > 0) {
+            Log.d("이이", "변경" + backstack.size());
+            ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_fragment_layout, backstack.pop());
+            ft.commit();
         } else {
-            //super.onBackPressed();
-            closeActivityHandler.onBackPressed();
+                closeActivityHandler.onBackPressed();
         }
 
     }
@@ -102,13 +116,6 @@ public class MainActivity extends AppCompatActivity {
         //액션바 양쪽 공백 제거
         Toolbar parent = (Toolbar) actionbar.getParent();
         parent.setContentInsetsAbsolute(0, 0);
-
-        // Login 화면부터 시작
-        // changeFragment(LoginFragment.getInstance());
-        ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.content_fragment_layout, LoginFragment.getInstance()).
-                addToBackStack(LoginFragment.getInstance().getTitle()).
-                commit();
         return true;
     }
 
@@ -151,12 +158,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void changeFragment(@NonNull BaseFragment fragment) {
+        Fragment targetfragment = getSupportFragmentManager().findFragmentById(R.id.content_fragment_layout);
 
-        if (!getVisibleFragment().equals(fragment)) { // 같은 Fragment로 움직였는지
+        if (!targetfragment.equals(fragment)) { // 같은 Fragment로 움직였는지
             ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_fragment_layout, fragment);
-            if (getIsExist(fragment)) {      // 기존에 저장된 Fragmnet인지
-                ft.addToBackStack(fragment.getTitle());
+
+            if (getIsExist(fragment)) {         // 기존에 저장된 Fragmnet인지
+                backstack.remove(fragment);
+                backstack.push((BaseFragment) targetfragment);
+            } else {
+                backstack.push((BaseFragment) targetfragment);
             }
             ft.commit();
         }
@@ -168,21 +180,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public boolean getIsExist(Fragment targetfragment) {
-        List<Fragment> list = getSupportFragmentManager().getFragments();
-        for (Fragment f : list) {
-            if (f != null && f.getClass().getName().equals(targetfragment.getClass().getName()))
-                return false;
-        }
-        return true;
-    }
 
-    public BaseFragment getVisibleFragment() {
-        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
-            if (fragment.isVisible()) {
-                return ((BaseFragment) fragment);
+        ArrayList<Fragment> list2 = new ArrayList(backstack);
+        for (Fragment f : list2) {
+            if (f != null && f.getClass().getName().equals(targetfragment.getClass().getName())) {
+                return true;
             }
         }
-        return null;
+        return false;
     }
 
     public void slideMenu(View v) {
