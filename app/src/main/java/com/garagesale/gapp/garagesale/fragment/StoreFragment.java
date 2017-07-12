@@ -230,15 +230,15 @@ public class StoreFragment extends BaseFragment implements GoogleMapFragment.Fra
 
         @Override
         public void onPermissionDenied(ArrayList<String> deniedPermissions) {
-            //setGoogleMap();
+           //setGoogleMap();
         }
     };
-
+/*
     public void setGoogleMap() {
             childFragment = GoogleMapFragment.getInstance();
             transaction = getChildFragmentManager().beginTransaction();
             transaction.replace(R.id.map, childFragment).commit();
-    }
+    }*/
     /******************구글맵 메소드(+권한) 끝**********************/
 
     /******************리스트 아이템 셋**********************/
