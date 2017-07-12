@@ -115,13 +115,6 @@ public class GoogleMapFragment extends Fragment
                 getChildFragmentManager().
                 findFragmentById(R.id.autoComplete);
         autocompleteFragment.setOnPlaceSelectedListener(this);
-
-        // 필터 (정확도, 범위)
-        typeFilter = new AutocompleteFilter.Builder()
-                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS)
-                .build();
-
-        autocompleteFragment.setFilter(typeFilter);
     }
 
     @Override
