@@ -1,7 +1,9 @@
 {
   "project_info": {
     "project_number": "117547810708",
-    "project_id": "firebase-garagesale"
+    "firebase_url": "https://fir-garagesale.firebaseio.com",
+    "project_id": "firebase-garagesale",
+    "storage_bucket": "firebase-garagesale.appspot.com"
   },
   "client": [
     {
@@ -12,6 +14,18 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "117547810708-4rbdo9apfq0gojajnbh82n7762ejua8o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.garagesale.gapp.garagesale",
+            "certificate_hash": "0d3e5b3fcfe1125bf940a2faa1f1d12880470008"
+          }
+        },
+        {
+          "client_id": "117547810708-s4909j158g85jlnuvoi5fhtbd6opp3uv.apps.googleusercontent.com",
+          "client_type": 3
+        },
         {
           "client_id": "117547810708-4k8bqsctheuomui23jt877ipk3efkqh1.apps.googleusercontent.com",
           "client_type": 3
@@ -31,7 +45,7 @@
           "other_platform_oauth_client": []
         },
         "ads_service": {
-          "status": 1
+          "status": 2
         }
       }
     }
