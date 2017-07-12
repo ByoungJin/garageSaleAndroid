@@ -19,6 +19,23 @@ android {
         buildConfigField "String", "KEYTOKEN", "\"com.garagesale.key.token\""   // 로컬 토큰 Key
 
     }
+
+    signingConfigs {
+        def Properties props = new Properties()
+        def propFile = new File('gradle.properties')
+        if(propFile.canRead())
+            props.load(new FileInputStream(propFile))
+        debug {
+            storeFile file("debug.jks")
+        }
+        release {
+            storeFile file(props['debug_keystore'])
+            storePassword props['debug_keystore_pass']
+            keyAlias props['debug_key_alias']
+            keyPassword props['debug_key_pass']
+        }
+    }
+
     dataBinding {
         enabled = true
     }
@@ -29,7 +46,11 @@ android {
     }
 
     buildTypes {
+        debug{
+            signingConfig signingConfigs.debug
+        }
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

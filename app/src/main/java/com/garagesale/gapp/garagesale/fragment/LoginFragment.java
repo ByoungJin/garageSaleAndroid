@@ -38,6 +38,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 import javax.inject.Inject;
@@ -153,7 +154,9 @@ public class LoginFragment extends BaseFragment implements  GoogleApiClient.OnCo
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(getMainActivity(), task -> {
-                    Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
+
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful()+"  " +user.getProviderId());
 
                     // If sign in fails, display a message to the user. If sign in succeeds
                     // the auth state listener will be notified and logic to handle the
