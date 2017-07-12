@@ -1,32 +1,87 @@
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:sothree="http://schemas.android.com/apk/res-auto">
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:sothree="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.sothree.slidinguppanel.SlidingUpPanelLayout
-        android:id="@+id/sliding_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="top"
-        sothree:umanoOverlay="true"
-        sothree:umanoPanelHeight="0dp"
-        sothree:umanoShadowHeight="4dp">
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <!-- 페이지 -->
-        <FrameLayout
-            android:id="@+id/content_fragment_layout"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center" />
+            android:layout_height="50dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="0dp"
+            android:background="#A6212121"
+            android:gravity="center_vertical"
+            sothree:layout_constraintLeft_toLeftOf="parent"
+            sothree:layout_constraintRight_toRightOf="parent"
+            sothree:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/relativeLayout5">
+
+            <ImageButton
+                android:id="@+id/menu_image"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="4dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/ic_menu_white_18dp"
+                android:onClick="slideMenu" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginLeft="17dp"
+                android:layout_toRightOf="@id/menu_image"
+                android:gravity="center_vertical"
+                android:text="타이틀"
+                android:textColor="#fff"
+                android:textSize="20sp" />
+
+            <ImageButton
+                android:id="@+id/btnHistory"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="4dp"
+                android:background="@android:drawable/ic_menu_search" />
+
+        </RelativeLayout>
+
+        <com.sothree.slidinguppanel.SlidingUpPanelLayout
+            android:id="@+id/sliding_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginTop="0dp"
+            android:gravity="top"
+            sothree:layout_constraintBottom_toBottomOf="parent"
+            sothree:layout_constraintHorizontal_bias="0.0"
+            sothree:layout_constraintLeft_toLeftOf="parent"
+            sothree:layout_constraintRight_toRightOf="parent"
+            sothree:layout_constraintTop_toBottomOf="@+id/relativeLayout5"
+            sothree:umanoOverlay="true"
+            sothree:umanoPanelHeight="0dp"
+            sothree:umanoShadowHeight="4dp"
+            tools:layout_constraintLeft_creator="1"
+            tools:layout_constraintRight_creator="1">
+
+            <!-- 페이지 -->
+            <FrameLayout
+                android:id="@+id/content_fragment_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center" />
 
 
-        <!-- Menu -->
-        <include layout="@layout/menu_layout"
-            android:id="@+id/menu_layout"/>
+            <!-- Menu -->
+            <include
+                android:id="@+id/menu_layout"
+                layout="@layout/menu_layout" />
 
-    </com.sothree.slidinguppanel.SlidingUpPanelLayout>
+        </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 
-</RelativeLayout>
+    </android.support.constraint.ConstraintLayout>
 </layout>

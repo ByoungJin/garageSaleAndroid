@@ -1,19 +1,12 @@
 package com.garagesale.gapp.garagesale;
 
-import android.annotation.SuppressLint;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -38,7 +31,6 @@ import com.garagesale.gapp.garagesale.util.SharedPreferenceManager;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity {
@@ -46,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
     NetworkComponent networkComponent;
     private CloseActivityHandler closeActivityHandler;
     private FragmentTransaction ft;
-    private BaseFragment defualtfragment;
     ActivityMainBinding binding;
     private Stack<BaseFragment> backstack;
 
@@ -56,12 +47,7 @@ public class MainActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         backstack = new Stack<>();
         ft = getSupportFragmentManager().beginTransaction();
-        defualtfragment = LoginFragment.getInstance();
-
-//        // Floating Button
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                .setAction("Action", null).show());
+        BaseFragment defualtfragment = LoginFragment.getInstance();
 
         // NetworkModule에서 Content를 받을 수 있도록 빌드
         networkComponent = DaggerNetworkComponent.builder().networkModule(new NetworkModule(this)).build();
@@ -69,8 +55,7 @@ public class MainActivity extends AppCompatActivity {
         closeActivityHandler = new CloseActivityHandler(this);
 
         // Login 화면부터 시작
-        ft.replace(R.id.content_fragment_layout, defualtfragment).
-                commit();
+        ft.replace(R.id.content_fragment_layout, defualtfragment).commit();
     }
 
     public NetworkComponent getNetworkComponent() {
@@ -89,34 +74,9 @@ public class MainActivity extends AppCompatActivity {
             ft.replace(R.id.content_fragment_layout, backstack.pop());
             ft.commit();
         } else {
-                closeActivityHandler.onBackPressed();
+            closeActivityHandler.onBackPressed();
         }
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        ActionBar actionBar = getSupportActionBar();
-
-        if (actionBar == null) return true;
-
-        // Custom Actionbar 사용 목적, CustomEnabled을 true 시키고 필요 없는 것 false
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(false);     //액션바 아이콘, 업 네비게이션 형태 표시
-        actionBar.setDisplayShowTitleEnabled(false);    //액션바에 표시되는 제목의 표시유무 설정
-        actionBar.setDisplayShowHomeEnabled(false);     //홈 아이콘 숨김처리.
-
-        //Custom Layout을 Actionbar에 포팅
-        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        @SuppressLint("InflateParams") View actionbar = inflater.inflate(R.layout.custom_actionbar, null);
-
-        actionBar.setCustomView(actionbar);
-
-        //액션바 양쪽 공백 제거
-        Toolbar parent = (Toolbar) actionbar.getParent();
-        parent.setContentInsetsAbsolute(0, 0);
-        return true;
     }
 
     // 메뉴버튼 클릭이벤트
@@ -192,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void slideMenu(View v) {
         // 판넬 열려있음 닫고 닫혀있음 열기
-        SlidingUpPanelLayout slidingUpPanelLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+        SlidingUpPanelLayout slidingUpPanelLayout = binding.contentMain.slidingLayout;
         if (slidingUpPanelLayout.getPanelState().equals(SlidingUpPanelLayout.PanelState.EXPANDED)) {
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
         } else {
