@@ -11,17 +11,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Toast;
+
 import com.garagesale.gapp.garagesale.R;
 import com.garagesale.gapp.garagesale.databinding.FragmentGooglemapBinding;
 import com.garagesale.gapp.garagesale.util.GPSInfo;
 import com.garagesale.gapp.garagesale.util.addrConvertor;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -37,14 +42,11 @@ import static android.app.Activity.RESULT_OK;
  */
 
 public class GoogleMapFragment extends Fragment
-        implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
+        implements OnMapReadyCallback, GoogleMap.OnMapClickListener,PlaceSelectionListener{
 
     // 싱글톤 패턴
     @SuppressLint("StaticFieldLeak")
     private static GoogleMapFragment mInstance;
-
-    public GoogleMapFragment() {
-    }
 
     public static GoogleMapFragment getInstance() {
         if (mInstance == null) mInstance = new GoogleMapFragment();
@@ -59,7 +61,11 @@ public class GoogleMapFragment extends Fragment
     private FragmentGooglemapBinding binding;
     private FragmentInteractionListener mParentListener;
     private SupportPlaceAutocompleteFragment autocompleteFragment;
+    private AutocompleteFilter typeFilter;
 
+    /**
+     * 부모 Fragment와 통신하기위한 리스너
+     */
     public interface FragmentInteractionListener {
         void sendMessageToParent(LatLng latLng,String address);
     }
@@ -92,15 +98,13 @@ public class GoogleMapFragment extends Fragment
                 getChildFragmentManager().
                 findFragmentById(R.id.googleMap);
         supportMapFragment.getMapAsync(this);
-
         binding = FragmentGooglemapBinding.bind(getView());
 
-       /* autocompleteFragment = (SupportPlaceAutocompleteFragment) this.
+        autocompleteFragment = (SupportPlaceAutocompleteFragment) this.
                 getChildFragmentManager().
                 findFragmentById(R.id.autoComplete);
-        if(autocompleteFragment==null)
-            Log.d("부모","왜널이야");*/
-
+        autocompleteFragment.setOnPlaceSelectedListener(this);
+        AutocompleteFilter typeFilter;
         binding.MyLocation.setOnClickListener(view1 -> {
             gLocation = mGPSInfo.getGPSLocation();
             mLatLng = new LatLng(gLocation.getLatitude(), gLocation.getLongitude());
@@ -108,7 +112,20 @@ public class GoogleMapFragment extends Fragment
             mParentListener.sendMessageToParent(mLatLng,addrConvertor.getAddress(getContext(),mLatLng));
         });
     }
+    public void createAutoComplete(){
+        // 자동완성
+        autocompleteFragment = (SupportPlaceAutocompleteFragment) this.
+                getChildFragmentManager().
+                findFragmentById(R.id.autoComplete);
+        autocompleteFragment.setOnPlaceSelectedListener(this);
 
+        // 필터 (정확도, 범위)
+        typeFilter = new AutocompleteFilter.Builder()
+                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS)
+                .build();
+
+        autocompleteFragment.setFilter(typeFilter);
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -163,4 +180,16 @@ public class GoogleMapFragment extends Fragment
         ).showInfoWindow();
     }
 
+    //자동완성 리스너
+    @Override
+    public void onPlaceSelected(Place place) {
+        mLatLng = place.getLatLng();
+        createGoogleMap(mGoogleMap, mLatLng);
+        mParentListener.sendMessageToParent(mLatLng,addrConvertor.getAddress(getContext(),mLatLng));
+    }
+    //자동완성 리스너
+    @Override
+    public void onError(Status status) {
+        Toast.makeText(getContext(),"다시 검색해주세요",Toast.LENGTH_SHORT);
+    }
 }

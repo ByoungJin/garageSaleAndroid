@@ -2,33 +2,44 @@
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-        <FrameLayout
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <fragment
+            android:id="@+id/googleMap"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent" />
 
-            <fragment
-                android:id="@+id/googleMap"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-<!--        구글맵 충돌 발생.
-           <fragment
-                android:id="@+id/autoComplete"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_margin="10dp"
-                android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
-                />
+
+        <fragment
+            android:id="@+id/autoComplete"
+            android:name="com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:gravity="right"
+            android:layout_margin="10dp"
+            />
+
+<!--
+        <ImageView
+            android:background="#ffffff"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="10dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/common_google_signin_btn_icon_dark_normal"/>
 -->
-            <ImageView
-                android:id="@+id/MyLocation"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="right"
-                android:layout_margin="10dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/common_google_signin_btn_icon_dark_normal" />
+        <ImageView
+            android:id="@+id/MyLocation"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="right"
+            android:layout_margin="10dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/common_google_signin_btn_icon_dark_normal" />
 
-        </FrameLayout>
+    </FrameLayout>
 
 </layout>
