@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="#00000000"/>
+            <!--stroke create dot by 2dp width 2dp gap and 2dp height-->
+            <stroke
+                android:color="#ffffff"
+                android:width="2.5dp"
+                android:dashWidth="2.5dp"
+                android:dashGap="4.0dp"
+                />
+        </shape>
+    </item>
+</selector>

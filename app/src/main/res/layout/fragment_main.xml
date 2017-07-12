@@ -1,26 +1,187 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
+<layout
+    xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/universe_background">
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/planetsContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/textView3"
+            <!--중앙에 위치하는 행성-->
+            <Button
+                android:id="@+id/planet_center"
+                android:layout_width="154dp"
+                android:layout_height="154dp"
+                android:background="@drawable/round_button"
+                android:text="planet"
+                android:textColor="#fff"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!--카테고리 위성의 궤도 점선 라인-->
+            <Button
+                android:layout_width="220dp"
+                android:layout_height="220dp"
+                android:background="@drawable/dotted_circle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
+            <!--카테고리 위성-->
+            <RelativeLayout
+                android:layout_width="247dp"
+                android:layout_height="247dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                >
+                <Button
+                    android:layout_height="32dp"
+                    android:layout_width="32dp"
+                    android:background="@drawable/round_button"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentTop="true"
+                    >
+                </Button>
+                <Button
+                    android:layout_height="32dp"
+                    android:layout_width="32dp"
+                    android:background="@drawable/round_button"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    >
+                </Button>
+                <Button
+                    android:layout_height="32dp"
+                    android:layout_width="32dp"
+                    android:background="@drawable/round_button"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    >
+                </Button>
+                <Button
+                    android:layout_height="32dp"
+                    android:layout_width="32dp"
+                    android:background="@drawable/round_button"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    >
+                </Button>
+            </RelativeLayout>
+
+            <!--다른 행성 5개-->
+
+
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintVertical_bias="0.0">
+
+                <Button
+                    android:id="@+id/planet_others_1"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/round_button"
+                    android:text="star"
+                    android:textColor="#fff"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginBottom="38dp"
+                    android:layout_alignBottom="@+id/planet_others_3"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+                <Button
+                    android:id="@+id/planet_others_2"
+                    android:layout_width="85dp"
+                    android:layout_height="85dp"
+                    android:background="@drawable/round_button"
+                    android:text="star"
+                    android:textColor="#fff"
+                    android:layout_marginRight="28dp"
+                    android:layout_marginEnd="28dp"
+                    android:layout_marginTop="18dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_toLeftOf="@+id/planet_others_3"
+                    android:layout_toStartOf="@+id/planet_others_3" />
+
+                <Button
+                    android:id="@+id/planet_others_3"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/round_button"
+                    android:text="star"
+                    android:textColor="#fff"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginEnd="25dp"
+                    android:layout_marginTop="26dp"
+                    android:layout_below="@+id/planet_others_2"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+
+                <Button
+                    android:id="@+id/planet_others_4"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:background="@drawable/round_button"
+                    android:text="star"
+                    android:textColor="#fff"
+                    android:layout_marginBottom="112dp"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignLeft="@+id/planet_others_1"
+                    android:layout_alignStart="@+id/planet_others_1" />
+
+                <Button
+                    android:id="@+id/planet_others_5"
+                    android:layout_width="95dp"
+                    android:layout_height="95dp"
+                    android:background="@drawable/round_button"
+                    android:text="star"
+                    android:textColor="#fff"
+                    android:layout_marginRight="14dp"
+                    android:layout_marginEnd="14dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_alignTop="@+id/planet_others_4"
+                    android:layout_alignRight="@+id/planet_others_3"
+                    android:layout_alignEnd="@+id/planet_others_3" />
+
+            </RelativeLayout>
+
+
+            // 나의 행성으로 돌아가는 우주선 버튼(별은 임시 아이콘)
+
+            <ImageView
+                android:id="@+id/ufo_home"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="main content"
-                android:textSize="16sp"
+                android:src="@drawable/ic_star_white_36dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginBottom="30dp"
+                />
+
 
 
         </android.support.constraint.ConstraintLayout>

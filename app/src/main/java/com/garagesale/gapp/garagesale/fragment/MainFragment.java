@@ -96,7 +96,7 @@ public class MainFragment extends BaseFragment {
 
     @Override
     public String getTitle() {
-        return "Main";
+        return "";
     }
 
 }
