@@ -88,9 +88,7 @@ public class StoreFragment extends BaseFragment implements GoogleMapFragment.Fra
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        view.post(() -> {
-            new setPermission(getContext(), GoogleMapPermission, Manifest.permission.ACCESS_FINE_LOCATION); // 권한요청 및 권한에따른 구글맵 셋팅});
-        });
+        new setPermission(getContext(), GoogleMapPermission, Manifest.permission.ACCESS_FINE_LOCATION); // 권한요청 및 권한에따른 구글맵 셋팅});
     }
 
     @Override
@@ -101,8 +99,6 @@ public class StoreFragment extends BaseFragment implements GoogleMapFragment.Fra
         userService = retrofit.create(UserService.class);
         binding = FragmentStoreBinding.bind(getView()); // Store 프레그먼트 View
         loadPicture = new LoadPicture(this,getContext());
-
-        //childFragment = GoogleAutoCompleteFragment.getInstance();
 
         setTestItemData(); //아이템 리스트뷰 셋팅 (테스트셋)
         setTestreplyData(); //댓글 리스트뷰 셋팅  (테스트셋)
@@ -225,20 +221,13 @@ public class StoreFragment extends BaseFragment implements GoogleMapFragment.Fra
     PermissionListener GoogleMapPermission = new PermissionListener() {
         @Override
         public void onPermissionGranted() {
-            //setGoogleMap();
         }
 
         @Override
         public void onPermissionDenied(ArrayList<String> deniedPermissions) {
-           //setGoogleMap();
         }
     };
-/*
-    public void setGoogleMap() {
-            childFragment = GoogleMapFragment.getInstance();
-            transaction = getChildFragmentManager().beginTransaction();
-            transaction.replace(R.id.map, childFragment).commit();
-    }*/
+
     /******************구글맵 메소드(+권한) 끝**********************/
 
     /******************리스트 아이템 셋**********************/
