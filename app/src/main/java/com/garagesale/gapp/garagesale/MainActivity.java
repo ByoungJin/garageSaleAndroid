@@ -39,12 +39,12 @@ public class MainActivity extends AppCompatActivity {
     private FragmentTransaction ft;
     ActivityMainBinding binding;
     private static Stack<BaseFragment> backstack;
-    private SharedPreferenceManager preferenceManager;
 
-    public interface  OnLoginSuccessListener{
+
+    public interface OnLoginSuccessListener {
     }
 
-    public void setOnLoginSuccessListener(){
+    public void setOnLoginSuccessListener() {
         backstack.clear();
     }
 
@@ -61,13 +61,9 @@ public class MainActivity extends AppCompatActivity {
         networkComponent = DaggerNetworkComponent.builder().networkModule(new NetworkModule(this)).build();
         //앱테스트하는데 너무실수로 자주꺼서 임시로 추가하는 baackpress 이벤트처리
         closeActivityHandler = new CloseActivityHandler(this);
-        preferenceManager = SharedPreferenceManager.getInstance(this);
 
-        // 토큰으로 로그인여부확인  기본상태 로그인 / 로그인상태 메인
-        if(preferenceManager.getStringValue(BuildConfig.KEYTOKEN) != "")
-            defualtfragment = MainFragment.getInstance();
-        else
-            defualtfragment = LoginFragment.getInstance();
+        // 기본 로그인
+        defualtfragment = LoginFragment.getInstance();
 
         ft.replace(R.id.content_fragment_layout, defualtfragment).commit();
     }

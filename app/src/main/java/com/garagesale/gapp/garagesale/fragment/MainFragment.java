@@ -70,7 +70,6 @@ public class MainFragment extends BaseFragment {
                 }
 
                 Toast.makeText(getActivity(), response.message(), Toast.LENGTH_SHORT).show();
-
             }
 
             @Override
