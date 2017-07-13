@@ -1,6 +1,5 @@
 package com.garagesale.gapp.garagesale.util;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -10,51 +9,31 @@ import android.widget.Toast;
 import com.garagesale.gapp.garagesale.BaseFragment;
 import com.garagesale.gapp.garagesale.R;
 import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
 
 import static com.google.android.gms.internal.zzs.TAG;
 
 /**
- * Created by Administrator on 2017-07-13.
+ * Created by Juyeol on 2017-07-13.
+ * 구글계정연동
  */
 
 public class GoogleLogin  implements  GoogleApiClient.OnConnectionFailedListener{
 
     private Context context;
-    private FirebaseAuth mAuth;
     private GoogleSignInOptions gso;
     private GoogleApiClient mGoogleApiClient;
     private  BaseFragment fragment;
     private static final int RC_SIGN_IN = 9001;
-    private FirebaseUser user;
 
     public GoogleLogin(Context c, BaseFragment fragment){
         context= c;
         this.fragment = fragment;
-        mAuth = FirebaseAuth.getInstance();
         GoogleSignIn();
         setClient();
     }
-
-    public String getToken(){
-        return user.getUid();
-    }
-
-    public String getUserEmail(){
-        return user.getEmail();
-    }
-
-    public String getUserName(){
-        return user.getDisplayName();
-    }
-
 
     private void GoogleSignIn() {
         gso = new GoogleSignInOptions.Builder

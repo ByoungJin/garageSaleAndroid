@@ -4,7 +4,8 @@ import android.app.Activity;
 import android.widget.Toast;
 
 /**
- * Created by Administrator on 2017-06-27.
+ * Created by Juyeol on 2017-06-27
+ * 엑티비티 닫기 컨트롤
  */
 
 
