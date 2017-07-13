@@ -83,7 +83,14 @@ public class MainActivity extends AppCompatActivity {
             ft.replace(R.id.content_fragment_layout, backstack.pop());
             ft.commit();
         } else {
+            Fragment targetfragment = getSupportFragmentManager().findFragmentById(R.id.content_fragment_layout);
+            if(targetfragment.equals(MainFragment.getInstance()))
             closeActivityHandler.onBackPressed();
+            else {
+                ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.content_fragment_layout, MainFragment.getInstance());
+                ft.commit();
+            }
         }
 
     }
