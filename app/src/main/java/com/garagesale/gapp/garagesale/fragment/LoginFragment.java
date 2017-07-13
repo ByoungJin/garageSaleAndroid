@@ -25,6 +25,7 @@ import com.garagesale.gapp.garagesale.entity.User;
 import com.garagesale.gapp.garagesale.response.UserResponse;
 import com.garagesale.gapp.garagesale.service.LoginService;
 import com.garagesale.gapp.garagesale.util.DataContainer;
+import com.garagesale.gapp.garagesale.util.GoogleLogin;
 import com.garagesale.gapp.garagesale.util.SharedPreferenceManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -51,7 +52,7 @@ import retrofit2.Retrofit;
 import static com.google.android.gms.internal.zzs.TAG;
 
 
-public class LoginFragment extends BaseFragment implements  GoogleApiClient.OnConnectionFailedListener{
+public class LoginFragment extends BaseFragment implements MainActivity.OnLoginSuccessListener{
 
     // 싱글톤 패턴
     @SuppressLint("StaticFieldLeak")
@@ -62,14 +63,12 @@ public class LoginFragment extends BaseFragment implements  GoogleApiClient.OnCo
     }
 
     private FragmentLoginBinding binding;
+    private  LoginService loginService;
     SharedPreferenceManager preferenceManager;
     @Inject
     public Retrofit retrofit;  // retrofit
-
-    private FirebaseAuth mAuth;
-    GoogleSignInOptions gso;
-    private GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 9001;
+    private GoogleLogin googleLogin;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -83,20 +82,15 @@ public class LoginFragment extends BaseFragment implements  GoogleApiClient.OnCo
 
         // Login (서버 주소는 build.gradle에 있음, 본인 로컬 서버 주소로 변경하여 테스트하세요)
         getNetworkComponent().inject(this); // retrofit 객체 주입 시점
-        LoginService loginService = retrofit.create(LoginService.class);    // 로그인 서비스 객체 생성
+        loginService = retrofit.create(LoginService.class);    // 로그인 서비스 객체 생성
         preferenceManager = SharedPreferenceManager.getInstance(getActivity());
 
-        GoogleSignIn();
-        mAuth = FirebaseAuth.getInstance();
-        mGoogleApiClient = new GoogleApiClient.Builder(getContext())
-                .enableAutoManage(getActivity(), this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
+
+
         binding.signInButton.setSize(SignInButton.SIZE_STANDARD);
 
         binding.signInButton.setOnClickListener(view -> {
-            Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-            startActivityForResult(signInIntent, RC_SIGN_IN);
+            googleLogin.requestLogin();
         });
 
         if(preferenceManager.getStringValue(BuildConfig.KEYTOKEN) != ""){
@@ -104,6 +98,9 @@ public class LoginFragment extends BaseFragment implements  GoogleApiClient.OnCo
             Call<UserResponse> repos = loginService.tokenLoginPost();
             repos.enqueue(getCallback());
             return;
+        }
+        else{
+            googleLogin = new GoogleLogin(getContext(),this);
         }
 
         // set Listener
@@ -128,47 +125,20 @@ public class LoginFragment extends BaseFragment implements  GoogleApiClient.OnCo
 
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-
             if (result.isSuccess()) {
-
-                // 로그인 성공 했을때
                 GoogleSignInAccount acct = result.getSignInAccount();
-                Log.d(TAG, "표시되는 전체 이름 =" + acct.getDisplayName());
-                Log.d(TAG, "표시되는 이름=" + acct.getGivenName());
                 Log.d(TAG, "이메일=" + acct.getEmail());
-                Log.d(TAG, "표시되는 성=" + acct.getFamilyName());
-
-                firebaseAuthWithGoogle(acct);
-
+               Call<UserResponse> repos = loginService.GoogleLoginPost(
+                    acct.getEmail(),acct.getIdToken(),acct.getDisplayName()
+                );
+                repos.enqueue(getCallback());
             } else {
                 Log.d(TAG,"실패");
-                // 로그인 실패 했을때
             }
         }
     }
 
 
-    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
-
-        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(getMainActivity(), task -> {
-
-                    FirebaseUser user = mAuth.getCurrentUser();
-                    Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful()+"  " +user.getProviderId());
-
-                    // If sign in fails, display a message to the user. If sign in succeeds
-                    // the auth state listener will be notified and logic to handle the
-                    // signed in user can be handled in the listener.
-                    if (!task.isSuccessful()) {
-                        Log.w(TAG, "signInWithCredential", task.getException());
-                        Toast.makeText(getContext(), "Authentication failed.",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                    // ...
-                });
-    }
 
     @NonNull
     public Callback<UserResponse> getCallback() {
@@ -196,9 +166,10 @@ public class LoginFragment extends BaseFragment implements  GoogleApiClient.OnCo
                         menuLayoutBinding.loginButton.setVisibility(Button.GONE); // login button
                         menuLayoutBinding.joinButton.setVisibility(Button.GONE); // join button
                         menuLayoutBinding.logoutButton.setVisibility(Button.VISIBLE); // logout button
-
                         // 화면 전환
+
                         getMainActivity().changeFragment(MainFragment.getInstance());
+                        getMainActivity().setOnLoginSuccessListener();
                         mInstance = null;   // 재사용 불필요 시 프레그먼트 객체 제거
 
                     } catch (Exception e) {
@@ -220,26 +191,11 @@ public class LoginFragment extends BaseFragment implements  GoogleApiClient.OnCo
         };
     }
 
-    private void GoogleSignIn() {
-        gso = new GoogleSignInOptions.Builder
-                (GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-    }
 
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        // An unresolvable error has occurred and Google APIs (including Sign-In) will not
-        // be available.
-        Log.d(TAG, "onConnectionFailed:" + connectionResult);
-        Toast.makeText(getContext(), "Google Play Services error.", Toast.LENGTH_SHORT).show();
-    }
 
     @Override
     public String getTitle() {
         return "Login";
     }
-
 
 }

@@ -18,6 +18,10 @@ public interface LoginService {
     @POST("user/login")
     Call<UserResponse> loginPost(@Field("email") String email, @Field("password") String password);
 
+    @FormUrlEncoded
+    @POST("user/login/google")
+    Call<UserResponse> GoogleLoginPost(@Field("email") String email, @Field("token") String token,@Field("name")String name);
+
     @POST("user/auth/token")
     Call<UserResponse> tokenLoginPost();
 

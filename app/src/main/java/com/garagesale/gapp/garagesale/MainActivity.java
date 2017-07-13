@@ -39,7 +39,16 @@ public class MainActivity extends AppCompatActivity {
     private CloseActivityHandler closeActivityHandler;
     private FragmentTransaction ft;
     ActivityMainBinding binding;
-    private Stack<BaseFragment> backstack;
+    private static Stack<BaseFragment> backstack;
+    private SharedPreferenceManager preferenceManager;
+
+    public interface  OnLoginSuccessListener{
+    }
+
+    public void setOnLoginSuccessListener(){
+        backstack.clear();
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +62,15 @@ public class MainActivity extends AppCompatActivity {
         networkComponent = DaggerNetworkComponent.builder().networkModule(new NetworkModule(this)).build();
         //앱테스트하는데 너무실수로 자주꺼서 임시로 추가하는 baackpress 이벤트처리
         closeActivityHandler = new CloseActivityHandler(this);
-
+        preferenceManager = SharedPreferenceManager.getInstance(this);
         // Login 화면부터 시작
+
+
+        if(preferenceManager.getStringValue(BuildConfig.KEYTOKEN) != "")
+            defualtfragment = MainFragment.getInstance();
+        else
+            defualtfragment = LoginFragment.getInstance();
+
         ft.replace(R.id.content_fragment_layout, defualtfragment).commit();
     }
 
@@ -69,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
         if (slidingUpPanelLayout.getPanelState().equals(SlidingUpPanelLayout.PanelState.EXPANDED)) {
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
         } else if (backstack.size() > 0) {
-            Log.d("이이", "변경" + backstack.size());
             ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_fragment_layout, backstack.pop());
             ft.commit();

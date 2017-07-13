@@ -32,7 +32,7 @@ public abstract class BaseFragment extends Fragment {
     }
 
     // Get MainActivity Context
-    protected MainActivity getMainActivity(){
+    public MainActivity getMainActivity(){
         return (MainActivity)getActivity();
     }
 
