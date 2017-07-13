@@ -2,12 +2,19 @@ package com.garagesale.gapp.garagesale.fragment;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
+import android.support.constraint.solver.widgets.ConstraintWidget;
+import android.text.Layout;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.garagesale.gapp.garagesale.BaseFragment;
@@ -58,7 +65,7 @@ public class PractiveMainFragment extends BaseFragment {
         Call<UserListResponse> repos = loginService.getUserList("12", "12");
         repos.enqueue(new Callback<UserListResponse>() {
             @Override
-            public void onResponse(Call<UserListResponse> call, Response<UserListResponse> response) {
+            public void onResponse(@NonNull Call<UserListResponse> call, Response<UserListResponse> response) {
                 // Error Handle
 
                 if (!response.isSuccessful()) {
@@ -78,7 +85,7 @@ public class PractiveMainFragment extends BaseFragment {
             }
 
             @Override
-            public void onFailure(Call<UserListResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<UserListResponse> call, Throwable t) {
 
             }
 
@@ -99,62 +106,59 @@ public class PractiveMainFragment extends BaseFragment {
         // 화면을 갱신
         binding.layoutRotate.invalidate();
 
-
     }
 
     public void randomArrangeImages() {
         ConstraintSet set = new ConstraintSet();
         Random random = new Random();
         set.clone(binding.planetsContainer);
-
-        int max = 68, min = 33, full = 100;
+        int full = 100;
 
         // 2시
-        set.setHorizontalBias(binding.imageView2h.getId(), getBiasFromMin(random, max, min, full)); // 33 ~ 100
-        set.setVerticalBias(binding.imageView2h.getId(), getBiasToMax(random, max, full));   // 0 ~ 67
+        setNewPosition(set, binding.imageView2h, random);
 
         // 5시
-        set.setHorizontalBias(binding.imageView5h.getId(), getBiasFromMin(random, max, min, full));
-        set.setVerticalBias(binding.imageView5h.getId(), getBiasFromMin(random, max, min, full));
+
+        setNewPosition(set, binding.imageView5h, random);
 
         // 7시
-        set.setHorizontalBias(binding.imageView7h.getId(), getBiasToMax(random, max, full));
-        set.setVerticalBias(binding.imageView7h.getId(), getBiasFromMin(random, max, min, full));
+        setNewPosition(set, binding.imageView7h, random);
 
         // 10시
-        set.setHorizontalBias(binding.imageView10h.getId(), getBiasToMax(random, max, full));
-        set.setVerticalBias(binding.imageView10h.getId(), getBiasToMax(random, max, full));
+        setNewPosition(set, binding.imageView10h, random);
 
 
         // 3시
-        set.setHorizontalBias(binding.imageView3h.getId(), getBiasFull(random, full));
-        set.setVerticalBias(binding.imageView3h.getId(), (float) 0.50);
+        setNewPosition(set, binding.imageView3h, random);
 
         // 6시
-        set.setHorizontalBias(binding.imageView6h.getId(), (float) 0.50);
-        set.setVerticalBias(binding.imageView6h.getId(), getBiasFull(random, full));
+        setNewPosition(set, binding.imageView6h, random);
 
         // 9시
-        set.setHorizontalBias(binding.imageView9h.getId(), getBiasFull(random, full));
-        set.setVerticalBias(binding.imageView9h.getId(), (float) 0.50);
+        setNewPosition(set, binding.imageView9h, random);
 
         // 12시
-        set.setHorizontalBias(binding.imageView12h.getId(), (float) 0.50);
-        set.setVerticalBias(binding.imageView12h.getId(), getBiasFull(random, full));
+        setNewPosition(set, binding.imageView12h, random);
+
 
         set.applyTo(binding.planetsContainer);
     }
 
-    public float getBiasFull(Random random, int full) {
-        return ((float) random.nextInt(full + 1)) / (float) full;
+    private void setNewPosition(ConstraintSet set, ImageView view, Random random) {
+        set.setHorizontalBias(view.getId(), getBiasFull(random));
+        set.setVerticalBias(view.getId(), getBiasFull(random));
+
+        // 랜덤크기 가져오기, 35 ~ 85 : 50
+        // returns the number of pixels for 123.4dip
+        int imageWH = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                (float) random.nextInt(50 + 1) + 35, getResources().getDisplayMetrics());
+
+        set.constrainWidth(view.getId(), imageWH);
+        set.constrainHeight(view.getId(), imageWH);
     }
 
-    public float getBiasToMax(Random random, int max, float full) {
-        return ((float) random.nextInt(max)) / full;
-    }
-
-    public float getBiasFromMin(Random random, int max, int min, float full) {
-        return ((float) random.nextInt(max) + min) / full;
+    public float getBiasFull(Random random) {
+        return ((float) random.nextInt(100 + 1)) / (float) 100;
     }
 
     @Override
