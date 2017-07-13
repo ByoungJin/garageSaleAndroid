@@ -20,16 +20,16 @@ import static com.google.android.gms.internal.zzs.TAG;
  * 구글계정연동
  */
 
-public class GoogleLogin  implements  GoogleApiClient.OnConnectionFailedListener{
+public class GoogleLogin implements GoogleApiClient.OnConnectionFailedListener {
 
     private Context context;
     private GoogleSignInOptions gso;
     private GoogleApiClient mGoogleApiClient;
-    private  BaseFragment fragment;
+    private BaseFragment fragment;
     private static final int RC_SIGN_IN = 9001;
 
-    public GoogleLogin(Context c, BaseFragment fragment){
-        context= c;
+    public GoogleLogin(Context c, BaseFragment fragment) {
+        context = c;
         this.fragment = fragment;
         GoogleSignIn();
         setClient();
@@ -50,15 +50,13 @@ public class GoogleLogin  implements  GoogleApiClient.OnConnectionFailedListener
                 .build();
     }
 
-    public void requestLogin(){
+    public void requestLogin() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         fragment.startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        // An unresolvable error has occurred and Google APIs (including Sign-In) will not
-        // be available.
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
         Toast.makeText(context, "Google Play Services error.", Toast.LENGTH_SHORT).show();
     }

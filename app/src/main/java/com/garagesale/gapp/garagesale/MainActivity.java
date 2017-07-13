@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -56,16 +55,15 @@ public class MainActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         backstack = new Stack<>();
         ft = getSupportFragmentManager().beginTransaction();
-        BaseFragment defualtfragment = LoginFragment.getInstance();
+        BaseFragment defualtfragment;
 
         // NetworkModule에서 Content를 받을 수 있도록 빌드
         networkComponent = DaggerNetworkComponent.builder().networkModule(new NetworkModule(this)).build();
         //앱테스트하는데 너무실수로 자주꺼서 임시로 추가하는 baackpress 이벤트처리
         closeActivityHandler = new CloseActivityHandler(this);
         preferenceManager = SharedPreferenceManager.getInstance(this);
-        // Login 화면부터 시작
 
-
+        // 토큰으로 로그인여부확인  기본상태 로그인 / 로그인상태 메인
         if(preferenceManager.getStringValue(BuildConfig.KEYTOKEN) != "")
             defualtfragment = MainFragment.getInstance();
         else

@@ -1,8 +1,6 @@
 package com.garagesale.gapp.garagesale.fragment;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,7 +19,6 @@ import com.garagesale.gapp.garagesale.R;
 import com.garagesale.gapp.garagesale.databinding.ActivityMainBinding;
 import com.garagesale.gapp.garagesale.databinding.FragmentLoginBinding;
 import com.garagesale.gapp.garagesale.databinding.MenuLayoutBinding;
-import com.garagesale.gapp.garagesale.entity.User;
 import com.garagesale.gapp.garagesale.response.UserResponse;
 import com.garagesale.gapp.garagesale.service.LoginService;
 import com.garagesale.gapp.garagesale.util.DataContainer;
@@ -29,14 +26,8 @@ import com.garagesale.gapp.garagesale.util.GoogleLogin;
 import com.garagesale.gapp.garagesale.util.SharedPreferenceManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-
 import javax.inject.Inject;
 
 import retrofit2.Call;
@@ -44,21 +35,20 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-import static com.google.android.gms.internal.zzs.TAG;
 
-
-public class LoginFragment extends BaseFragment implements MainActivity.OnLoginSuccessListener{
+public class LoginFragment extends BaseFragment implements MainActivity.OnLoginSuccessListener {
 
     // 싱글톤 패턴
     @SuppressLint("StaticFieldLeak")
     private static LoginFragment mInstance;
-    public static LoginFragment getInstance(){
-        if(mInstance == null) mInstance = new LoginFragment();
+
+    public static LoginFragment getInstance() {
+        if (mInstance == null) mInstance = new LoginFragment();
         return mInstance;
     }
 
     private FragmentLoginBinding binding;
-    private  LoginService loginService;
+    private LoginService loginService;
     SharedPreferenceManager preferenceManager;
     @Inject
     public Retrofit retrofit;  // retrofit
@@ -80,22 +70,19 @@ public class LoginFragment extends BaseFragment implements MainActivity.OnLoginS
         loginService = retrofit.create(LoginService.class);    // 로그인 서비스 객체 생성
         preferenceManager = SharedPreferenceManager.getInstance(getActivity());
 
-
-
         binding.signInButton.setSize(SignInButton.SIZE_STANDARD);
 
         binding.signInButton.setOnClickListener(view -> {
             googleLogin.requestLogin();
         });
 
-        if(preferenceManager.getStringValue(BuildConfig.KEYTOKEN) != ""){
+        if (preferenceManager.getStringValue(BuildConfig.KEYTOKEN) != "") {
             // 토큰 로그인
             Call<UserResponse> repos = loginService.tokenLoginPost();
             repos.enqueue(getCallback());
             return;
-        }
-        else{
-            googleLogin = new GoogleLogin(getContext(),this);
+        } else {
+            googleLogin = new GoogleLogin(getContext(), this);
         }
 
         // set Listener
@@ -122,25 +109,22 @@ public class LoginFragment extends BaseFragment implements MainActivity.OnLoginS
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
                 GoogleSignInAccount acct = result.getSignInAccount();
-                Log.d(TAG, "이메일=" + acct.getEmail());
-               Call<UserResponse> repos = loginService.GoogleLoginPost(
-                    acct.getEmail(),acct.getIdToken(),acct.getDisplayName()
+                Call<UserResponse> repos = loginService.GoogleLoginPost(
+                        acct.getEmail(), acct.getIdToken(), acct.getDisplayName()
                 );
                 repos.enqueue(getCallback());
             } else {
-                Log.d(TAG,"실패");
+                Toast.makeText(getContext(), "로그인 연동 실패", Toast.LENGTH_SHORT);
             }
         }
     }
-
-
 
     @NonNull
     public Callback<UserResponse> getCallback() {
         return new Callback<UserResponse>() {
             @Override
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     try {
 
                         UserResponse userResponse = response.body();
@@ -170,23 +154,20 @@ public class LoginFragment extends BaseFragment implements MainActivity.OnLoginS
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }
-                else {
-                    int statusCode  = response.code();
+                } else {
+                    int statusCode = response.code();
                     // handle request errors depending on status code
-                    Toast.makeText(getActivity(), response.message(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<UserResponse> call, Throwable t) {
                 // 아무 응답도 못받았을 때
-                Log.v("t.getMessage()",t.getMessage());
+                Log.v("t.getMessage()", t.getMessage());
             }
         };
     }
-
-
 
     @Override
     public String getTitle() {
