@@ -4,16 +4,12 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
-import android.support.constraint.solver.widgets.ConstraintWidget;
-import android.text.Layout;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -99,12 +95,9 @@ public class PractiveMainFragment extends BaseFragment {
         });
 
         // 애니메이션
-        // 애니메이션xml 파일을 로드
-        Animation animation = loadAnimation(getContext(), R.anim.rotate);
-        // 애니메이션을 시작
-        binding.layoutRotate.startAnimation(animation);
-        // 화면을 갱신
-        binding.layoutRotate.invalidate();
+        Animation animation = loadAnimation(getContext(), R.anim.rotate); // 애니메이션xml 파일을 로드
+        binding.layoutRotate.startAnimation(animation); // 애니메이션을 시작
+        binding.layoutRotate.invalidate(); // 화면을 갱신
 
     }
 
@@ -112,49 +105,36 @@ public class PractiveMainFragment extends BaseFragment {
         ConstraintSet set = new ConstraintSet();
         Random random = new Random();
         set.clone(binding.planetsContainer);
-        int full = 100;
 
-        // 2시
-        setNewPosition(set, binding.imageView2h, random);
+        setNewPosition(set, binding.imageView2h, random); // 2시
+        setNewPosition(set, binding.imageView5h, random); // 5시
+        setNewPosition(set, binding.imageView7h, random); // 7시
+        setNewPosition(set, binding.imageView10h, random); // 10시
 
-        // 5시
-
-        setNewPosition(set, binding.imageView5h, random);
-
-        // 7시
-        setNewPosition(set, binding.imageView7h, random);
-
-        // 10시
-        setNewPosition(set, binding.imageView10h, random);
-
-
-        // 3시
-        setNewPosition(set, binding.imageView3h, random);
-
-        // 6시
-        setNewPosition(set, binding.imageView6h, random);
-
-        // 9시
-        setNewPosition(set, binding.imageView9h, random);
-
-        // 12시
-        setNewPosition(set, binding.imageView12h, random);
-
+        setNewPosition(set, binding.imageView3h, random); // 3시
+        setNewPosition(set, binding.imageView9h, random); // 9시
+        setNewPosition(set, binding.imageView12h, random); // 12시
 
         set.applyTo(binding.planetsContainer);
     }
 
     private void setNewPosition(ConstraintSet set, ImageView view, Random random) {
+        // 랜덤위치 범위 : 0.0 ~ 1.0
         set.setHorizontalBias(view.getId(), getBiasFull(random));
         set.setVerticalBias(view.getId(), getBiasFull(random));
 
-        // 랜덤크기 가져오기, 35 ~ 85 : 50
+        // 랜덤크기 가져오기, 범위 : 35 ~ 85
         // returns the number of pixels for 123.4dip
         int imageWH = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 (float) random.nextInt(50 + 1) + 35, getResources().getDisplayMetrics());
 
         set.constrainWidth(view.getId(), imageWH);
         set.constrainHeight(view.getId(), imageWH);
+
+        // Scale 애니메이션
+        Animation animation = loadAnimation(getContext(), R.anim.scale); // 애니메이션xml 파일을 로드
+        view.startAnimation(animation); // 애니메이션을 시작
+        view.invalidate(); // 화면을 갱신
     }
 
     public float getBiasFull(Random random) {
