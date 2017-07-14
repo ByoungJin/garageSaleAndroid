@@ -1,6 +1,7 @@
 package com.garagesale.gapp.garagesale.fragment;
 
 import android.annotation.SuppressLint;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -92,6 +93,7 @@ public class PractiveMainFragment extends BaseFragment {
 
         binding.imageViewCenter.setOnClickListener(view -> {
             randomArrangeImages();
+            getMainActivity().getSoundPool().load( getMainActivity(), R.raw.fa, 1); // sound play
         });
 
         // 애니메이션
