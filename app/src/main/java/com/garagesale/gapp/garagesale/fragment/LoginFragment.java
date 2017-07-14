@@ -128,6 +128,10 @@ public class LoginFragment extends BaseFragment implements MainActivity.OnLoginS
                     try {
 
                         UserResponse userResponse = response.body();
+                        if(userResponse.getUser() == null) {
+                            throw new Exception("User Empty");
+                        }
+
                         preferenceManager.putStringValue(BuildConfig.KEYTOKEN, userResponse.getToken()); // 토큰을 로컬에 저장
                         DataContainer.getInstance().setmUser(userResponse.getUser()); // User DataContainer에 저장
 
@@ -177,6 +181,8 @@ public class LoginFragment extends BaseFragment implements MainActivity.OnLoginS
     @Override
     public void onDestroy() {
         super.onDestroy();
-        googleLogin.getmGoogleApiClient().disconnect();
+        if(googleLogin != null) {
+            googleLogin.getmGoogleApiClient().disconnect();
+        }
     }
 }
