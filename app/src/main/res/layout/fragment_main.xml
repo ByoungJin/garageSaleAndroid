@@ -83,9 +83,6 @@
             </RelativeLayout>
 
             <!--다른 행성 5개-->
-
-
-
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="0dp"
@@ -171,7 +168,6 @@
 
 
             // 나의 행성으로 돌아가는 우주선 버튼(별은 임시 아이콘)
-
             <ImageView
                 android:id="@+id/ufo_home"
                 android:layout_width="wrap_content"
@@ -182,8 +178,6 @@
                 app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginBottom="30dp"
                 />
-
-
 
         </android.support.constraint.ConstraintLayout>
 
