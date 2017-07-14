@@ -111,8 +111,6 @@ public class PractiveMainFragment extends BaseFragment {
         setNewPosition(set, binding.imageView7h, random); // 7시
         setNewPosition(set, binding.imageView10h, random); // 10시
 
-        setNewPosition(set, binding.imageView3h, random); // 3시
-        setNewPosition(set, binding.imageView9h, random); // 9시
         setNewPosition(set, binding.imageView12h, random); // 12시
 
         set.applyTo(binding.planetsContainer);
