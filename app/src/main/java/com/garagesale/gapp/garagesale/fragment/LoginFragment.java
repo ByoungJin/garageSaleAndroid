@@ -174,4 +174,9 @@ public class LoginFragment extends BaseFragment implements MainActivity.OnLoginS
         return "Login";
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        googleLogin.getmGoogleApiClient().disconnect();
+    }
 }
