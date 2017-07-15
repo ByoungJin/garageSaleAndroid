@@ -108,6 +108,13 @@ public class LoginFragment extends BaseFragment implements MainActivity.OnLoginS
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
                 GoogleSignInAccount acct = result.getSignInAccount();
+
+                // 구글 클라이언트 disconnect
+                if(googleLogin != null) {
+                    googleLogin.getmGoogleApiClient().stopAutoManage(getActivity());
+                    googleLogin.getmGoogleApiClient().disconnect();
+                }
+
                 Call<UserResponse> repos = loginService.GoogleLoginPost(
                         acct.getEmail(), acct.getIdToken(), acct.getDisplayName()
                 );
@@ -125,11 +132,6 @@ public class LoginFragment extends BaseFragment implements MainActivity.OnLoginS
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
                 if (response.isSuccessful()) {
                     try {
-                        if(googleLogin != null) {
-                            googleLogin.getmGoogleApiClient().stopAutoManage(getActivity());
-                            googleLogin.getmGoogleApiClient().disconnect();
-
-                        }
 
                         UserResponse userResponse = response.body();
                         if(userResponse.getUser() == null) {
