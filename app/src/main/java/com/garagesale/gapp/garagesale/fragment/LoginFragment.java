@@ -73,6 +73,7 @@ public class LoginFragment extends BaseFragment implements MainActivity.OnLoginS
         binding.signInButton.setSize(SignInButton.SIZE_STANDARD);
 
         binding.signInButton.setOnClickListener(view -> {
+            googleLogin = new GoogleLogin(getContext(), this);
             googleLogin.requestLogin();
         });
 
@@ -81,8 +82,6 @@ public class LoginFragment extends BaseFragment implements MainActivity.OnLoginS
             Call<UserResponse> repos = loginService.tokenLoginPost();
             repos.enqueue(getCallback());
             return;
-        } else {
-            googleLogin = new GoogleLogin(getContext(), this);
         }
 
         // set Listener
@@ -126,6 +125,11 @@ public class LoginFragment extends BaseFragment implements MainActivity.OnLoginS
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
                 if (response.isSuccessful()) {
                     try {
+                        if(googleLogin != null) {
+                            googleLogin.getmGoogleApiClient().stopAutoManage(getActivity());
+                            googleLogin.getmGoogleApiClient().disconnect();
+
+                        }
 
                         UserResponse userResponse = response.body();
                         if(userResponse.getUser() == null) {
@@ -178,11 +182,4 @@ public class LoginFragment extends BaseFragment implements MainActivity.OnLoginS
         return "Login";
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if(googleLogin != null) {
-            googleLogin.getmGoogleApiClient().disconnect();
-        }
-    }
 }
