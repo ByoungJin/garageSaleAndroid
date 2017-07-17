@@ -20,7 +20,7 @@ public interface LoginService {
 
     @FormUrlEncoded
     @POST("user/login/google")
-    Call<UserResponse> GoogleLoginPost(@Field("email") String email, @Field("token") String token,@Field("name")String name);
+    Call<UserResponse> GoogleLoginPost(@Field("token") String token);
 
     @POST("user/auth/token")
     Call<UserResponse> tokenLoginPost();
