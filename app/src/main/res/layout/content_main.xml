@@ -41,7 +41,7 @@
                 android:textSize="20sp" />
 
             <EditText
-                android:layout_width="217dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right"
                 android:hint="상품 검색"
@@ -53,6 +53,8 @@
                 android:background="@drawable/edt_bg_selector"
                 android:backgroundTint="#FFFFFF"
                 android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/btnHistory"
+                android:layout_marginRight="8dp"
                 android:layout_alignLeft="@+id/title"
                 android:layout_alignStart="@+id/title" />
 

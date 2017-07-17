@@ -73,6 +73,7 @@ public class LoginFragment extends BaseFragment implements MainActivity.OnLoginS
         binding.signInButton.setSize(SignInButton.SIZE_STANDARD);
 
         binding.signInButton.setOnClickListener(view -> {
+            googleLogin = new GoogleLogin(getContext(), this);
             googleLogin.requestLogin();
         });
 
@@ -81,8 +82,6 @@ public class LoginFragment extends BaseFragment implements MainActivity.OnLoginS
             Call<UserResponse> repos = loginService.tokenLoginPost();
             repos.enqueue(getCallback());
             return;
-        } else {
-            googleLogin = new GoogleLogin(getContext(), this);
         }
 
         // set Listener
@@ -109,6 +108,13 @@ public class LoginFragment extends BaseFragment implements MainActivity.OnLoginS
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
                 GoogleSignInAccount acct = result.getSignInAccount();
+
+                // 구글 클라이언트 disconnect
+                if(googleLogin != null) {
+                    googleLogin.getmGoogleApiClient().stopAutoManage(getActivity());
+                    googleLogin.getmGoogleApiClient().disconnect();
+                }
+
                 Call<UserResponse> repos = loginService.GoogleLoginPost(
                         acct.getEmail(), acct.getIdToken(), acct.getDisplayName()
                 );
@@ -128,6 +134,10 @@ public class LoginFragment extends BaseFragment implements MainActivity.OnLoginS
                     try {
 
                         UserResponse userResponse = response.body();
+                        if(userResponse.getUser() == null) {
+                            throw new Exception("User Empty");
+                        }
+
                         preferenceManager.putStringValue(BuildConfig.KEYTOKEN, userResponse.getToken()); // 토큰을 로컬에 저장
                         DataContainer.getInstance().setmUser(userResponse.getUser()); // User DataContainer에 저장
 

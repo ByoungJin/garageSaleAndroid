@@ -61,4 +61,8 @@ public class GoogleLogin implements GoogleApiClient.OnConnectionFailedListener {
         Toast.makeText(context, "Google Play Services error.", Toast.LENGTH_SHORT).show();
     }
 
+    public GoogleApiClient getmGoogleApiClient() {
+        return mGoogleApiClient;
+    }
+
 }

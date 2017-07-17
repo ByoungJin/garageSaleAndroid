@@ -1,6 +1,10 @@
 package com.garagesale.gapp.garagesale;
 
 import android.databinding.DataBindingUtil;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.media.SoundPool;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -38,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
     private CloseActivityHandler closeActivityHandler;
     private FragmentTransaction ft;
     ActivityMainBinding binding;
+    SoundPool soundPool;
+
     private static Stack<BaseFragment> backstack;
 
 
@@ -61,6 +67,21 @@ public class MainActivity extends AppCompatActivity {
         networkComponent = DaggerNetworkComponent.builder().networkModule(new NetworkModule(this)).build();
         //앱테스트하는데 너무실수로 자주꺼서 임시로 추가하는 baackpress 이벤트처리
         closeActivityHandler = new CloseActivityHandler(this);
+
+        // Load sound pool
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .build();
+            soundPool = new SoundPool.Builder().setAudioAttributes(audioAttributes).setMaxStreams(8).build();
+        }
+        else {
+            soundPool = new SoundPool(8, AudioManager.STREAM_NOTIFICATION, 0);
+        }
+
+        soundPool.setOnLoadCompleteListener((soundPool1, sampleId, status) -> soundPool1.play(sampleId, 1f, 1f, 0, 0, 1f));
 
         // 기본 로그인
         defualtfragment = LoginFragment.getInstance();
@@ -180,4 +201,7 @@ public class MainActivity extends AppCompatActivity {
         return binding;
     }
 
+    public SoundPool getSoundPool() {
+        return soundPool;
+    }
 }
