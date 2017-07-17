@@ -114,9 +114,8 @@ public class LoginFragment extends BaseFragment implements MainActivity.OnLoginS
                     googleLogin.getmGoogleApiClient().stopAutoManage(getActivity());
                     googleLogin.getmGoogleApiClient().disconnect();
                 }
-
                 Call<UserResponse> repos = loginService.GoogleLoginPost(
-                        acct.getEmail(), acct.getIdToken(), acct.getDisplayName()
+                        acct.getIdToken()
                 );
                 repos.enqueue(getCallback());
             } else {
