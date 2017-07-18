@@ -1,7 +1,6 @@
 package com.garagesale.gapp.garagesale.fragment;
 
 import android.annotation.SuppressLint;
-import android.media.SoundPool;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -89,36 +89,57 @@ public class PractiveMainFragment extends BaseFragment {
         });
 
         // 이미지 랜덤 배치
-        randomArrangeImages();
+        renderImages();
 
-        binding.imageViewCenter.setOnClickListener(view -> {
-            randomArrangeImages();
-            getMainActivity().getSoundPool().load( getMainActivity(), R.raw.fa, 1); // sound play
+        binding.ufoHome.setOnClickListener(view -> {
+            renderImages();
+            getMainActivity().getSoundPool().load(getMainActivity(), R.raw.fa, 1); // sound play
         });
 
-        // 애니메이션
+        // Center 행성 회전 애니메이션
         Animation animation = loadAnimation(getContext(), R.anim.rotate); // 애니메이션xml 파일을 로드
         binding.layoutRotate.startAnimation(animation); // 애니메이션을 시작
         binding.layoutRotate.invalidate(); // 화면을 갱신
 
     }
 
-    public void randomArrangeImages() {
+    public void renderImages() {
+
+        // 랜덤 위치,크기 점점 커지는 애니메이션, 클릭 이벤트 적용
         ConstraintSet set = new ConstraintSet();
-        Random random = new Random();
+        Random random = new Random();   // 난수
         set.clone(binding.planetsContainer);
-
-        setNewPosition(set, binding.imageView2h, random); // 2시
-        setNewPosition(set, binding.imageView5h, random); // 5시
-        setNewPosition(set, binding.imageView7h, random); // 7시
-        setNewPosition(set, binding.imageView10h, random); // 10시
-
-        setNewPosition(set, binding.imageView12h, random); // 12시
-
+        renderView(set, binding.imageView2h, random); // 2시
+        renderView(set, binding.imageView5h, random); // 5시
+        renderView(set, binding.imageView7h, random); // 7시
+        renderView(set, binding.imageView10h, random); // 10시
+        renderView(set, binding.imageView12h, random); // 12시
         set.applyTo(binding.planetsContainer);
+
     }
 
-    private void setNewPosition(ConstraintSet set, ImageView view, Random random) {
+    private void moveViewAni(View targetView, View intoView) {
+        TranslateAnimation anim = new TranslateAnimation(
+                0.0f,
+                (intoView.getLeft() - targetView.getX()) + (intoView.getWidth() - targetView.getWidth())/2,
+                0.0f,
+                (intoView.getTop() - targetView.getY()) + (intoView.getHeight() - targetView.getHeight())/2
+        );
+        anim.setFillAfter(true);
+        anim.setDuration(2000); // 이동 시간 x/1000 초
+        targetView.startAnimation(anim);
+    }
+
+    private void renderView(ConstraintSet set, ImageView view, Random random) {
+        // setOnClickEvent : moveViewAni
+        if(!view.hasOnClickListeners()) view.setOnClickListener(view1 -> {
+            //** 복합적 애니메이션이 한꺼번에 발생해야함
+            // TODO: 2017. 7. 19. 센터 작아져야함
+            moveViewAni(view, binding.imageViewCenter); // 중심으로 이동
+            // TODO: 2017. 7. 19. 센터 크기만큼 커지는 애니메이션
+            // TODO: 2017. 7. 19. 타겟 구역에 새로운 View 랜덤 위치, 랜덤크기 가지고 점점 커져야함
+        });
+
         // 랜덤위치 범위 : 0.0 ~ 1.0
         set.setHorizontalBias(view.getId(), getBiasFull(random));
         set.setVerticalBias(view.getId(), getBiasFull(random));
