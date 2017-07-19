@@ -12,8 +12,8 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        buildConfigField "String", "TESTURL", "\"http://10.0.2.2:3000\""    // 서버 주소
-        //buildConfigField "String", "TESTURL", "\"http://172.30.1.48:3000\""    // 서버 주소
+        //buildConfigField "String", "TESTURL", "\"http://10.0.2.2:3000\""    // 서버 주소
+        buildConfigField "String", "TESTURL", "\"http://172.30.1.48:3000\""    // 서버 주소
         buildConfigField "String", "BASEURL", "\"https://garagesalesever.herokuapp.com\""    // 서버 주소
 
         buildConfigField "String", "KEYTOKEN", "\"com.garagesale.key.token\""   // 로컬 토큰 Key
@@ -86,6 +86,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-auth:10.0.1'     //google login
     compile 'gun0912.ted:tedpermission:1.0.4'        //permission lib
     compile 'com.github.bumptech.glide:glide:3.7.0' //glide lib
+    compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

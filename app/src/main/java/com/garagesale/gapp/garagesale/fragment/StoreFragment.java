@@ -8,30 +8,22 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.RecyclerView;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.content.Context;
 
 import com.garagesale.gapp.garagesale.BaseFragment;
-import com.garagesale.gapp.garagesale.MainActivity;
 import com.garagesale.gapp.garagesale.R;
 import com.garagesale.gapp.garagesale.databinding.FragmentStoreBinding;
 import com.garagesale.gapp.garagesale.entity.User;
-import com.garagesale.gapp.garagesale.entity.listData;
 import com.garagesale.gapp.garagesale.response.UserResponse;
 import com.garagesale.gapp.garagesale.service.UserService;
 import com.garagesale.gapp.garagesale.util.Camera.*;
 import com.garagesale.gapp.garagesale.util.DataContainer;
-import com.garagesale.gapp.garagesale.util.mListAdapter;
+import com.garagesale.gapp.garagesale.util.TabPagerAdapter;
 import com.garagesale.gapp.garagesale.util.setPermission;
-import com.google.android.gms.maps.model.LatLng;
 import com.gun0912.tedpermission.PermissionListener;
 
 import java.util.ArrayList;
@@ -51,8 +43,8 @@ import static android.app.Activity.RESULT_OK;
  * Created by juyeol on 2017-06-28.
  * 현재 skeleton 레이아웃
  */
-public class StoreFragment extends BaseFragment implements GoogleMapFragment.FragmentInteractionListener,
-        View.OnClickListener, View.OnTouchListener{
+public class StoreFragment extends BaseFragment implements
+        View.OnClickListener {
 
     // 싱글톤 패턴
     @SuppressLint("StaticFieldLeak")
@@ -74,10 +66,10 @@ public class StoreFragment extends BaseFragment implements GoogleMapFragment.Fra
     private Uri outputFileUri;
     private LoadPicture loadPicture;
     // 여기부턴 리스트 관련 인자들
-    private RecyclerView.Adapter iAdapter, rAdapter;
-    private ArrayList<listData> itemDataset, replyDataset;
-    private Fragment childFragment;
-    FragmentTransaction transaction;
+
+    // 탭관련 인자들
+    TabPagerAdapter mTabPagerAdapter;
+
     User user = DataContainer.getInstance().getmUser(); // user 정보
 
     @Override
@@ -98,24 +90,13 @@ public class StoreFragment extends BaseFragment implements GoogleMapFragment.Fra
         getNetworkComponent().inject(this); // retrofit 객체 주입
         userService = retrofit.create(UserService.class);
         binding = FragmentStoreBinding.bind(getView()); // Store 프레그먼트 View
-        loadPicture = new LoadPicture(this,getContext());
+        loadPicture = new LoadPicture(this, getContext());
 
-        setTestItemData(); //아이템 리스트뷰 셋팅 (테스트셋)
-        setTestreplyData(); //댓글 리스트뷰 셋팅  (테스트셋)
-
-        //댓글, 아이템목록 맨 아래로
-        view.post(() -> {
-            binding.itemList.smoothScrollToPosition(iAdapter.getItemCount() - 1);
-            binding.replyList.smoothScrollToPosition(rAdapter.getItemCount() - 1);
-        });
-
-        binding.transparentImage.setOnTouchListener(this); // GoogleMapFragment와 scrollview 간의 간섭 컨트롤
-        binding.replyaccept.setOnClickListener(this);        //댓글 작성 버튼
-
-        binding.addItem.setOnClickListener(this);
-        binding.addItem2.setOnClickListener(this);
         // Glide.with(getInstance()).load("http://192.168.42.180:3000/imeage/Screenshot_2017-07-04-17-56-47.png").into(binding.imageView5);
 
+        mTabPagerAdapter = new TabPagerAdapter(getActivity().getSupportFragmentManager());
+        binding.viewpager.setAdapter(mTabPagerAdapter);
+        binding.tabs.setupWithViewPager(binding.viewpager);
 
         // 유저 정보 출력
         if (user != null) {
@@ -135,9 +116,8 @@ public class StoreFragment extends BaseFragment implements GoogleMapFragment.Fra
                     showImage(loadPicture.drawFile(outputFileUri));
                     sendServerImage();
                 }
-            }
-            else if(requestCode == REQUEST_TAKE_PHOTO){
-                if (outputFileUri!= null) {
+            } else if (requestCode == REQUEST_TAKE_PHOTO) {
+                if (outputFileUri != null) {
                     showImage(loadPicture.drawFile(outputFileUri));
                     sendServerImage();
                 }
@@ -145,11 +125,11 @@ public class StoreFragment extends BaseFragment implements GoogleMapFragment.Fra
         }
     }
 
-    @Override
+  /*  @Override
     public void sendMessageToParent(LatLng latLng, String address) {
         binding.editText13.setText("위도 : " + String.valueOf(latLng.longitude) + "\n경도 : " + String.valueOf(latLng.latitude));
         binding.editText14.setText(address);
-    }
+    }*/
 
     /*****************카메라 처리 메소드 **********************/
 
@@ -160,7 +140,7 @@ public class StoreFragment extends BaseFragment implements GoogleMapFragment.Fra
 
     public void sendServerImage() {
         MultipartBody.Part body;
-        body= loadPicture.createBody(outputFileUri);
+        body = loadPicture.createBody(outputFileUri);
         Call<UserResponse> repos = userService.uploadProfile(body);
 
         repos.enqueue(new Callback<UserResponse>() {
@@ -181,12 +161,6 @@ public class StoreFragment extends BaseFragment implements GoogleMapFragment.Fra
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.replyaccept:
-                replyDataset.add(new listData("anonymous", "?? km", String.valueOf(binding.replytext.getText()), R.mipmap.ic_launcher));
-                rAdapter.notifyDataSetChanged();
-                binding.replyList.smoothScrollToPosition(rAdapter.getItemCount() - 1);
-                binding.replytext.setText(null);
-                break;
             case R.id.addItem:
                 loadPicture.onGallery();
                 break;
@@ -196,25 +170,6 @@ public class StoreFragment extends BaseFragment implements GoogleMapFragment.Fra
         }
     }
 
-    @Override
-    public boolean onTouch(View view, MotionEvent motionEvent) {
-        int action = motionEvent.getAction();
-        switch (action) {
-            case MotionEvent.ACTION_DOWN:
-                binding.scrollView.requestDisallowInterceptTouchEvent(true);
-                return false;
-
-            case MotionEvent.ACTION_UP:
-                binding.scrollView.requestDisallowInterceptTouchEvent(false);
-                return true;
-
-            case MotionEvent.ACTION_MOVE:
-                binding.scrollView.requestDisallowInterceptTouchEvent(true);
-                return false;
-            default:
-                return true;
-        }
-    }
     /******************리스너 정의 끝**********************/
 
     /******************구글맵 메소드(+권한)**********************/
@@ -230,29 +185,6 @@ public class StoreFragment extends BaseFragment implements GoogleMapFragment.Fra
 
     /******************구글맵 메소드(+권한) 끝**********************/
 
-    /******************리스트 아이템 셋**********************/
-    public void setTestItemData() {
-        itemDataset = new ArrayList<>();
-        iAdapter = new mListAdapter(itemDataset);
-        binding.itemList.setAdapter(iAdapter);
-        // 테스트셋
-        for (int i = 0; i < 10; i++) {
-            itemDataset.add(new listData("전자렌지", "1000원", "구매한지 1년 어쩌고", R.mipmap.ic_launcher));
-        }
-    }
-
-    public void setTestreplyData() {
-        replyDataset = new ArrayList<>();
-        rAdapter = new mListAdapter(replyDataset);
-        binding.replyList.setAdapter(rAdapter);
-
-        // 테스트셋
-        for (int i = 0; i < 10; i++) {
-            replyDataset.add(new listData("병수", "0.05km", "깍아줘요", R.mipmap.ic_launcher));
-        }
-    }
-
-    /******************리스트 아이템 셋 끝**********************/
 
     @Override
     public String getTitle() {

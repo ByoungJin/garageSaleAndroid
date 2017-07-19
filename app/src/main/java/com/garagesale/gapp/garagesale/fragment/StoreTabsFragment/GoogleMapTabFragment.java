@@ -1,11 +1,10 @@
-package com.garagesale.gapp.garagesale.fragment;
+package com.garagesale.gapp.garagesale.fragment.StoreTabsFragment;
 
 import android.annotation.SuppressLint;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,26 +13,20 @@ import android.content.Intent;
 import android.widget.Toast;
 
 import com.garagesale.gapp.garagesale.R;
-import com.garagesale.gapp.garagesale.databinding.FragmentGooglemapBinding;
+import com.garagesale.gapp.garagesale.databinding.FragmentStoreGooglemapTabBinding;
 import com.garagesale.gapp.garagesale.util.GPSInfo;
 import com.garagesale.gapp.garagesale.util.addrConvertor;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import static android.app.Activity.RESULT_CANCELED;
-import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by juyeol on 2017-06-28.
@@ -41,15 +34,15 @@ import static android.app.Activity.RESULT_OK;
  * GoogleMap 이벤트, ParentFragment View로 리스너 컨트롤
  */
 
-public class GoogleMapFragment extends Fragment
+public class GoogleMapTabFragment extends Fragment
         implements OnMapReadyCallback, GoogleMap.OnMapClickListener,PlaceSelectionListener{
 
     // 싱글톤 패턴
     @SuppressLint("StaticFieldLeak")
-    private static GoogleMapFragment mInstance;
+    private static GoogleMapTabFragment mInstance;
 
-    public static GoogleMapFragment getInstance() {
-        if (mInstance == null) mInstance = new GoogleMapFragment();
+    public static GoogleMapTabFragment getInstance() {
+        if (mInstance == null) mInstance = new GoogleMapTabFragment();
         return mInstance;
     }
 
@@ -58,33 +51,33 @@ public class GoogleMapFragment extends Fragment
     private Location gLocation;
     private LatLng mLatLng;
     private SupportMapFragment supportMapFragment;
-    private FragmentGooglemapBinding binding;
-    private FragmentInteractionListener mParentListener;
+    private FragmentStoreGooglemapTabBinding binding;
+    // private FragmentInteractionListener mParentListener;
     private SupportPlaceAutocompleteFragment autocompleteFragment;
     private AutocompleteFilter typeFilter;
 
     /**
      * 부모 Fragment와 통신하기위한 리스너
      */
-    public interface FragmentInteractionListener {
+   /* public interface FragmentInteractionListener {
         void sendMessageToParent(LatLng latLng,String address);
-    }
+    }*/
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         // check if parent Fragment implements listener
-        if (getParentFragment() instanceof FragmentInteractionListener) {
+       /* if (getParentFragment() instanceof FragmentInteractionListener) {
             mParentListener = (FragmentInteractionListener) getParentFragment();
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnChildFragmentInteractionListener");
-        }
+        }*/
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_googlemap, container, false);
+        final View view = inflater.inflate(R.layout.fragment_store_googlemap_tab, container, false);
         return view;
     }
 
@@ -98,7 +91,7 @@ public class GoogleMapFragment extends Fragment
                 getChildFragmentManager().
                 findFragmentById(R.id.googleMap);
         supportMapFragment.getMapAsync(this);
-        binding = FragmentGooglemapBinding.bind(getView());
+        binding = FragmentStoreGooglemapTabBinding.bind(getView());
 
         createAutoComplete();
 
@@ -106,7 +99,7 @@ public class GoogleMapFragment extends Fragment
             gLocation = mGPSInfo.getGPSLocation();
             mLatLng = new LatLng(gLocation.getLatitude(), gLocation.getLongitude());
             createGoogleMap(mGoogleMap, mLatLng);
-            mParentListener.sendMessageToParent(mLatLng,addrConvertor.getAddress(getContext(),mLatLng));
+            // mParentListener.sendMessageToParent(mLatLng,addrConvertor.getAddress(getContext(),mLatLng));
         });
     }
     public void createAutoComplete(){
@@ -134,7 +127,7 @@ public class GoogleMapFragment extends Fragment
         mLatLng = mGPSInfo.getLatLng();
         createGoogleMap(map, mLatLng);
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mLatLng, 16));
-        mParentListener.sendMessageToParent(mLatLng,addrConvertor.getAddress(getContext(),mLatLng));
+        //  mParentListener.sendMessageToParent(mLatLng,addrConvertor.getAddress(getContext(),mLatLng));
         mGoogleMap.setOnMapClickListener(this);
     }
 
@@ -146,7 +139,7 @@ public class GoogleMapFragment extends Fragment
     @Override
     public void onMapClick(LatLng latLng) {
         createGoogleMap(mGoogleMap, latLng);
-        mParentListener.sendMessageToParent(mLatLng,addrConvertor.getAddress(getContext(),mLatLng));
+        // mParentListener.sendMessageToParent(mLatLng,addrConvertor.getAddress(getContext(),mLatLng));
     }
 
     /**
@@ -175,11 +168,34 @@ public class GoogleMapFragment extends Fragment
     public void onPlaceSelected(Place place) {
         mLatLng = place.getLatLng();
         createGoogleMap(mGoogleMap, mLatLng);
-        mParentListener.sendMessageToParent(mLatLng,addrConvertor.getAddress(getContext(),mLatLng));
+        //  mParentListener.sendMessageToParent(mLatLng,addrConvertor.getAddress(getContext(),mLatLng));
     }
     //자동완성 리스너
     @Override
     public void onError(Status status) {
         Toast.makeText(getContext(),"다시 검색해주세요",Toast.LENGTH_SHORT);
     }
+
+    /*  터치간섭 삭제
+
+        @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        int action = motionEvent.getAction();
+        switch (action) {
+            case MotionEvent.ACTION_DOWN:
+                binding.scrollView.requestDisallowInterceptTouchEvent(true);
+                return false;
+
+            case MotionEvent.ACTION_UP:
+                binding.scrollView.requestDisallowInterceptTouchEvent(false);
+                return true;
+
+            case MotionEvent.ACTION_MOVE:
+                binding.scrollView.requestDisallowInterceptTouchEvent(true);
+                return false;
+            default:
+                return true;
+        }
+    }
+     */
 }

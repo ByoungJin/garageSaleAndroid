@@ -58,7 +58,8 @@
                     app:layout_constraintLeft_toLeftOf="@+id/view2"
                     app:layout_constraintRight_toLeftOf="@+id/view2"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@android:drawable/ic_menu_add" />
+                    app:srcCompat="@android:drawable/ic_menu_add"
+                    app:layout_constraintDimensionRatio="v,1:1" />
 
                 <view
                     android:id="@+id/view2"
