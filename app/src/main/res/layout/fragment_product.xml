@@ -59,7 +59,7 @@
             android:layout_marginTop="8dp"
             android:ems="10"
             android:hint="price"
-            android:text="@{String.valueOf(product.price)}"
+            android:text="@{product.stringPrice}"
             android:inputType="number"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/descriptionEditText" />

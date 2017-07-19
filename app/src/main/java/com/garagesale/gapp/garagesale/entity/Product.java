@@ -65,6 +65,10 @@ public class Product {
         return price;
     }
 
+    public String getStringPrice() {
+        return String.valueOf(price);
+    }
+
     public void setPrice(Integer price) {
         this.price = price;
     }
