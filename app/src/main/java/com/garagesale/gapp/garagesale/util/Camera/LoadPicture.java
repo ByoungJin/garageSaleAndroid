@@ -92,9 +92,28 @@ public class LoadPicture {
                 }
             }, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
-
         return outputFileUri;
     }
+
+    private static final String TYPE_IMAGE = "image/*";
+    private static final int PROFILE_IMAGE_ASPECT_X = 3;
+    private static final int PROFILE_IMAGE_ASPECT_Y = 1;
+    private static final int PROFILE_IMAGE_OUTPUT_X = 600;
+    private static final int PROFILE_IMAGE_OUTPUT_Y = 200;
+    private static final int REQUEST_CODE_PROFILE_IMAGE_CROP = 3;
+
+    public void doCrop(Uri outputFileUri) {
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(outputFileUri, TYPE_IMAGE);
+        intent.putExtra("scale", true);
+        intent.putExtra("aspectX", PROFILE_IMAGE_ASPECT_X);
+        intent.putExtra("aspectY", PROFILE_IMAGE_ASPECT_Y);
+        intent.putExtra("outputX", PROFILE_IMAGE_OUTPUT_X);
+        intent.putExtra("outputY", PROFILE_IMAGE_OUTPUT_Y);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+        fragment.startActivityForResult(intent, REQUEST_CODE_PROFILE_IMAGE_CROP);
+    }
+
 
 
 
@@ -117,7 +136,6 @@ public class LoadPicture {
             return null;
         }
         return bitmapImage;
-        //showImage(bitmapImage);
     }
 
     /**

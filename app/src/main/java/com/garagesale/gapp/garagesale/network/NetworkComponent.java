@@ -8,7 +8,7 @@ import com.garagesale.gapp.garagesale.fragment.PractiveMainFragment;
 import com.garagesale.gapp.garagesale.fragment.ProductFragment;
 import com.garagesale.gapp.garagesale.fragment.ProfileFragment;
 import com.garagesale.gapp.garagesale.fragment.SettingFragment;
-import com.garagesale.gapp.garagesale.fragment.StoreFragment;
+import com.garagesale.gapp.garagesale.fragment.StoreGoogleTap;
 
 import javax.inject.Singleton;
 
@@ -31,7 +31,7 @@ public interface NetworkComponent {
 
     void inject(SettingFragment fragment);
 
-    void inject(StoreFragment fragment);
+    void inject(StoreGoogleTap fragment);
 
     void inject(ProductFragment fragment);
 
