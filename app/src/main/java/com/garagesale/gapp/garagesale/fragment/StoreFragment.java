@@ -18,12 +18,14 @@ import com.garagesale.gapp.garagesale.BaseFragment;
 import com.garagesale.gapp.garagesale.R;
 import com.garagesale.gapp.garagesale.databinding.FragmentStoreBinding;
 import com.garagesale.gapp.garagesale.entity.User;
+import com.garagesale.gapp.garagesale.fragment.StoreTabsFragment.GoogleMapTabFragment;
 import com.garagesale.gapp.garagesale.response.UserResponse;
 import com.garagesale.gapp.garagesale.service.UserService;
 import com.garagesale.gapp.garagesale.util.Camera.*;
 import com.garagesale.gapp.garagesale.util.DataContainer;
 import com.garagesale.gapp.garagesale.util.TabPagerAdapter;
 import com.garagesale.gapp.garagesale.util.setPermission;
+import com.google.android.gms.maps.model.LatLng;
 import com.gun0912.tedpermission.PermissionListener;
 
 import java.util.ArrayList;
@@ -44,7 +46,7 @@ import static android.app.Activity.RESULT_OK;
  * 현재 skeleton 레이아웃
  */
 public class StoreFragment extends BaseFragment implements
-        View.OnClickListener {
+        GoogleMapTabFragment.FragmentInteractionListener, View.OnClickListener {
 
     // 싱글톤 패턴
     @SuppressLint("StaticFieldLeak")
@@ -94,7 +96,7 @@ public class StoreFragment extends BaseFragment implements
 
         // Glide.with(getInstance()).load("http://192.168.42.180:3000/imeage/Screenshot_2017-07-04-17-56-47.png").into(binding.imageView5);
 
-        mTabPagerAdapter = new TabPagerAdapter(getActivity().getSupportFragmentManager());
+        mTabPagerAdapter = new TabPagerAdapter(this.getChildFragmentManager());
         binding.viewpager.setAdapter(mTabPagerAdapter);
         binding.tabs.setupWithViewPager(binding.viewpager);
 
@@ -124,12 +126,6 @@ public class StoreFragment extends BaseFragment implements
             }
         }
     }
-
-  /*  @Override
-    public void sendMessageToParent(LatLng latLng, String address) {
-        binding.editText13.setText("위도 : " + String.valueOf(latLng.longitude) + "\n경도 : " + String.valueOf(latLng.latitude));
-        binding.editText14.setText(address);
-    }*/
 
     /*****************카메라 처리 메소드 **********************/
 
@@ -191,4 +187,8 @@ public class StoreFragment extends BaseFragment implements
         return "Store";
     }
 
+    @Override
+    public void sendMessageToParent(LatLng latLng, String address) {
+        Log.d("메인", address);
+    }
 }

@@ -4,6 +4,7 @@ package com.garagesale.gapp.garagesale.util;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.garagesale.gapp.garagesale.fragment.StoreTabsFragment.CommentTabFragment;
 import com.garagesale.gapp.garagesale.fragment.StoreTabsFragment.GoogleMapTabFragment;

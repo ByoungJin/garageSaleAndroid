@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         backstack = new Stack<>();
         ft = getSupportFragmentManager().beginTransaction();
-        BaseFragment defualtfragment;
+        BaseFragment defaultfragment;
 
         // NetworkModule에서 Content를 받을 수 있도록 빌드
         networkComponent = DaggerNetworkComponent.builder().networkModule(new NetworkModule(this)).build();
@@ -84,9 +84,9 @@ public class MainActivity extends AppCompatActivity {
         soundPool.setOnLoadCompleteListener((soundPool1, sampleId, status) -> soundPool1.play(sampleId, 1f, 1f, 0, 0, 1f));
 
         // 기본 로그인
-        defualtfragment = LoginFragment.getInstance();
+        defaultfragment = LoginFragment.getInstance();
 
-        ft.replace(R.id.content_fragment_layout, defualtfragment).commit();
+        ft.replace(R.id.content_fragment_layout, defaultfragment).commit();
     }
 
     public NetworkComponent getNetworkComponent() {

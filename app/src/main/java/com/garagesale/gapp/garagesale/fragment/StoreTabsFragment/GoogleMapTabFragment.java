@@ -52,27 +52,27 @@ public class GoogleMapTabFragment extends Fragment
     private LatLng mLatLng;
     private SupportMapFragment supportMapFragment;
     private FragmentStoreGooglemapTabBinding binding;
-    // private FragmentInteractionListener mParentListener;
+    private FragmentInteractionListener mParentListener;
     private SupportPlaceAutocompleteFragment autocompleteFragment;
     private AutocompleteFilter typeFilter;
 
     /**
      * 부모 Fragment와 통신하기위한 리스너
      */
-   /* public interface FragmentInteractionListener {
+    public interface FragmentInteractionListener {
         void sendMessageToParent(LatLng latLng,String address);
-    }*/
+    }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         // check if parent Fragment implements listener
-       /* if (getParentFragment() instanceof FragmentInteractionListener) {
+        if (getParentFragment() instanceof FragmentInteractionListener) {
             mParentListener = (FragmentInteractionListener) getParentFragment();
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnChildFragmentInteractionListener");
-        }*/
+        }
     }
 
     @Override
@@ -99,7 +99,7 @@ public class GoogleMapTabFragment extends Fragment
             gLocation = mGPSInfo.getGPSLocation();
             mLatLng = new LatLng(gLocation.getLatitude(), gLocation.getLongitude());
             createGoogleMap(mGoogleMap, mLatLng);
-            // mParentListener.sendMessageToParent(mLatLng,addrConvertor.getAddress(getContext(),mLatLng));
+            mParentListener.sendMessageToParent(mLatLng, addrConvertor.getAddress(getContext(), mLatLng));
         });
     }
     public void createAutoComplete(){
@@ -127,7 +127,7 @@ public class GoogleMapTabFragment extends Fragment
         mLatLng = mGPSInfo.getLatLng();
         createGoogleMap(map, mLatLng);
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mLatLng, 16));
-        //  mParentListener.sendMessageToParent(mLatLng,addrConvertor.getAddress(getContext(),mLatLng));
+        mParentListener.sendMessageToParent(mLatLng, addrConvertor.getAddress(getContext(), mLatLng));
         mGoogleMap.setOnMapClickListener(this);
     }
 
@@ -139,7 +139,7 @@ public class GoogleMapTabFragment extends Fragment
     @Override
     public void onMapClick(LatLng latLng) {
         createGoogleMap(mGoogleMap, latLng);
-        // mParentListener.sendMessageToParent(mLatLng,addrConvertor.getAddress(getContext(),mLatLng));
+        mParentListener.sendMessageToParent(mLatLng, addrConvertor.getAddress(getContext(), mLatLng));
     }
 
     /**
@@ -168,7 +168,7 @@ public class GoogleMapTabFragment extends Fragment
     public void onPlaceSelected(Place place) {
         mLatLng = place.getLatLng();
         createGoogleMap(mGoogleMap, mLatLng);
-        //  mParentListener.sendMessageToParent(mLatLng,addrConvertor.getAddress(getContext(),mLatLng));
+        mParentListener.sendMessageToParent(mLatLng, addrConvertor.getAddress(getContext(), mLatLng));
     }
     //자동완성 리스너
     @Override
