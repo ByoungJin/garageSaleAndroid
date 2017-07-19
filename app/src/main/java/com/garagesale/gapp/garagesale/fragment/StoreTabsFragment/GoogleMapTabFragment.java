@@ -5,7 +5,9 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.content.Context;
@@ -35,7 +37,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
  */
 
 public class GoogleMapTabFragment extends Fragment
-        implements OnMapReadyCallback, GoogleMap.OnMapClickListener,PlaceSelectionListener{
+        implements OnMapReadyCallback, GoogleMap.OnMapClickListener, PlaceSelectionListener, View.OnClickListener {
 
     // 싱글톤 패턴
     @SuppressLint("StaticFieldLeak")
@@ -54,7 +56,6 @@ public class GoogleMapTabFragment extends Fragment
     private FragmentStoreGooglemapTabBinding binding;
     private FragmentInteractionListener mParentListener;
     private SupportPlaceAutocompleteFragment autocompleteFragment;
-    private AutocompleteFilter typeFilter;
 
     /**
      * 부모 Fragment와 통신하기위한 리스너
@@ -95,12 +96,9 @@ public class GoogleMapTabFragment extends Fragment
 
         createAutoComplete();
 
-        binding.MyLocation.setOnClickListener(view1 -> {
-            gLocation = mGPSInfo.getGPSLocation();
-            mLatLng = new LatLng(gLocation.getLatitude(), gLocation.getLongitude());
-            createGoogleMap(mGoogleMap, mLatLng);
-            mParentListener.sendMessageToParent(mLatLng, addrConvertor.getAddress(getContext(), mLatLng));
-        });
+        binding.MyLocation.setOnClickListener(this);
+        binding.blockText.setOnClickListener(this);
+        binding.defaultText.setVisibility(View.GONE);
     }
     public void createAutoComplete(){
         // 자동완성
@@ -128,7 +126,8 @@ public class GoogleMapTabFragment extends Fragment
         createGoogleMap(map, mLatLng);
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mLatLng, 16));
         mParentListener.sendMessageToParent(mLatLng, addrConvertor.getAddress(getContext(), mLatLng));
-        mGoogleMap.setOnMapClickListener(this);
+        mGoogleMap.getUiSettings().setAllGesturesEnabled(false);
+        mGoogleMap.setOnMapClickListener(null);
     }
 
     /**
@@ -174,6 +173,27 @@ public class GoogleMapTabFragment extends Fragment
     @Override
     public void onError(Status status) {
         Toast.makeText(getContext(),"다시 검색해주세요",Toast.LENGTH_SHORT);
+    }
+
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.blockText:
+                binding.blockText.setText("지도 활성화");
+                binding.blockText.setVisibility(View.GONE);
+                binding.defaultText.setVisibility(View.VISIBLE);
+                mGoogleMap.getUiSettings().setAllGesturesEnabled(true);
+                mGoogleMap.setOnMapClickListener(this);
+                break;
+
+            case R.id.MyLocation:
+                gLocation = mGPSInfo.getGPSLocation();
+                mLatLng = new LatLng(gLocation.getLatitude(), gLocation.getLongitude());
+                createGoogleMap(mGoogleMap, mLatLng);
+                mParentListener.sendMessageToParent(mLatLng, addrConvertor.getAddress(getContext(), mLatLng));
+                break;
+        }
     }
 
     /*  터치간섭 삭제
