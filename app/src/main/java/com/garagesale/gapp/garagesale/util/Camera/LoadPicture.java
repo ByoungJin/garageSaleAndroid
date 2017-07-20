@@ -29,6 +29,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 import static com.garagesale.gapp.garagesale.R.anim.rotate;
+import static com.garagesale.gapp.garagesale.R.anim.scale;
 import static com.garagesale.gapp.garagesale.util.Camera.RealPathUtil.getRealPath;
 
 /**
@@ -42,9 +43,11 @@ public class LoadPicture {
     private static final int REQUEST_TAKE_PHOTO = 1;
     private static final int REQUEST_GALLERY = 2;
 
+    private Intent intent;
     private Fragment fragment;
     private Context context;
     private Uri outputFileUri;
+
     public LoadPicture(Fragment fragment, Context context){
         this.fragment = fragment;
         this.context = context;
@@ -95,22 +98,26 @@ public class LoadPicture {
         return outputFileUri;
     }
 
+    // CROP 이미지 설정값들 (비율, 크기, 파일형식)
     private static final String TYPE_IMAGE = "image/*";
-    private static final int PROFILE_IMAGE_ASPECT_X = 3;
+    private static final int PROFILE_IMAGE_ASPECT_X = 1;
     private static final int PROFILE_IMAGE_ASPECT_Y = 1;
-    private static final int PROFILE_IMAGE_OUTPUT_X = 600;
-    private static final int PROFILE_IMAGE_OUTPUT_Y = 200;
+    private static final int PROFILE_IMAGE_OUTPUT_X = 400;
+    private static final int PROFILE_IMAGE_OUTPUT_Y = 400;
     private static final int REQUEST_CODE_PROFILE_IMAGE_CROP = 3;
 
     public void doCrop(Uri outputFileUri) {
-        Intent intent = new Intent("com.android.camera.action.CROP");
-        intent.setDataAndType(outputFileUri, TYPE_IMAGE);
-        intent.putExtra("scale", true);
-        intent.putExtra("aspectX", PROFILE_IMAGE_ASPECT_X);
-        intent.putExtra("aspectY", PROFILE_IMAGE_ASPECT_Y);
+        intent = new Intent("com.android.camera.action.CROP");
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        intent.putExtra("scale", scale);
         intent.putExtra("outputX", PROFILE_IMAGE_OUTPUT_X);
         intent.putExtra("outputY", PROFILE_IMAGE_OUTPUT_Y);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+        intent.putExtra("aspectX", PROFILE_IMAGE_ASPECT_X);
+        intent.putExtra("aspectY", PROFILE_IMAGE_ASPECT_Y);
+        intent.setDataAndType(outputFileUri, TYPE_IMAGE);
+        intent.putExtra("crop", "true");
+        intent.putExtra("circleCrop", true);
         fragment.startActivityForResult(intent, REQUEST_CODE_PROFILE_IMAGE_CROP);
     }
 

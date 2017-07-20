@@ -50,7 +50,6 @@ public class ProviderUtil {
     try {
       return getOutputMediaFileUri(context, getOutputMediaFile());
     } catch (IOException e) {
-      Log.d("asd", e.getLocalizedMessage());
       e.printStackTrace();
       return null;
     }

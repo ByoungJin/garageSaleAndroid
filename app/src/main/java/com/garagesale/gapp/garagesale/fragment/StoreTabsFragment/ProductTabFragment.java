@@ -49,6 +49,15 @@ public class ProductTabFragment extends Fragment implements
         return mInstance;
     }
 
+    /**
+     * 부모 Fragment와 통신하기위한 리스너
+     */
+    public interface ProductTabInteractionListener {
+        void ProductTabMessageToParent(Drawable d);
+
+        void SendserverPicture(MultipartBody.Part body);
+    }
+
     View view;
 
     private FragmentStoreProductTabBinding binding;
@@ -61,16 +70,10 @@ public class ProductTabFragment extends Fragment implements
     private static final int REQUEST_CODE_PROFILE_IMAGE_CROP = 3;
     private Uri outputFileUri;
     private LoadPicture loadPicture;
+
     private ProductTabInteractionListener mProductListener;
 
-    /**
-     * 부모 Fragment와 통신하기위한 리스너
-     */
-    public interface ProductTabInteractionListener {
-        void ProductTabMessageToParent(Drawable d);
 
-        void SendserverPicture(MultipartBody.Part body);
-    }
 
     @Override
     public void onAttach(Context context) {
@@ -110,6 +113,7 @@ public class ProductTabFragment extends Fragment implements
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_GALLERY) {
                 outputFileUri = data.getData();

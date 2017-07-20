@@ -25,7 +25,7 @@ import com.garagesale.gapp.garagesale.fragment.PractiveMainFragment;
 import com.garagesale.gapp.garagesale.fragment.ProductFragment;
 import com.garagesale.gapp.garagesale.fragment.ProfileFragment;
 import com.garagesale.gapp.garagesale.fragment.SettingFragment;
-import com.garagesale.gapp.garagesale.fragment.StoreGoogleTap;
+import com.garagesale.gapp.garagesale.fragment.StoreFragment;
 import com.garagesale.gapp.garagesale.network.DaggerNetworkComponent;
 import com.garagesale.gapp.garagesale.network.NetworkComponent;
 import com.garagesale.gapp.garagesale.network.NetworkModule;
@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         } else if (id == R.id.setting_button) {
             changeFragment(SettingFragment.getInstance());
         } else if (id == R.id.store_button) {
-            changeFragment(StoreGoogleTap.getInstance());
+            changeFragment(StoreFragment.getInstance());
         } else if (id == R.id.product_button) {
             changeFragment(ProductFragment.getInstance());
         } else if (id == R.id.planet_list_button) {

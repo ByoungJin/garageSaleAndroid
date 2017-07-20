@@ -39,16 +39,16 @@ import retrofit2.Retrofit;
  * Created by juyeol on 2017-06-28.
  * 현재 skeleton 레이아웃
  */
-public class StoreGoogleTap extends BaseFragment implements
+public class StoreFragment extends BaseFragment implements
         GoogleMapTabFragment.GoogleTapInteractionListener,
         ProductTabFragment.ProductTabInteractionListener {
 
     // 싱글톤 패턴
     @SuppressLint("StaticFieldLeak")
-    private static StoreGoogleTap mInstance;
+    private static StoreFragment mInstance;
 
-    public static StoreGoogleTap getInstance() {
-        if (mInstance == null) mInstance = new StoreGoogleTap();
+    public static StoreFragment getInstance() {
+        if (mInstance == null) mInstance = new StoreFragment();
         return mInstance;
     }
 
