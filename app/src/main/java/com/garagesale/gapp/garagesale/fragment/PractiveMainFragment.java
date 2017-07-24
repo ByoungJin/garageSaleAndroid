@@ -98,7 +98,11 @@ public class PractiveMainFragment extends BaseFragment {
 
         // Center 행성 회전 애니메이션
         Animation animation = loadAnimation(getContext(), R.anim.rotate); // 애니메이션xml 파일을 로드
-        binding.layoutRotate.startAnimation(animation); // 애니메이션을 시작
+        binding.layoutRotate.startAnimation(animation); // 회전레이아웃을 시계방향으로 회전
+
+        animation = loadAnimation(getContext(), R.anim.rotate_reverse); // 애니메이션xml 파일을 로드
+        binding.category.startAnimation(animation); // 카테고리 위성을 반대로 회전
+
         binding.layoutRotate.invalidate(); // 화면을 갱신
 
     }
