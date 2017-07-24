@@ -66,18 +66,18 @@ public class PractiveMainFragment extends BaseFragment {
                 // Error Handle
 
                 if (!response.isSuccessful()) {
-                    Toast.makeText(getActivity(), response.message(), Toast.LENGTH_SHORT).show();
+                    if(getActivity() != null) Toast.makeText(getActivity(), response.message(), Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 UserListResponse userListResponse = response.body();
 
                 if (userListResponse == null) {
-                    Toast.makeText(getActivity(), response.message(), Toast.LENGTH_SHORT).show();
+                    if(getActivity() != null) Toast.makeText(getActivity(), response.message(), Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                Toast.makeText(getActivity(), response.message(), Toast.LENGTH_SHORT).show();
+                if(getActivity() != null) Toast.makeText(getActivity(), response.message(), Toast.LENGTH_SHORT).show();
 
             }
 

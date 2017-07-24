@@ -64,11 +64,11 @@ public class ProductFragment extends BaseFragment {
             public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
                 // Error Handle
                 if(!response.isSuccessful()){
-                    Toast.makeText(getActivity(), response.message(),Toast.LENGTH_SHORT).show();
+                    if(getActivity() != null) Toast.makeText(getActivity(), response.message(),Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                Toast.makeText(getActivity(), "물건 생성 성공, 물건 이름 : " + response.body().getProduct().getName(), Toast.LENGTH_SHORT).show();
+                if(getActivity() != null) Toast.makeText(getActivity(), "물건 생성 성공, 물건 이름 : " + response.body().getProduct().getName(), Toast.LENGTH_SHORT).show();
 
             }
 

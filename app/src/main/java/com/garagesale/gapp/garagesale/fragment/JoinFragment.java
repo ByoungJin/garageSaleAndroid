@@ -66,7 +66,7 @@ public class JoinFragment extends BaseFragment {
 
             // 패스워드가 일치하는지 확인
             if (!binding.passwordEditText.getText().toString().equals(binding.confirmEditText.getText().toString())) {
-                Toast.makeText(getActivity(), "패스워드가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
+                if(getActivity() != null) Toast.makeText(getActivity(), "패스워드가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -93,7 +93,7 @@ public class JoinFragment extends BaseFragment {
 
                             //Toast.makeText(getActivity(), "로그인 성공, Name : " + userResponse.getUser().getName(), Toast.LENGTH_SHORT).show();
 
-                            Toast.makeText(getActivity(), "Join 성공, 토큰 : " + preferenceManager.getStringValue(BuildConfig.KEYTOKEN), Toast.LENGTH_SHORT).show();
+                            if(getActivity() != null) Toast.makeText(getActivity(), "Join 성공, 토큰 : " + preferenceManager.getStringValue(BuildConfig.KEYTOKEN), Toast.LENGTH_SHORT).show();
 
                             // 로그인, 조인 버튼 없애고, 로그아웃 보임.
                             ActivityMainBinding activityMainBinding = getMainActivity().getBinding();
@@ -110,7 +110,7 @@ public class JoinFragment extends BaseFragment {
                         }
                     } else {
                         // handle request errors depending on status code
-                        Toast.makeText(getActivity(), response.message(),Toast.LENGTH_SHORT).show();
+                        if(getActivity() != null) Toast.makeText(getActivity(), response.message(),Toast.LENGTH_SHORT).show();
                     }
 
                 }

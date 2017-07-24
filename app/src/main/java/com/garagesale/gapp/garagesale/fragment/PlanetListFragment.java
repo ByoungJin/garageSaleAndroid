@@ -71,7 +71,7 @@ public class PlanetListFragment extends BaseFragment {
 
         // Get GPS정보
         Location gLocation = GPSInfo.getmInstance(getContext()).getGPSLocation();
-        Toast.makeText(getActivity(), "gLocation : " + String.valueOf(gLocation.getLongitude()) + ", " + String.valueOf(gLocation.getLatitude()) , Toast.LENGTH_SHORT).show();
+        if(getActivity() != null) Toast.makeText(getActivity(), "gLocation : " + String.valueOf(gLocation.getLongitude()) + ", " + String.valueOf(gLocation.getLatitude()) , Toast.LENGTH_SHORT).show();
 
         // Get 근거리 User 정보
         Call<UserListResponse> repos = loginService.getUserList(String.valueOf(gLocation.getLongitude()), String.valueOf(gLocation.getLatitude()));
@@ -80,13 +80,13 @@ public class PlanetListFragment extends BaseFragment {
             public void onResponse(Call<UserListResponse> call, Response<UserListResponse> response) {
                 // Error Handle
                 if(!response.isSuccessful()){
-                    Toast.makeText(getActivity(), response.message(),Toast.LENGTH_SHORT).show();
+                    if(getActivity() != null) Toast.makeText(getActivity(), response.message(),Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 UserListResponse userListResponse = response.body();
                 if(userListResponse == null) {
-                    Toast.makeText(getActivity(), response.message() , Toast.LENGTH_SHORT).show();
+                    if(getActivity() != null) Toast.makeText(getActivity(), response.message() , Toast.LENGTH_SHORT).show();
                     return;
                 }
                 setTestItemData(userListResponse.getUsers());

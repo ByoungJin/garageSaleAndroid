@@ -146,7 +146,7 @@ public class LoginFragment extends BaseFragment implements MainActivity.OnLoginS
 
                         //Toast.makeText(getActivity(), "로그인 성공, Name : " + userResponse.getUser().getName(), Toast.LENGTH_SHORT).show();
 
-                        Toast.makeText(getActivity(), "로그인 성공, 토큰 : " + preferenceManager.getStringValue(BuildConfig.KEYTOKEN), Toast.LENGTH_SHORT).show();
+                        if(getActivity() != null) Toast.makeText(getActivity(), "로그인 성공, 토큰 : " + preferenceManager.getStringValue(BuildConfig.KEYTOKEN), Toast.LENGTH_SHORT).show();
 
                         // 로그인, 조인 버튼 없애고, 로그아웃 보임.
                         ActivityMainBinding activityMainBinding = getMainActivity().getBinding();
@@ -166,7 +166,7 @@ public class LoginFragment extends BaseFragment implements MainActivity.OnLoginS
                 } else {
                     int statusCode = response.code();
                     // handle request errors depending on status code
-                    Toast.makeText(getActivity(), response.message(), Toast.LENGTH_SHORT).show();
+                    if(getActivity() != null) Toast.makeText(getActivity(), response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
