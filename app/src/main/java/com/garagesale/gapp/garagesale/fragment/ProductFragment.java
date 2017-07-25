@@ -53,6 +53,14 @@ public class ProductFragment extends BaseFragment {
     }
 
     public void onCreateButtonClick(View view){
+        if(binding.nameEditText.getText().toString().equals("")) {
+            if(getActivity() != null) Toast.makeText(getActivity(), "Name 입력하시오", Toast.LENGTH_SHORT).show();
+            return;
+        } else if(binding.priceEditText.getText().toString().equals("")) {
+            if(getActivity() != null) Toast.makeText(getActivity(), "Price 입력하시오", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         retrofit.create(ProductService.class).createProduct(
 
                 binding.nameEditText.getText().toString(),
