@@ -3,76 +3,106 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <FrameLayout
-        android:layout_width="match_parent" android:layout_height="match_parent">
 
-        <android.support.constraint.ConstraintLayout
+       <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="#004FFD">
 
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Login"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="8dp"
-                android:layout_marginLeft="8dp"
-                app:layout_constraintLeft_toLeftOf="parent" />
+            <!--<TextView-->
+                <!--android:id="@+id/textView"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Login"-->
+                <!--app:layout_constraintTop_toTopOf="parent"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:layout_marginLeft="8dp"-->
+                <!--app:layout_constraintLeft_toLeftOf="parent"-->
+                <!--android:layout_marginStart="8dp" />-->
 
             <EditText
                 android:id="@+id/userIdText"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:ems="10"
-                android:hint="Email"
+                android:hint="E-mail"
+                android:textColorHint="@color/white"
+                android:textColor="@color/white"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="130dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 android:inputType="textEmailAddress"
-                app:layout_constraintTop_toBottomOf="@+id/textView"
-                android:layout_marginLeft="8dp"
-                app:layout_constraintLeft_toLeftOf="parent" />
+                android:theme="@style/Theme.App.Base"
+                />
 
             <EditText
                 android:id="@+id/passwordText"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
                 android:ems="10"
                 android:hint="Password"
+                android:textColorHint="@color/white"
+                android:textColor="@color/white"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/userIdText"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 android:inputType="textPassword"
-                app:layout_constraintTop_toBottomOf="@+id/userIdText"
-                android:layout_marginLeft="8dp"
-                app:layout_constraintLeft_toLeftOf="parent" />
+                android:theme="@style/Theme.App.Base"
+               />
 
             <Button
                 android:id="@+id/loginButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Login"
-                app:layout_constraintTop_toBottomOf="@+id/passwordText"
-                android:layout_marginLeft="8dp"
-                app:layout_constraintLeft_toLeftOf="parent" />
+                android:layout_width="match_parent"
+                android:layout_height="33dp"
+                android:text="로그인"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:background="@drawable/round_corner_button"
+                android:layout_centerInParent="true"
+                android:layout_below="@+id/passwordText"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+              />
 
-            <Button
-                android:id="@+id/joinButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                android:text="Go to Join"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/loginButton" />
+           <Button
+               android:id="@+id/sign_in_button"
+               android:layout_width="match_parent"
+               android:layout_height="33dp"
+               android:text="구글 계정으로 로그인"
+               android:textColor="@color/black"
+               android:textStyle="bold"
+               android:background="@drawable/round_corner_button"
+               android:layout_below="@+id/loginButton"
+               android:layout_centerHorizontal="true"
+               android:layout_marginTop="11dp"
+               android:layout_marginLeft="20dp"
+               android:layout_marginRight="20dp"
+               />
 
-            <com.google.android.gms.common.SignInButton
-                android:id="@+id/sign_in_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/joinButton"
-                app:layout_constraintRight_toRightOf="@+id/joinButton"
-                app:layout_constraintLeft_toLeftOf="@+id/joinButton" />
+           <Button
+               android:id="@+id/joinButton"
+               android:layout_width="match_parent"
+               android:layout_height="33dp"
+               android:text="회원가입"
+               android:textColor="@color/white"
+               android:textStyle="bold"
+               android:background="@drawable/round_corner_button_trans"
+               android:layout_below="@+id/sign_in_button"
+               android:layout_centerHorizontal="true"
+               android:layout_marginTop="11dp"
+               android:layout_marginLeft="20dp"
+               android:layout_marginRight="20dp"
+               />
 
-        </android.support.constraint.ConstraintLayout>
 
-    </FrameLayout>
+
+
+
+
+       </RelativeLayout>
+
 </layout>

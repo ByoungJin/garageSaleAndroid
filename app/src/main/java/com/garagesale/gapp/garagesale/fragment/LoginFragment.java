@@ -70,7 +70,7 @@ public class LoginFragment extends BaseFragment implements MainActivity.OnLoginS
         loginService = retrofit.create(LoginService.class);    // 로그인 서비스 객체 생성
         preferenceManager = SharedPreferenceManager.getInstance(getActivity());
 
-        binding.signInButton.setSize(SignInButton.SIZE_STANDARD);
+//        binding.signInButton.setSize(SignInButton.SIZE_STANDARD);
 
         binding.signInButton.setOnClickListener(view -> {
             googleLogin = new GoogleLogin(getContext(), this);
