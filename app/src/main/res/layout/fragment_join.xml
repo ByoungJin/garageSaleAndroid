@@ -1,85 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+<RelativeLayout
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:background="@color/background">
 
             <TextView
                 android:id="@+id/textView2"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Join"
-                android:layout_marginLeft="8dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="8dp" />
+                android:layout_width="wrap_content"
+                android:text="잘못 입력되었어요!"
+                android:textStyle="bold"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                >
+            </TextView>
 
             <EditText
                 android:id="@+id/emailEditText"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
                 android:ems="10"
-                android:hint="email"
+                android:hint="@string/e_mail"
+                android:textColorHint="@color/white"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="130dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 android:inputType="textEmailAddress"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView2" />
+                android:theme="@style/Theme.App.Base"
+                />
 
             <EditText
                 android:id="@+id/nameEditText"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
                 android:ems="10"
-                android:hint="Name"
+                android:hint="@string/nickname"
+                android:textColorHint="@color/white"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_below="@+id/emailEditText"
                 android:inputType="textPersonName"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/emailEditText" />
+                android:theme="@style/Theme.App.Base"
+                />
 
             <EditText
                 android:id="@+id/passwordEditText"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
                 android:ems="10"
-                android:hint="Password"
+                android:hint="@string/password"
+                android:textColorHint="@color/white"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_below="@+id/nameEditText"
                 android:inputType="textPassword"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/nameEditText" />
+                android:theme="@style/Theme.App.Base"
+                />
 
             <EditText
                 android:id="@+id/confirmEditText"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="7dp"
                 android:ems="10"
-                android:hint="ConfirmPassword"
+                android:hint="@string/re_password"
+                android:textColorHint="@color/white"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_below="@+id/passwordEditText"
                 android:inputType="textPassword"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/passwordEditText" />
+                android:theme="@style/Theme.App.Base"
+                />
 
             <Button
                 android:id="@+id/joinButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="0dp"
-                android:text="Button"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/confirmEditText" />
-        </android.support.constraint.ConstraintLayout>
+                android:layout_width="match_parent"
+                android:layout_height="33dp"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_below="@id/confirmEditText"
+                android:text="@string/join"
+                android:background="@drawable/round_corner_button"
+                />
 
-    </FrameLayout>
+</RelativeLayout>
 
 </layout>
