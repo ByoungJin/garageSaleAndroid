@@ -57,6 +57,9 @@ public class JoinFragment extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        // Action Bar Hiding
+        getMainActivity().hideActionBar();
+
         getNetworkComponent().inject(this);
         JoinService joinService = retrofit.create(JoinService.class);
         preferenceManager = SharedPreferenceManager.getInstance(getActivity());
@@ -104,6 +107,10 @@ public class JoinFragment extends BaseFragment {
 
                             // 화면 전환
                             getMainActivity().changeFragment(MainFragment.getInstance());
+
+                            // View Action Bar
+                            getMainActivity().viewActionBar();
+
                             mInstance = null;   // 재사용 불필요 시 프레그먼트 객체 제거
                         } catch (Exception e){
                             e.printStackTrace();

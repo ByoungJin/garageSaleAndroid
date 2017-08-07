@@ -144,6 +144,15 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void hideActionBar(){
+        // 개발을 위해 잠시 잠금
+//        binding.contentMain.actionBar.setVisibility(View.GONE); // Hide Action Bar
+    }
+
+    public void viewActionBar(){
+        binding.contentMain.actionBar.setVisibility(View.VISIBLE);
+    }
+
     public void logout() {
         SharedPreferenceManager.getInstance(this).putStringValue(BuildConfig.KEYTOKEN, ""); // 토큰 초기화
         MenuLayoutBinding menuLayoutBinding = binding.contentMain.menuLayout;

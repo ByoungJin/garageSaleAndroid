@@ -15,7 +15,7 @@
             sothree:layout_constraintLeft_toLeftOf="parent"
             sothree:layout_constraintRight_toRightOf="parent"
             sothree:layout_constraintTop_toTopOf="parent"
-            android:id="@+id/relativeLayout5">
+            android:id="@+id/actionBar">
 
             <ImageButton
                 android:id="@+id/menu_image"
@@ -86,16 +86,14 @@
 
         <com.sothree.slidinguppanel.SlidingUpPanelLayout
             android:id="@+id/sliding_layout"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginBottom="0dp"
-            android:layout_marginTop="0dp"
             android:gravity="top"
             sothree:layout_constraintBottom_toBottomOf="parent"
             sothree:layout_constraintHorizontal_bias="0.0"
             sothree:layout_constraintLeft_toLeftOf="parent"
             sothree:layout_constraintRight_toRightOf="parent"
-            sothree:layout_constraintTop_toBottomOf="@+id/relativeLayout5"
+            sothree:layout_constraintTop_toBottomOf="@+id/actionBar"
             sothree:umanoOverlay="true"
             sothree:umanoPanelHeight="0dp"
             sothree:umanoShadowHeight="4dp"

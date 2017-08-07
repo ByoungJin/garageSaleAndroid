@@ -65,6 +65,9 @@ public class LoginFragment extends BaseFragment implements MainActivity.OnLoginS
         super.onActivityCreated(savedInstanceState);
         binding = FragmentLoginBinding.bind(getView()); // Login 프레그먼트 View
 
+        // Action Bar Hiding
+        getMainActivity().hideActionBar();
+
         // Login (서버 주소는 build.gradle에 있음, 본인 로컬 서버 주소로 변경하여 테스트하세요)
         getNetworkComponent().inject(this); // retrofit 객체 주입 시점
         loginService = retrofit.create(LoginService.class);    // 로그인 서비스 객체 생성
@@ -154,10 +157,15 @@ public class LoginFragment extends BaseFragment implements MainActivity.OnLoginS
                         menuLayoutBinding.loginButton.setVisibility(Button.GONE); // login button
                         menuLayoutBinding.joinButton.setVisibility(Button.GONE); // join button
                         menuLayoutBinding.logoutButton.setVisibility(Button.VISIBLE); // logout button
+
                         // 화면 전환
 
                         getMainActivity().changeFragment(MainFragment.getInstance());
                         getMainActivity().setOnLoginSuccessListener();
+
+                        // View Action Bar
+                        getMainActivity().viewActionBar();
+
                         mInstance = null;   // 재사용 불필요 시 프레그먼트 객체 제거
 
                     } catch (Exception e) {
