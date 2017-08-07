@@ -20,12 +20,14 @@ import com.garagesale.gapp.garagesale.databinding.MenuLayoutBinding;
 import com.garagesale.gapp.garagesale.fragment.JoinFragment;
 import com.garagesale.gapp.garagesale.fragment.LoginFragment;
 import com.garagesale.gapp.garagesale.fragment.MainFragment;
+import com.garagesale.gapp.garagesale.fragment.PickPlanetFragment;
 import com.garagesale.gapp.garagesale.fragment.PlanetListFragment;
 import com.garagesale.gapp.garagesale.fragment.PractiveMainFragment;
 import com.garagesale.gapp.garagesale.fragment.ProductFragment;
 import com.garagesale.gapp.garagesale.fragment.ProfileFragment;
 import com.garagesale.gapp.garagesale.fragment.SettingFragment;
 import com.garagesale.gapp.garagesale.fragment.StoreFragment;
+import com.garagesale.gapp.garagesale.fragment.TutorialFragment;
 import com.garagesale.gapp.garagesale.network.DaggerNetworkComponent;
 import com.garagesale.gapp.garagesale.network.NetworkComponent;
 import com.garagesale.gapp.garagesale.network.NetworkModule;
@@ -140,7 +142,14 @@ public class MainActivity extends AppCompatActivity {
             logout();
         } else if (id == R.id.practive_main_button) {
             changeFragment(PractiveMainFragment.getInstance());
+        } else if (id == R.id.pick_category_button) {
+            changeFragment(PickPlanetFragment.getInstance());
+        } else if (id == R.id.pick_planet_button) {
+            changeFragment(PickPlanetFragment.getInstance());
+        } else if (id == R.id.tutorial_button) {
+            changeFragment(TutorialFragment.getInstance());
         }
+
 
     }
 

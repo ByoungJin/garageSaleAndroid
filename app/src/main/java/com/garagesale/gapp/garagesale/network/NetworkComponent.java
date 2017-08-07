@@ -3,12 +3,15 @@ package com.garagesale.gapp.garagesale.network;
 import com.garagesale.gapp.garagesale.fragment.JoinFragment;
 import com.garagesale.gapp.garagesale.fragment.LoginFragment;
 import com.garagesale.gapp.garagesale.fragment.MainFragment;
+import com.garagesale.gapp.garagesale.fragment.PickCategoryFragment;
+import com.garagesale.gapp.garagesale.fragment.PickPlanetFragment;
 import com.garagesale.gapp.garagesale.fragment.PlanetListFragment;
 import com.garagesale.gapp.garagesale.fragment.PractiveMainFragment;
 import com.garagesale.gapp.garagesale.fragment.ProductFragment;
 import com.garagesale.gapp.garagesale.fragment.ProfileFragment;
 import com.garagesale.gapp.garagesale.fragment.SettingFragment;
 import com.garagesale.gapp.garagesale.fragment.StoreFragment;
+import com.garagesale.gapp.garagesale.fragment.TutorialFragment;
 
 import javax.inject.Singleton;
 
@@ -38,4 +41,10 @@ public interface NetworkComponent {
     void inject(PlanetListFragment fragment);
 
     void inject(PractiveMainFragment fragment);
+
+    void inject(PickCategoryFragment fragment);
+
+    void inject(PickPlanetFragment fragment);
+
+    void inject(TutorialFragment fragment);
 }
