@@ -35,21 +35,27 @@
                     android:id="@+id/header"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{list.header}" />
+                    android:text="@{list.header}"
+                    android:textColor="@color/black"
+                    />
 
                 <TextView
                     android:id="@+id/option"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="right"
-                    android:text="@{list.option}" />
+                    android:text="@{list.option}"
+                    android:textColor="@color/black"
+                    />
             </LinearLayout>
 
             <TextView
                 android:id="@+id/body"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{list.body}" />
+                android:text="@{list.body}"
+                android:textColor="@color/black"
+                />
         </LinearLayout>
 
 
