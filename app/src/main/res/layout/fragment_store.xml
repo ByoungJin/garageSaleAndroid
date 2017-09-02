@@ -34,86 +34,79 @@
             android:layout_marginLeft="0dp"
             app:layout_constraintLeft_toLeftOf="parent">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-                <!-- 왼쪽 사용자 이미지, 정보 레이어-->
-                <LinearLayout
-                    android:layout_width="91dp"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                android:layout_height="100dp"
+                >
+                    <RelativeLayout
+                        android:id="@+id/layout1"
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentLeft="true"
+                        >
 
                     <TextView
                         android:id="@+id/editText9"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="판매자정보"
-                        android:layout_marginLeft="10dp"
-                        android:textSize="12sp" />
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="2dp"
+                        android:textSize="12sp"
+                        />
 
                     <ImageView
                         android:id="@+id/imageView7"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="3"
-                        app:srcCompat="@mipmap/ic_launcher" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@mipmap/ic_launcher"
+                        android:layout_centerInParent="true"
+                        />
 
                     <TextView
                         android:id="@+id/editText10"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:ems="5"
-                        android:text="신용 등급 보기"
-                        android:layout_marginLeft="10dp"
-                        android:textSize="12sp" />
-                </LinearLayout>
+                        android:text="신용 등급 확인"
+                        android:textSize="12sp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true" />
 
-                <!-- 오른쪽 상점이름, 상점설명-->
-                <LinearLayout
+                    </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/layout2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:layout_marginTop="10dp">
+                    android:layout_toRightOf="@+id/layout1">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
+                <TextView
+                    android:id="@+id/editText12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="2dp"
+                    android:text="상점 이름"
+                    android:textSize="12sp"
+                    />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="3"
-                        android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/editText11"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:layout_centerVertical="true"
+                        android:text="누구누구의 반짝행성"
+                        android:layout_alignLeft="@+id/editText12"
+                        android:layout_alignStart="@+id/editText12" />
 
-                        <EditText
-                            android:id="@+id/editText12"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="2"
-                            android:inputType="textPersonName"
-                            android:text="Name"
-                            android:layout_marginBottom="32dp" />
+                </RelativeLayout>
 
-                        <TextView
-                            android:id="@+id/editText11"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1"
-                            android:text="누구누구의 반짝행성"
-                            android:textSize="12sp" />
+                </RelativeLayout>
 
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-                </LinearLayout>
-            </LinearLayout>
         </FrameLayout>
 
         <!-- 두번째 사용자정보 레이어 끝 -->
@@ -133,17 +126,6 @@
             app:layout_constraintLeft_toLeftOf="@+id/userInfoLayout"
             app:layout_constraintRight_toRightOf="@+id/userInfoLayout"
             app:layout_constraintTop_toBottomOf="@+id/userInfoLayout" />
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/viewpager"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tabs"
-            android:layout_marginTop="0dp"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintLeft_toLeftOf="@+id/tabs"
-            app:layout_constraintRight_toRightOf="@+id/tabs"
-            app:layout_constraintTop_toBottomOf="@+id/tabs" />
 
         <LinearLayout
             android:id="@+id/etcLayout"
@@ -169,6 +151,17 @@
                 android:text="메세지" />
 
         </LinearLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tabs"
+            android:layout_marginTop="-277dp"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toLeftOf="@+id/tabs"
+            app:layout_constraintRight_toRightOf="@+id/tabs"
+            app:layout_constraintTop_toBottomOf="@+id/tabs" />
 
 
         <!-- 일곱번째 기타 버튼 끝 -->
