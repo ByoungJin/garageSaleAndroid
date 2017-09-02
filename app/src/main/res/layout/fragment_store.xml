@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:tools="http://schemas.android.com/tools"
+
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/background">
 
-        <!-- 첫번째 이미지 레이어 -->
-        <!-- 첫번째 이미지 레이어 끝 -->
+
 
         <ImageView
             android:id="@+id/imageView5"
@@ -26,54 +27,50 @@
         <FrameLayout
             android:id="@+id/userInfoLayout"
             android:layout_width="0dp"
-            android:layout_height="100dp"
-            app:layout_constraintRight_toRightOf="parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
             android:layout_marginRight="0dp"
             android:layout_marginTop="32dp"
-            app:layout_constraintTop_toBottomOf="@+id/imageView5"
-            android:layout_marginLeft="0dp"
-            app:layout_constraintLeft_toLeftOf="parent">
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView5">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                >
-                    <RelativeLayout
-                        android:id="@+id/layout1"
-                        android:layout_width="90dp"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentLeft="true"
-                        >
+                android:layout_height="80dp">
+
+                <RelativeLayout
+                    android:id="@+id/layout1"
+                    android:layout_width="90dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentLeft="true">
 
                     <TextView
                         android:id="@+id/editText9"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="판매자정보"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="2dp"
-                        android:textSize="12sp"
-                        />
+                        android:text="판매자정보"
+                        android:textSize="12sp" />
 
                     <ImageView
                         android:id="@+id/imageView7"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:srcCompat="@mipmap/ic_launcher"
                         android:layout_centerInParent="true"
-                        />
+                        app:srcCompat="@mipmap/ic_launcher" />
 
                     <TextView
                         android:id="@+id/editText10"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="신용 등급 확인"
-                        android:textSize="12sp"
                         android:layout_alignParentBottom="true"
                         android:layout_centerHorizontal="true"
-                        />
+                        android:text="신용 등급 확인"
+                        android:textSize="12sp" />
 
-                    </RelativeLayout>
+                </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/layout2"
@@ -81,46 +78,33 @@
                     android:layout_height="match_parent"
                     android:layout_toRightOf="@+id/layout1">
 
-                <TextView
-                    android:id="@+id/editText12"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPersonName"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="2dp"
-                    android:text="상점 이름"
-                    android:textSize="12sp"
-                    />
+                    <TextView
+                        android:id="@+id/editText12"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="2dp"
+                        android:inputType="textPersonName"
+                        android:text="상점 이름"
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/editText11"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="18sp"
+                        android:layout_alignLeft="@+id/editText12"
+                        android:layout_alignStart="@+id/editText12"
                         android:layout_centerVertical="true"
                         android:text="누구누구의 반짝행성"
-                        android:layout_alignLeft="@+id/editText12"
-                        android:layout_alignStart="@+id/editText12" />
-
+                        android:textSize="18sp" />
                 </RelativeLayout>
 
-                </RelativeLayout>
-
+            </RelativeLayout>
         </FrameLayout>
 
 
         <!-- 일곱번째 기타 버튼 -->
-
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tabs"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintLeft_toLeftOf="@+id/userInfoLayout"
-            app:layout_constraintRight_toRightOf="@+id/userInfoLayout"
-            android:layout_marginTop="2dp"
-            app:layout_constraintTop_toBottomOf="@+id/userInfoLayout" />
 
         <LinearLayout
             android:id="@+id/etcLayout"
@@ -129,7 +113,6 @@
             android:orientation="horizontal"
             app:layout_constraintLeft_toLeftOf="@+id/viewpager"
             app:layout_constraintRight_toRightOf="@+id/viewpager"
-            android:layout_marginTop="0dp"
             app:layout_constraintTop_toBottomOf="@+id/viewpager"
             app:layout_constraintHorizontal_bias="0.0">
 
@@ -151,14 +134,25 @@
             android:id="@+id/viewpager"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tabs"
-            android:layout_marginTop="-277dp"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintLeft_toLeftOf="@+id/tabs"
             app:layout_constraintRight_toRightOf="@+id/tabs"
             app:layout_constraintTop_toBottomOf="@+id/tabs" />
 
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="0dp"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="@+id/userInfoLayout"
+            app:layout_constraintRight_toRightOf="@+id/userInfoLayout"
+            app:layout_constraintTop_toBottomOf="@+id/userInfoLayout" />
 
         <!-- 일곱번째 기타 버튼 끝 -->
+
     </android.support.constraint.ConstraintLayout>
-</layout>
+
+
+    </layout>
+
