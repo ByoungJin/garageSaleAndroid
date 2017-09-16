@@ -20,6 +20,7 @@ import com.garagesale.gapp.garagesale.databinding.MenuLayoutBinding;
 import com.garagesale.gapp.garagesale.fragment.JoinFragment;
 import com.garagesale.gapp.garagesale.fragment.LoginFragment;
 import com.garagesale.gapp.garagesale.fragment.MainFragment;
+import com.garagesale.gapp.garagesale.fragment.PickCategoryFragment;
 import com.garagesale.gapp.garagesale.fragment.PickPlanetFragment;
 import com.garagesale.gapp.garagesale.fragment.PlanetListFragment;
 import com.garagesale.gapp.garagesale.fragment.PractiveMainFragment;
@@ -143,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
         } else if (id == R.id.practive_main_button) {
             changeFragment(PractiveMainFragment.getInstance());
         } else if (id == R.id.pick_category_button) {
-            changeFragment(PickPlanetFragment.getInstance());
+            changeFragment(PickCategoryFragment.getInstance());
         } else if (id == R.id.pick_planet_button) {
             changeFragment(PickPlanetFragment.getInstance());
         } else if (id == R.id.tutorial_button) {
