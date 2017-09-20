@@ -4,14 +4,10 @@ import android.Manifest;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.widget.Toast;
 
 import android.content.Context;
@@ -21,16 +17,13 @@ import com.gun0912.tedpermission.PermissionListener;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
-import static com.garagesale.gapp.garagesale.R.anim.rotate;
-import static com.garagesale.gapp.garagesale.R.anim.scale;
-import static com.garagesale.gapp.garagesale.util.Camera.RealPathUtil.getRealPath;
+import static com.garagesale.gapp.garagesale.R.anim.scale_up;
 
 /**
  * Created by juyeol on 2017-07-05.
@@ -110,7 +103,7 @@ public class LoadPicture {
         intent = new Intent("com.android.camera.action.CROP");
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        intent.putExtra("scale", scale);
+        intent.putExtra("scale_up", scale_up);
         intent.putExtra("outputX", PROFILE_IMAGE_OUTPUT_X);
         intent.putExtra("outputY", PROFILE_IMAGE_OUTPUT_Y);
         intent.putExtra("aspectX", PROFILE_IMAGE_ASPECT_X);
