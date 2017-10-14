@@ -102,9 +102,6 @@ public class PractiveMainFragment extends BaseFragment {
 
         animation = loadAnimation(getContext(), R.anim.rotate_reverse); // 애니메이션xml 파일을 로드
         binding.category.startAnimation(animation); // 카테고리 위성을 반대로 회전
-
-        binding.layoutRotate.invalidate(); // 화면을 갱신
-
     }
 
     public void renderImages() {
@@ -127,7 +124,6 @@ public class PractiveMainFragment extends BaseFragment {
         // 중심크기 만큼 커짐
         float scale = ((float) intoView.getHeight() / (float) targetView.getHeight());
         targetView.animate().scaleX(scale).scaleY(scale).setDuration(durationMiles);
-
 
         // 중심으로 이동
         TranslateAnimation anim = new TranslateAnimation(
@@ -161,8 +157,8 @@ public class PractiveMainFragment extends BaseFragment {
                 //** 복합적 애니메이션이 한꺼번에 발생해야함
                 // TODO: 2017. 7. 19. 센터 작아져야함
                 Animation animation = loadAnimation(getContext(), R.anim.scale_down); // 애니메이션xml 파일을 로드
-                // 애니메이션 리스너
-                animation.setAnimationListener(new Animation.AnimationListener() {
+
+                view.getAnimation().setAnimationListener(new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
                         // 중복 클릭 방지
@@ -171,7 +167,6 @@ public class PractiveMainFragment extends BaseFragment {
                     @Override
                     public void onAnimationEnd(Animation animation) {
                         // TODO: 2017. 7. 19. 타겟 구역에 새로운 View 랜덤 위치, 랜덤크기 가지고 점점 커져야함
-                        //set.clone(binding.planetsContainer);
                         setRandomPosition(set, view, random);
                         set.applyTo(binding.planetsContainer);
 
@@ -184,7 +179,6 @@ public class PractiveMainFragment extends BaseFragment {
                 });
                 animation.setDuration(durationMiles); // 애니메이션 시간
                 binding.imageViewCenter.setAnimation(animation); // 애니메이션을 시작
-//                binding.imageViewCenter.invalidate(); // 화면을 갱신
 
             });
         }
@@ -193,13 +187,15 @@ public class PractiveMainFragment extends BaseFragment {
     }
 
     private void setRandomPosition(ConstraintSet set, ImageView view, Random random) {
+
+        // 커지지 않도록 방지
+        view.animate().scaleX(1).scaleY(1);
+
         // 랜덤위치 범위 : 0.0 ~ 1.0
         set.setHorizontalBias(view.getId(), getBiasFull(random));
         set.setVerticalBias(view.getId(), getBiasFull(random));
 
         // 랜덤크기 가져오기, 범위 : 35 ~ 85
-        // returns the number of pixels for 123.4dip
-        view.animate().scaleX(1).scaleY(1);    // 중심크기 만큼 커짐
         int imageWH = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 (float) random.nextInt(50 + 1) + 35, getResources().getDisplayMetrics());
 
@@ -208,10 +204,7 @@ public class PractiveMainFragment extends BaseFragment {
 
         // Scale 애니메이션
         Animation animation = loadAnimation(getContext(), R.anim.scale_up); // 애니메이션xml 파일을 로드
-//        animation.setFillAfter(true);    // 이동한 곳으로 Set
         view.setAnimation(animation); // 애니메이션을 시작
-//        view.invalidate(); // 화면을 갱신
-
     }
 
     public float getBiasFull(Random random) {
