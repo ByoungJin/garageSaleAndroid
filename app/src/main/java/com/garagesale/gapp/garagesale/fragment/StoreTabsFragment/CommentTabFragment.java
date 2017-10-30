@@ -45,7 +45,6 @@ public class CommentTabFragment extends Fragment implements View.OnClickListener
         return view;
     }
 
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
