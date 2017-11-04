@@ -83,8 +83,8 @@ public class PickPlanetFragment extends BaseFragment {
         binding.planetIconList.setAdapter(adapter);
 
         // 테스트셋
-        for (int i = 0; i < 10; i++) {
-            list.add(new listPlanet(R.mipmap.ic_launcher));
+        for (int i = 0; i < 100; i++) {
+            list.add(new listPlanet(R.drawable.planet));
         }
     }
 
